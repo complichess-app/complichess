@@ -28,6 +28,7 @@
   body { background: radial-gradient(1200px 600px at 50% -10%, #17304F 0%, var(--bg) 60%) fixed; min-height: 100vh; }
   button { font-family: inherit; color: inherit; cursor: pointer; }
   button:disabled { cursor: not-allowed; opacity: .45; }
+  .stage { padding-top: max(16px, env(safe-area-inset-top)) !important; padding-bottom: max(48px, env(safe-area-inset-bottom)) !important; }
   .stage { display: flex; gap: 28px; justify-content: center; align-items: flex-start; flex-wrap: wrap; padding: 16px 12px 48px; direction: ltr; }
   .phone { position: relative; width: 390px; max-width: 100%; background: linear-gradient(180deg, #12223A 0%, var(--screen) 140px); border: 1px solid rgba(255,255,255,.05); border-radius: 28px; padding: 18px 14px 22px; display: flex; flex-direction: column; gap: 14px; direction: rtl; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
   .phone.wide { width: 470px; }
@@ -130,6 +131,9 @@
   @keyframes dmIn { from { opacity: 0; transform: scale(.5); } }
   @keyframes dmPulse { 50% { transform: scale(.88); opacity: .75; } }
   .sqr, .card, .demo, .board8 { -webkit-touch-callout: none; }
+  .zdetails summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--muted); padding: 4px 0; }
+  .zdetails[open] { display: flex; flex-direction: column; gap: 8px; }
+  .contact { display: inline-flex; gap: 6px; align-items: center; color: #7DF9FF; font-weight: 700; text-decoration: none; border-bottom: 1px dashed rgba(125,249,255,.5); }
   .prechip { display: inline-flex; align-items: center; gap: 6px; background: rgba(168,38,46,.9); color: #fff; border: 0; border-radius: 999px; padding: 4px 10px; font-weight: 800; font-size: 12.5px; align-self: flex-start; }
   .hearts { position: absolute; top: 1px; left: 1px; display: flex; gap: 0; direction: ltr; z-index: 2; filter: drop-shadow(0 1px 1px rgba(0,0,0,.6)); }
   .heart { width: 14px; height: 14px; display: inline-block; margin-left: -1px; }
@@ -314,6 +318,20 @@ function piece(kind, side, size, rot, rot2) {
 }
 
 /* ---------- tiny DOM helper ---------- */
+/* long press (iOS Safari never fires contextmenu on touch) */
+function addLongPress(el, fn) {
+  let tm = 0, x0 = 0, y0 = 0;
+  const clear = () => { if (tm) { clearTimeout(tm); tm = 0; } };
+  el.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse') return;
+    x0 = e.clientX; y0 = e.clientY; clear();
+    tm = setTimeout(() => { tm = 0; el._lpAt = Date.now(); LP_SUPPRESS = Date.now(); if (typeof DRAG !== 'undefined') { DRAG.on = false; if (DRAG.ghost) { DRAG.ghost.remove(); DRAG.ghost = null; } } try { navigator.vibrate && navigator.vibrate(15); } catch (er) {} fn({ preventDefault() {}, stopPropagation() {} }); }, 480);
+  });
+  el.addEventListener('pointermove', (e) => { if (tm && Math.hypot(e.clientX - x0, e.clientY - y0) > 10) clear(); });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach((n) => el.addEventListener(n, clear));
+}
+let LP_SUPPRESS = 0;
+document.addEventListener('click', (e) => { if (Date.now() - LP_SUPPRESS < 700) { e.stopPropagation(); e.preventDefault(); LP_SUPPRESS = 0; } }, true);
 function h(tag, attrs, kids) {
   const el = document.createElement(tag);
   for (const k in (attrs || {})) {
@@ -323,6 +341,7 @@ function h(tag, attrs, kids) {
     else if (k === 'class') el.className = v;
     else if (k === 'text') el.textContent = v;
     else if (k === 'value') el.value = v;
+    else if (k === 'oncontextmenu') { el.addEventListener('contextmenu', (e) => { e.preventDefault(); if (Date.now() - (el._lpAt || 0) < 800) return; v(e); }); addLongPress(el, v); }
     else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
     else el.setAttribute(k, v === true ? '' : v);
   }
@@ -2481,21 +2500,23 @@ EXTRA_VIEWS['profile'] = (stage) => {
 };
 
 /* ================= rules / how to play ================= */
+let RULES_DEMO = null;
 EXTRA_VIEWS['rules'] = (stage) => {
   const B = new BuilderC({ theme: theme() });
   const cellColor = { c: '#3A5A84', s: '#5FA8FF', l: '#F2B84B', x: '#FF7A66', e: '#24405F' };
   const groups = [['classic', 'כלים קלאסיים'], ['fairy', 'כלי שחמט פיות'], ['mine', 'כלים מקוריים של Complichess'], ['pawn', 'רגלים']];
   const para = (t) => h('div', { class: 'soft', style: 'font-size:14px;line-height:1.65', text: t });
-  const pieceCard = (p) => h('div', { class: 'panel', style: 'flex-direction:row;gap:12px;align-items:flex-start' }, [
+  const pieceCard = (p) => { const open = RULES_DEMO === p.id; return h('div', { class: 'panel', style: 'gap:10px' + (open ? ';border-color:var(--accent)' : '') }, [h('div', { style: 'display:flex;flex-direction:row;gap:12px;align-items:flex-start' }, [
     h('div', { style: 'display:flex;flex-direction:column;align-items:center;gap:6px;flex:none' }, [
       h('div', { class: 'pbox', style: 'width:52px;height:52px' }, [piece(p.id, 'white', 48)]),
       h('div', { class: 'mini', style: 'grid-template-columns:repeat(7,6px)' }, p.grid.map((v) => h('span', { style: 'width:6px;height:6px;background:' + cellColor[v] })))
     ]),
     h('div', { style: 'flex:1;display:flex;flex-direction:column;gap:4px' }, [
       h('div', { class: 'row', style: 'justify-content:space-between' }, [h('div', { style: 'font-size:15px;font-weight:800', text: p.name }), h('span', { class: 'pill', style: 'background:var(--accent)', text: p.id === 'OF' ? '1' : (p.id === 'P' ? 'חינם' : (p.pts || 'חינם')) })]),
-      h('div', { class: 'soft', style: 'font-size:13px;line-height:1.5', text: p.desc })
+      h('div', { class: 'soft', style: 'font-size:13px;line-height:1.5', text: p.desc }),
+      h('button', { class: 'btn', style: 'min-height:34px;font-size:12.5px;align-self:flex-start;margin-top:2px', 'aria-expanded': String(open), onclick: () => { RULES_DEMO = open ? null : p.id; scheduleRender(); }, text: open ? '■ סגור הדגמה' : '▶ ראה איך הוא זז' })
     ])
-  ]);
+  ]), open ? demoView(p.id, 'rules-' + p.id) : null]); };
   stage.appendChild(h('div', { class: 'phone', style: 'gap:12px' }, [
     topBar('איך משחקים', goMenu),
     h('div', { class: 'panel', style: 'gap:8px' }, [
@@ -2505,7 +2526,7 @@ EXTRA_VIEWS['rules'] = (stage) => {
       para('הצרחה מותרת רק כשבפינה עומד כלי שיכול לזוז כמו צריח — צריח, מלכה, אמזונה או קנצלר. מיני צריח לא נחשב.'),
       para('המשחק עצמו דטרמיניסטי לגמרי כמו שחמט: אין קלפים ואין מזל. מט מנצח; פט, חזרה משולשת, 50 מהלכים בלי הכאה או תזוזת רגלי, או חוסר כלים — תיקו.')
     ]),
-    h('div', { class: 'panel', style: 'gap:6px' }, [h('div', { style: 'font-size:15px;font-weight:800', text: 'זכויות' }), para('© 2026 בר לבובסקי. Complichess — הרעיון, החוקים, הכלים המקוריים (מיני כלים, קצין, חבל, אקדח, גרוויטציה), העיצוב והקוד — כל הזכויות שמורות. מי שרוצה להשתמש בחלק כלשהו מוזמן לפנות אליי ולבקש רשות.'), h('div', { class: 'dim', style: 'font-size:12px;line-height:1.5', text: 'רכיבי צד שלישי: PeerJS (רישיון MIT) לחיבור אונליין, והגופן Rubik (רישיון SIL OFL).' })]),
+    h('div', { class: 'panel', style: 'gap:6px' }, [h('div', { style: 'font-size:15px;font-weight:800', text: 'זכויות' }), para('© 2026 בר לבובסקי. Complichess — הרעיון, החוקים, הכלים המקוריים (מיני כלים, קצין, חבל, אקדח, גרוויטציה), העיצוב והקוד — כל הזכויות שמורות. מי שרוצה להשתמש בחלק כלשהו מוזמן לפנות אליי ולבקש רשות.'), contactLink(), h('div', { class: 'dim', style: 'font-size:12px;line-height:1.5', text: 'רכיבי צד שלישי: PeerJS (רישיון MIT) לחיבור אונליין, והגופן Rubik (רישיון SIL OFL).' })]),
     h('div', { class: 'legend' }, [h('span', {}, [h('i', { style: 'background:#5FA8FF' }), 'תנועה לאורך קו']), h('span', {}, [h('i', { style: 'background:#F2B84B' }), 'קפיצה / צעד']), h('span', {}, [h('i', { style: 'background:#FF7A66' }), 'יכולת מיוחדת'])])
   ].concat(...groups.map(([g, title]) => [h('div', { style: 'font-size:16px;font-weight:800;margin-top:6px', text: title })].concat(B.pieces.filter((p) => p.g === g).map(pieceCard))))));
 };
@@ -2650,7 +2671,7 @@ function watchRoom() {
   if (typeof Peer === 'undefined') { APP.menuError = 'אין חיבור לאינטרנט'; renderApp(); return; }
   stopWatching();
   SPEC.code = code; SPEC.status = 'מתחבר…'; SPEC.game = null; go('watch');
-  const peer = new Peer(); SPEC.peer = peer;
+  const peer = new Peer(PEER_OPTS); SPEC.peer = peer; keepPeerAlive(peer);
   peer.on('open', () => {
     const conn = peer.connect(PREFIX + code, { reliable: true, metadata: { spectator: true } }); SPEC.conn = conn;
     conn.on('open', () => { SPEC.status = 'מחובר · ממתין למשחק'; scheduleRender(); });
@@ -2860,11 +2881,11 @@ function demoView(t, key, side) {
     const s = r * 8 + f;
     board.appendChild(h('div', { class: 'demo-sq', 'data-s': String(s), style: 'background:' + ((f + r) % 2 === 0 ? T.dark : T.light) }));
   }
-  const marks = h('div', { class: 'demo-layer' }), pcsL = h('div', { class: 'demo-layer' }), fx = h('div', { class: 'demo-layer' });
-  board.appendChild(marks); board.appendChild(pcsL); board.appendChild(fx);
+  const marks = h('div', { class: 'demo-layer' }), pcsL = h('div', { class: 'demo-layer' }), over = h('div', { class: 'demo-layer' }), fx = h('div', { class: 'demo-layer' });
+  board.appendChild(marks); board.appendChild(pcsL); board.appendChild(over); board.appendChild(fx);
   const cap = h('div', { class: 'demo-cap', 'aria-live': 'polite' });
   el.appendChild(board); el.appendChild(cap);
-  const D = { el, key, t, side, steps: demoScript(t), i: 0, nodes: {}, marks, pcsL, fx, cap, timer: 0, misses: 0, T };
+  const D = { el, key, t, side, steps: demoScript(t), i: 0, nodes: {}, marks, pcsL, over, fx, cap, timer: 0, misses: 0, T };
   DEMO.cache[key] = D;
   demoApply(D, D.steps[0]); D.timer = setTimeout(() => demoTick(D), D.steps[0].ms);
   return el;
@@ -2904,8 +2925,8 @@ function demoApply(D, st) {
   });
   Object.keys(D.nodes).forEach((id) => { if (!seen[id]) { const n = D.nodes[id]; n.classList.add('gone'); delete D.nodes[id]; setTimeout(() => n.remove(), 450); } });
   // marks
-  D.marks.innerHTML = '';
-  const mk = (s, cls) => { if (!inWin(s)) return; const q = dPos(s); D.marks.appendChild(h('span', { class: 'demo-m ' + cls, style: 'left:' + q.x + '%;top:' + q.y + '%' })); };
+  D.marks.innerHTML = ''; D.over.innerHTML = '';
+  const mk = (s, cls) => { if (!inWin(s)) return; const q = dPos(s); (cls === 'ring' || cls === 'x' || cls === 'charge' ? D.over : D.marks).appendChild(h('span', { class: 'demo-m ' + cls, style: 'left:' + q.x + '%;top:' + q.y + '%' })); };
   st.hl.forEach((s) => mk(s, 'hl')); st.dots.forEach((s) => mk(s, 'dot')); st.rings.forEach((s) => mk(s, 'ring')); st.xs.forEach((s) => mk(s, 'x'));
   if (st.charge) mk(D_AT, 'charge');
   // shot fx
@@ -3032,8 +3053,10 @@ function builderView(b, opts) {
           h('div', { style: 'flex:1;display:flex;flex-direction:column;gap:4px' }, [h('div', { style: 'font-size:22px;font-weight:800', text: z.name }), h('div', { style: 'font-size:14px;font-weight:700;color:' + b.accent, text: z.ptsText })]),
           h('button', { class: 'iconbtn', style: 'background:#0F1B2D', 'aria-label': 'סגור', onclick: b.closeZoom }, [svgIcon(ICON.close, 18)])
         ]),
-        h('div', { class: 'zgrid' }, z.cells.map((c) => h('div', { style: 'background:' + c.bg }, [c.center ? piece(z.id, side, 32) : null]))),
-        legend(z.specialLabel),
+        demoView(z.id, 'zoom-' + z.id, side),
+        h('details', { class: 'zdetails' }, [h('summary', { text: 'תרשים תנועה מלא' }),
+          h('div', { class: 'zgrid' }, z.cells.map((c) => h('div', { style: 'background:' + c.bg }, [c.center ? piece(z.id, side, 32) : null]))),
+          legend(z.specialLabel)]),
         h('div', { style: 'font-size:15px;line-height:1.6;color:#E4EAF2', text: z.desc })
       ])
     ]));
@@ -3158,7 +3181,7 @@ function boardEl(cells, opts) {
       c.badge ? h('span', { class: 'badge', style: 'background:' + c.badge.color, text: c.badge.sym }) : null
     ];
     const cls = 'sqr' + (c.size > 40 ? ' wide' : '') + (c.isLast && opts.animate && !(opts.shot) ? ' pop' : '') + (dragging && i === DRAG.fromIdx ? ' dragsrc' : '') + (dragging && i === DRAG.over && i !== DRAG.fromIdx ? ' dragover' : '');
-    return h('button', { class: cls, 'data-i': String(i), 'aria-label': c.aria, style: 'background:' + c.bg + (c.hint ? ';box-shadow: inset 0 0 0 4px #3B82F6' : ''),
+    return h('button', { class: cls, 'data-i': String(i), 'aria-label': c.aria, oncontextmenu: c.has && !opts.noInfo ? () => openPieceInfo(c.kind, c.side) : null, style: 'background:' + c.bg + (c.hint ? ';box-shadow: inset 0 0 0 4px #3B82F6' : ''),
       onclick: c.tap ? () => { if (Date.now() - DRAG.suppress < 350) return; c.tap(); } : null }, kids);
   }));
   if (opts.shot) { const fx = shotFx(cells, opts.shot); if (fx) board.appendChild(fx); }
@@ -3308,6 +3331,23 @@ function moveName(r) {
   return L + sqn(r.from) + sep + sqn(r.to) + (r.promoTo ? '=' + (PLETTER[r.promoTo] || r.promoTo) : '');
 }
 
+/* ---------- piece info (long press on a piece) ---------- */
+let PIECE_INFO = null;
+function openPieceInfo(kind, side) { const t = kind === 'ROM' || kind === 'ROE' ? 'RO' : kind; PIECE_INFO = { t, side }; scheduleRender(); }
+function pieceInfoOverlay() {
+  const m = pieceMeta(PIECE_INFO.t), close = () => { PIECE_INFO = null; scheduleRender(); };
+  return h('div', { class: 'overlay', onclick: close }, [h('div', { class: 'dialog', role: 'dialog', 'aria-label': m.name, style: 'width:360px', onclick: (e) => e.stopPropagation() }, [
+    h('div', { class: 'row', style: 'gap:12px' }, [
+      h('div', { class: 'pbox', style: 'width:60px;height:60px;border-radius:14px' }, [piece(PIECE_INFO.t === 'RO' ? 'ROM' : PIECE_INFO.t, PIECE_INFO.side, 56)]),
+      h('div', { style: 'flex:1;display:flex;flex-direction:column;gap:2px' }, [h('div', { style: 'font-size:20px;font-weight:800', text: m.name }),
+        h('div', { style: 'font-size:13px;font-weight:700;color:var(--accent)', text: m.id === 'K' ? 'המלך' : m.id === 'P' ? 'חינם' : m.id === 'OF' ? '1 נקודה' : (m.pts ? m.pts + ' נקודות' : 'חינם') })]),
+      h('button', { class: 'iconbtn', style: 'background:#0F1B2D', 'aria-label': 'סגור', onclick: close }, [svgIcon(ICON.close, 18)])
+    ]),
+    demoView(PIECE_INFO.t, 'info-' + PIECE_INFO.t),
+    h('div', { style: 'font-size:14.5px;line-height:1.6;color:#E4EAF2', text: m.desc })
+  ])]);
+}
+
 /* ---------- settings dialog ---------- */
 let SETTINGS_OPEN = false;
 function openSettings() { SETTINGS_OPEN = true; scheduleRender(); }
@@ -3347,11 +3387,40 @@ const ON = { peer: null, conn: null, code: '', myColor: null, status: '', myDeck
 const PREFIX = 'complichess-v2-';
 const CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const newCode = () => Array.from({ length: 4 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join('');
+/* Works between any two devices (iPhone, Android, desktop): STUN for direct links, TURN relays as a
+   fallback for strict NATs / mobile data (incl. TCP+TLS on port 443 for locked-down networks). */
+const PEER_OPTS = { debug: 0, config: { iceServers: [
+  { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] },
+  { urls: ['turn:eu-0.turn.peerjs.com:3478', 'turn:us-0.turn.peerjs.com:3478'], username: 'peerjs', credential: 'peerjsp' },
+  { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turn:openrelay.metered.ca:443?transport=tcp', 'turns:openrelay.metered.ca:443'], username: 'openrelayproject', credential: 'openrelayproject' }
+], sdpSemantics: 'unified-plan' } };
+function keepPeerAlive(peer) {
+  // iOS/Android suspend pages in the background (e.g. while sending the code on WhatsApp): re-attach to the signalling server
+  peer.on('disconnected', () => { setTimeout(() => { try { if (!peer.destroyed && peer.disconnected) peer.reconnect(); } catch (e) {} }, 800); });
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) return;
+  [ON.peer, typeof SPEC !== 'undefined' ? SPEC.peer : null].forEach((p) => { try { if (p && !p.destroyed && p.disconnected) p.reconnect(); } catch (e) {} });
+  if (ON.myColor === 'b' && ON.code && !ON.conn && ON.peer && !ON.peer.destroyed) rejoinHost();
+});
+function rejoinHost() {
+  if (ON.rejoinTimer || !ON.peer || ON.peer.destroyed || ON.conn) return;
+  ON.rejoinTries = (ON.rejoinTries || 0) + 1;
+  if (ON.rejoinTries > 40) { ON.status = 'לא מצליח להתחבר מחדש — צאו והיכנסו שוב לחדר'; scheduleRender(); return; }
+  ON.rejoinTimer = setTimeout(() => {
+    ON.rejoinTimer = 0;
+    if (!ON.peer || ON.peer.destroyed || ON.conn) return;
+    try { if (ON.peer.disconnected) ON.peer.reconnect(); } catch (e) {}
+    try { wireConn(ON.peer.connect(PREFIX + ON.code, { reliable: true })); } catch (e) {}
+    setTimeout(() => { if (!ON.oppHere) { ON.conn = null; rejoinHost(); } }, 5000);
+  }, ON.rejoinTries === 1 ? 300 : 1500);
+}
 function send(msg) { try { if (ON.conn && ON.conn.open) ON.conn.send(msg); } catch (e) {} }
 function resetOnline() {
   try { if (ON.conn) ON.conn.close(); } catch (e) {}
   try { if (ON.peer) ON.peer.destroy(); } catch (e) {}
-  Object.assign(ON, { peer: null, conn: null, code: '', myColor: null, status: '', myDeck: null, oppDeck: null, started: false, oppHere: false, builder: null, game: null, oppName: '', budget: DEFAULT_BUDGET });
+  Object.assign(ON, { peer: null, conn: null, code: '', myColor: null, status: '', myDeck: null, oppDeck: null, started: false, oppHere: false, builder: null, game: null, oppName: '', budget: DEFAULT_BUDGET, wasConnected: false, rejoinTries: 0 });
+  if (ON.rejoinTimer) { clearTimeout(ON.rejoinTimer); ON.rejoinTimer = 0; }
 }
 function newOnlineBuilder() {
   ON.myDeck = null; ON.started = false; ON.game = null;
@@ -3382,7 +3451,8 @@ function maybeStartOnline() {
 function backToOnlineBuilder() { ON.oppDeck = null; newOnlineBuilder(); scheduleRender(); }
 function wireConn(conn) {
   ON.conn = conn;
-  conn.on('open', () => { ON.oppHere = true; ON.status = 'מחובר'; send({ t: 'hello', v: 2, name: curName(), tc: ON.myColor === 'w' ? ON.tc : undefined, budget: ON.myColor === 'w' ? ON.budget : undefined }); if (ON.myDeck) send({ t: 'ready', deck: ON.myDeck }); playSound('notify'); scheduleRender(); });
+  conn.on('open', () => { if (ON.conn !== conn) { try { conn.close(); } catch (e) {} return; } ON.rejoinTries = 0; const again = !!ON.wasConnected; ON.wasConnected = true; ON.oppHere = true; ON.status = again ? 'החיבור חזר ✓' : 'מחובר';
+    if (ON.game) send({ t: 'sync', record: ON.game.state.record.map((r) => ({ from: r.from, to: r.to, type: r.type, promoTo: r.promoTo || null })) }); send({ t: 'hello', v: 2, name: curName(), tc: ON.myColor === 'w' ? ON.tc : undefined, budget: ON.myColor === 'w' ? ON.budget : undefined }); if (ON.myDeck) send({ t: 'ready', deck: ON.myDeck }); playSound('notify'); scheduleRender(); });
   conn.on('data', (msg) => {
     if (!msg || typeof msg !== 'object') return;
     const g = ON.game;
@@ -3395,9 +3465,15 @@ function wireConn(conn) {
     else if (msg.t === 'draw-offer' && g) { g.incomingDraw(); playSound('notify'); }
     else if (msg.t === 'draw-reply' && g) { if (msg.ok) g.finish({ reason: 'agreed', winner: null }); else g.drawDeclined(); }
     else if (msg.t === 'leave') { backToOnlineBuilder(); }
+    else if (msg.t === 'sync' && g && Array.isArray(msg.record)) {
+      // after a dropped connection: replay any moves we missed (the other side's history is longer and starts like ours)
+      const mine = g.state.record, theirs = msg.record;
+      const same = mine.every((r, i) => theirs[i] && +theirs[i].from === r.from && +theirs[i].to === r.to);
+      if (same && theirs.length > mine.length) theirs.slice(mine.length).forEach((m) => g.applyRemote({ from: +m.from, to: +m.to, type: String(m.type), promoTo: m.promoTo ? String(m.promoTo) : null }));
+    }
     scheduleRender();
   });
-  conn.on('close', () => { ON.oppHere = false; ON.status = 'היריב התנתק'; ON.conn = null; scheduleRender(); });
+  conn.on('close', () => { if (ON.conn !== conn) return; ON.oppHere = false; ON.conn = null; ON.status = ON.myColor === 'b' ? 'החיבור נפל — מתחבר מחדש…' : 'היריב התנתק — ממתין שיחזור…'; if (ON.myColor === 'b') rejoinHost(); scheduleRender(); });
   conn.on('error', () => { ON.status = 'שגיאת חיבור'; scheduleRender(); });
 }
 function hostRoom() {
@@ -3405,9 +3481,9 @@ function hostRoom() {
   resetOnline();
   ON.myColor = 'w'; ON.code = newCode(); ON.tc = tcNow(); ON.budget = budgetNow(); ON.status = 'יוצר חדר...';
   APP.mode = 'online'; newOnlineBuilder();
-  const peer = new Peer(PREFIX + ON.code); ON.peer = peer;
+  const peer = new Peer(PREFIX + ON.code, PEER_OPTS); ON.peer = peer; keepPeerAlive(peer);
   peer.on('open', () => { ON.status = 'ממתין לחבר'; scheduleRender(); });
-  peer.on('connection', (conn) => { if (conn.metadata && conn.metadata.spectator) { specAccept(conn); return; } if (ON.conn) { conn.on('open', () => conn.close()); return; } wireConn(conn); });
+  peer.on('connection', (conn) => { if (conn.metadata && conn.metadata.spectator) { specAccept(conn); return; } if (ON.conn && ON.conn.open) { conn.on('open', () => conn.close()); return; } wireConn(conn); });
   peer.on('error', (e) => { if (e && e.type === 'unavailable-id') { hostRoom(); return; } if (!ON.oppHere) ON.status = 'שגיאה: ' + (e && e.type ? e.type : 'לא ידוע') + ' — נסה שוב'; scheduleRender(); });
   renderApp();
 }
@@ -3418,16 +3494,21 @@ function joinRoom() {
   resetOnline();
   ON.myColor = 'b'; ON.code = code; ON.status = 'מתחבר לחדר...';
   APP.mode = 'online'; APP.menuError = ''; newOnlineBuilder();
-  const peer = new Peer(); ON.peer = peer;
-  peer.on('open', () => { wireConn(peer.connect(PREFIX + code, { reliable: true })); });
+  const peer = new Peer(PEER_OPTS); ON.peer = peer; keepPeerAlive(peer);
+  let first = true;
+  peer.on('open', () => { if (!first) return; first = false; wireConn(peer.connect(PREFIX + code, { reliable: true })); });
   peer.on('error', (e) => {
+    if (e && e.type === 'peer-unavailable' && ON.wasConnected) { ON.conn = null; rejoinHost(); return; }
+    if (e && (e.type === 'network' || e.type === 'server-error' || e.type === 'socket-error' || e.type === 'socket-closed') && ON.wasConnected) { ON.status = 'אין רשת — מנסה שוב…'; scheduleRender(); return; }
     if (e && e.type === 'peer-unavailable') { resetOnline(); APP.mode = 'online-menu'; APP.menuError = 'לא נמצא חדר עם הקוד ' + code; renderApp(); return; }
     ON.status = 'שגיאה: ' + (e && e.type ? e.type : 'לא ידוע'); scheduleRender();
   });
   renderApp();
 }
 function shareCode() {
-  const text = 'בוא נשחק Complichess! פתח את הקובץ, בחר "שחק אונליין" ← "הצטרף לחדר" והקלד את הקוד: ' + ON.code;
+  const web = /^https?:/.test(location.protocol) ? location.origin + location.pathname : '';
+  const text = web ? 'בוא נשחק Complichess! לחץ כדי להצטרף לחדר שלי (עובד באייפון ובאנדרואיד): ' + web + '#join=' + ON.code + '  ·  קוד החדר: ' + ON.code
+    : 'בוא נשחק Complichess! פתח את המשחק, בחר "שחק אונליין" ← "הצטרף לחדר" והקלד את הקוד: ' + ON.code;
   if (navigator.share) navigator.share({ text }).catch(() => {});
   else if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => { ON.status = 'ההודעה הועתקה'; scheduleRender(); }).catch(() => {});
 }
@@ -3492,7 +3573,7 @@ function neonFrame(now) {
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const dpr = Math.min(2, window.devicePixelRatio || 1), W = window.innerWidth, H = window.innerHeight;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
-  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const ctx = cv.getContext && cv.getContext('2d'); if (!ctx) return; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
   const t = reduce ? 2 : (now - NEON.t0) / 1000;
   // stars
   if (!NEON.stars) { NEON.stars = []; let sd = 7; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647; for (let i = 0; i < 90; i++) NEON.stars.push([rnd(), rnd(), rnd() * 1.2 + 0.3, rnd() * 6.28]); }
@@ -3548,6 +3629,10 @@ function neonFrame(now) {
   if (!reduce && !document.hidden) NEON.raf = requestAnimationFrame(neonFrame);
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden && NEON.cv && NEON.cv.isConnected && !NEON.raf) NEON.raf = requestAnimationFrame(neonFrame); });
+const CONTACT_EMAIL = 'complichess.app@gmail.com';
+function contactLink() {
+  return h('a', { class: 'contact', href: 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Complichess'), dir: 'ltr' }, [h('span', { text: '✉' }), h('span', { text: CONTACT_EMAIL })]);
+}
 function menuView() {
   const hasAI = typeof startAIGame === 'function';
   const hasReview = typeof openReview === 'function' && typeof analyzeGame === 'function';
@@ -3570,7 +3655,7 @@ function menuView() {
     hasReview ? bigBtn('משחקים שמורים וניתוח', savedGames().length ? savedGames().length + ' משחקים שמורים · קוד משחק מחבר' : 'משחקים שתסיים יישמרו כאן', () => go('games'), false, 'games') : null,
     EXTRA_VIEWS_HAS('rules') ? bigBtn('איך משחקים', 'כל הכלים, המחירים והחוקים', () => go('rules'), false, 'rules') : null,
     APP.menuError ? h('div', { style: 'font-size:14px;font-weight:700;color:#FF9C8A', text: APP.menuError }) : null,
-    h('div', { class: 'footer', text: '© 2026 בר לבובסקי · Complichess · כל הזכויות שמורות. רוצים להשתמש ברעיון, בחוקים או בקוד? פנו אליי ובקשו רשות.' })
+    h('div', { class: 'footer' }, [h('div', { text: '© 2026 בר לבובסקי · Complichess · כל הזכויות שמורות. רוצים להשתמש ברעיון, בחוקים או בקוד? פנו אליי ובקשו רשות.' }), h('div', { style: 'margin-top:6px' }, [h('span', { text: 'יצירת קשר: ' }), contactLink()])])
   ]);
 }
 function onlineMenuView() {
@@ -3659,10 +3744,22 @@ function renderApp() {
     renderExtra(stage, APP.mode);
   }
   if (SETTINGS_OPEN) stage.appendChild(settingsOverlay());
+  if (PIECE_INFO) stage.appendChild(pieceInfoOverlay());
   if (AD.on) stage.appendChild(adOverlay());
   if (APP.toast) stage.appendChild(h('div', { class: 'toast', role: 'status', text: APP.toast }));
   try { window.scrollTo(0, y); } catch (e) {}
 }
+/* iOS: audio only starts after a user gesture — unlock it on the first touch */
+function unlockAudio() {
+  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); const b = AC.createBuffer(1, 1, 22050), s = AC.createBufferSource(); s.buffer = b; s.connect(AC.destination); s.start(0); } catch (e) {}
+  document.removeEventListener('pointerdown', unlockAudio, true); document.removeEventListener('touchend', unlockAudio, true);
+}
+document.addEventListener('pointerdown', unlockAudio, true); document.addEventListener('touchend', unlockAudio, true);
+/* deep link: …/#join=ABCD opens straight into a friend's room */
+(function () {
+  const m = /join=([A-Za-z0-9]{4})/.exec(location.hash || '');
+  if (m) { APP.joinCode = m[1].toUpperCase(); try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} setTimeout(() => joinRoom(), 50); }
+})();
 renderApp();
 </script>
 </body>
