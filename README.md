@@ -1,2 +1,10 @@
-# complichess
-Complichess - chess with a deck you build. (c) 2026 ar Lvovski, all rights reserved.
+# Complichess
+
+שחמט עם דק שאתה בונה. **לשחק:** https://complichess-app.github.io/complichess/
+
+Chess where each player builds their own back rank from a 35-point deck of classic,
+fairy and original pieces (rope, gun, gravity…). Play on one device, online with a
+friend by room code, or against the built-in engine.
+
+© 2026 Bar Lvovski — all rights reserved. See [LICENSE](LICENSE).
+Contact: complichess.app@gmail.com

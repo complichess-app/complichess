@@ -1,0 +1,13 @@
+Copyright (c) 2026 Bar Lvovski. All rights reserved.
+
+Complichess — the game idea, rules, custom pieces, artwork and source code in
+this repository — is proprietary. No license is granted to copy, modify,
+distribute, or use any part of it, in whole or in part, without prior written
+permission from the author.
+
+Want to use something from here? I'm happy to hear from you — just ask first:
+complichess.app@gmail.com
+
+Third-party components keep their own licenses:
+- PeerJS (MIT License) — https://github.com/peers/peerjs
+- Rubik font (SIL Open Font License 1.1) — https://fonts.google.com/specimen/Rubik
