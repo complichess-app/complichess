@@ -155,6 +155,29 @@
   .voicelvl { width: 14px; height: 14px; border-radius: 999px; background: #3CE08A; box-shadow: 0 0 10px #3CE08A; transition: transform .08s; flex: none; }
   .voicelvl.muted { background: #FF6B8A; box-shadow: 0 0 10px #FF6B8A; }
   .online-chip { background: rgba(60,224,138,.12); color: #8DF5BD; font-size: 12px; }
+  .kindtabs button { background: transparent; color: var(--muted); font-size: 13px; }
+  .kindtabs button.on { background: linear-gradient(180deg, rgba(98,232,255,.95), rgba(60,170,230,.95)); color: #06101A; box-shadow: 0 4px 14px rgba(98,232,255,.25); }
+  .tempo-intro { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 12px; background: linear-gradient(135deg, rgba(98,232,255,.12), rgba(255,79,216,.08)); border: 1px solid rgba(98,232,255,.35); }
+  .jbar { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .jhead { display: flex; align-items: baseline; gap: 6px; font-size: 13px; font-weight: 700; color: var(--muted); }
+  .jlabel { flex: 1; } .jdrop { color: #62E8FF; } .jnum { font-size: 20px; color: #DFFBFF; font-variant-numeric: tabular-nums; min-width: 22px; text-align: left; } .jmax { font-size: 12px; color: var(--dim); }
+  .jtrack { position: relative; height: 14px; border-radius: 999px; background: rgba(6,5,16,.85); border: 1px solid rgba(98,232,255,.25); overflow: hidden; direction: ltr; }
+  .jbar.me .jtrack { height: 18px; }
+  .jfill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #1BA7FF, #62E8FF 60%, #C6F8FF); box-shadow: 0 0 14px rgba(98,232,255,.6); transition: width .12s linear; }
+  .jbar:not(.me) .jfill { background: linear-gradient(90deg, #B03AFF, #FF4FD8); box-shadow: 0 0 12px rgba(255,79,216,.45); }
+  .jsegs { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(20, 1fr); } .jsegs i { border-right: 1px solid rgba(6,5,16,.55); }
+  .tscore { align-self: flex-end; font-weight: 800; color: #FFD27A; font-size: 15px; min-width: 34px; text-align: center; }
+  .ttimer-wrap { display: flex; justify-content: center; align-items: center; gap: 8px; margin: -2px 0; }
+  .ttimer { font-size: 30px; font-weight: 800; letter-spacing: 1px; font-variant-numeric: tabular-nums; color: #F3F1FA; text-shadow: 0 0 14px rgba(160,140,255,.45); }
+  .ttimer.dbl { color: #FFB2F0; text-shadow: 0 0 16px rgba(255,79,216,.7); } .ttimer.low { color: #FF6B8A; animation: livePulse .8s ease-in-out infinite; }
+  .tdbl { font-weight: 900; color: #06101A; background: linear-gradient(90deg, #FF4FD8, #62E8FF); border-radius: 999px; padding: 2px 10px; font-size: 13px; }
+  .tempo .badge { width: 17px; height: 17px; font-size: 10.5px; top: 1px; right: 1px; box-shadow: 0 0 0 1.5px rgba(6,5,16,.7); }
+  .sqr.tdim .piece { filter: saturate(.4) brightness(.8); }
+  .tcd { position: absolute; inset: 8%; border-radius: 999px; pointer-events: none; z-index: 2; background: conic-gradient(rgba(6,5,16,.55) 0deg, rgba(6,5,16,.55) var(--a, 360deg), transparent 0); animation: tcd 1500ms linear both; }
+  @property --a { syntax: '<angle>'; inherits: false; initial-value: 360deg; }
+  @keyframes tcd { from { --a: 360deg; } to { --a: 0deg; } }
+  .tnote { text-align: center; font-weight: 800; color: #FF9FB6; font-size: 13.5px; }
+  .tresult { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(98,232,255,.14), rgba(255,79,216,.12)); border: 1px solid rgba(98,232,255,.4); text-align: center; }
   .prechip { display: inline-flex; align-items: center; gap: 6px; background: rgba(168,38,46,.9); color: #fff; border: 0; border-radius: 999px; padding: 4px 10px; font-weight: 800; font-size: 12.5px; align-self: flex-start; }
   .hearts { position: absolute; top: 1px; left: 1px; display: flex; gap: 0; direction: ltr; z-index: 2; filter: drop-shadow(0 1px 1px rgba(0,0,0,.6)); }
   .heart { width: 14px; height: 14px; display: inline-block; margin-left: -1px; }
@@ -328,8 +351,8 @@ const validTc = (tc) => tc === 'none' || /^\d{1,3}\+\d{1,2}$/.test(String(tc)) &
 /* game mode: normal (35 points, preset clocks) or special (any budget, exact minutes + increment) */
 const DEFAULT_BUDGET = 35;
 const isSpecial = () => SET.mode === 'special';
-const budgetNow = () => isSpecial() ? Math.max(1, Math.min(99, SET.budget | 0)) : DEFAULT_BUDGET;
-const tcNow = () => isSpecial() ? (SET.cClock ? Math.max(1, SET.cMin | 0) + '+' + Math.max(0, SET.cInc | 0) : 'none') : SET.tc;
+const budgetNow = () => isSpecial() ? (SET.specialKind === 'tempo' ? 999 : Math.max(1, Math.min(99, SET.budget | 0))) : DEFAULT_BUDGET;
+const tcNow = () => isSpecial() && SET.specialKind === 'tempo' ? 'none' : isSpecial() ? (SET.cClock ? Math.max(1, SET.cMin | 0) + '+' + Math.max(0, SET.cInc | 0) : 'none') : SET.tc;
 if (!SET.look2) { if (SET.theme === 'green') SET.theme = 'neon'; SET.look2 = 1; try { store.set('settings', SET); } catch (e) {} }
 const saveSettings = () => store.set('settings', SET);
 const theme = () => THEMES[SET.theme] || THEMES.green;
@@ -2055,6 +2078,7 @@ function startAIGame() {
   go('ai-build');
 }
 function launchAIGame() {
+  if (typeof isTempo === 'function' && isTempo()) { AI.oppDeck = AIS.oppDeck === 'classic' ? CLASSIC16.slice() : (AIS.oppDeck === 'mirror' ? AI.deck.slice() : randomDeck(DEFAULT_BUDGET + 10)); const w = AI.human === 'w' ? AI.deck : AI.oppDeck, b = AI.human === 'w' ? AI.oppDeck : AI.deck; startAITempo(w, b, AI.human, AIS.cxLevel); return; }
   AI.oppDeck = AIS.oppDeck === 'classic' ? CLASSIC16.slice() : (AIS.oppDeck === 'mirror' ? AI.deck.slice() : randomDeck(budgetNow()));
   const white = AI.human === 'w' ? AI.deck : AI.oppDeck, black = AI.human === 'w' ? AI.oppDeck : AI.deck;
   AI.lastDelta = null; AI.hint = null;
@@ -3359,6 +3383,333 @@ function voiceBar() {
   return h('div', { class: 'row voicebar' + (VOICE.state === 'on' ? ' live' : ''), style: 'flex-wrap:wrap' }, kids);
 }
 
+/* ================= TEMPO mode: real-time, 3 minutes, TempoJuice ================= */
+const TEMPO = { DUR: 180000, MAX: 20, START: 10, RATE: 1 / 1000, DOUBLE_LEFT: 60000, CD: 1500 };
+const TCOST = { RO: 0, ROE: 0, K: 1, P: 1, MA: 1, WA: 1, FE: 1, AL: 1, DA: 1, OF: 2, MN: 2, MB: 2, CA: 2,
+  N: 3, B: 3, ZE: 3, MR: 3, CE: 3, GR: 3, R: 4, AR: 4, NR: 4, CH: 5, GU: 5, Q: 6, AM: 7 };
+const TVAL = { P: 1, OF: 1, N: 3, B: 3, R: 5, Q: 9, AM: 12, CH: 7, AR: 6, CE: 4, NR: 6, MA: 1, CA: 2, ZE: 3, WA: 1, FE: 1, AL: 1, DA: 1, MN: 2, MB: 2, MR: 3, RO: 0, GU: 8, GR: 4, K: 0 };
+const isTempo = () => isSpecial() && SET.specialKind === 'tempo';
+const tCost = (t) => (TCOST[t] !== undefined ? TCOST[t] : 3);
+
+class TempoMatch {
+  constructor(o) {
+    this.o = o; this.E = makeEngine();
+    this.white = o.white; this.black = o.black;
+    this.reset();
+  }
+  reset() {
+    this.st = this.E.setup(this.white, this.black);
+    this.t0 = Date.now(); this.end = this.t0 + TEMPO.DUR;
+    this.j = { w: { v: TEMPO.START, at: this.t0 }, b: { v: TEMPO.START, at: this.t0 } };
+    this.cd = {}; this.sel = { w: null, b: null }; this.selAt = { w: 0, b: 0 }; this.result = null; this.last = null; this.flash = null; this.version = 0;
+    this.aiNext = Date.now() + 1200;
+  }
+  /* ---- juice ---- */
+  regen(t1, t2) {
+    if (t2 <= t1) return 0;
+    const dbl = this.end - TEMPO.DOUBLE_LEFT;
+    const a = Math.max(0, Math.min(t2, dbl) - t1), b = Math.max(0, t2 - Math.max(t1, dbl));
+    return (a + 2 * b) * TEMPO.RATE;
+  }
+  juice(c, t) { t = t || Date.now(); if (this.result) t = Math.min(t, this.result.at || t); const x = this.j[c]; return Math.min(TEMPO.MAX, x.v + this.regen(x.at, Math.min(t, this.end))); }
+  spend(c, n, t) { this.j[c] = { v: this.juice(c, t) - n, at: t }; }
+  remain(t) { return Math.max(0, this.end - (t || Date.now())); }
+  doubleTime(t) { return this.remain(t) <= TEMPO.DOUBLE_LEFT && this.remain(t) > 0; }
+  /* ---- moves ---- */
+  movesFrom(c, s, t) {
+    if (this.result) return [];
+    const p = this.st.board[s];
+    if (!p || p.c !== c || p.t === 'RO') return [];
+    if ((this.cd[s] || 0) > (t || Date.now())) return [];
+    return this.E.pseudo(this.st.board, s, null).concat(this.E.castleMoves(this.st.board, s, c)).filter((m) => m.type !== 'ep');
+  }
+  costOf(s, m) { const p = this.st.board[s]; return !p ? 99 : (m && m.type === 'rope') || p.t === 'ROE' ? 0 : tCost(p.t); }
+  tryMove(c, mv, t) {
+    t = t || Date.now();
+    if (this.result || t >= this.end) { this.tick(t); return false; }
+    const list = this.movesFrom(c, mv.from, t);
+    const m = list.find((x) => x.to === mv.to && (!mv.type || x.type === mv.type)) || list.find((x) => x.to === mv.to);
+    if (!m) return false;
+    const cost = this.costOf(mv.from, m);
+    if (this.juice(c, t) + 1e-9 < cost) return false;
+    const p = this.st.board[m.from];
+    this.spend(c, cost, t);
+    const n = this.E.apply(Object.assign({}, this.st, { turn: c, ep: null }), m);
+    // cooldowns follow the piece
+    delete this.cd[m.from];
+    if (m.type !== 'charge' && m.type !== 'shoot') this.cd[m.to] = t + TEMPO.CD; else this.cd[m.from] = t + TEMPO.CD;
+    if (m.type === 'castle') { delete this.cd[m.rf]; this.cd[m.rt] = t + TEMPO.CD; }
+    this.st = n;
+    this.last = { from: m.from, to: m.to, type: m.type, c, at: t, piece: p.t };
+    if (this.sel[c] === m.from) this.sel[c] = null;
+    const o = c === 'w' ? 'b' : 'w';
+    if (this.sel[o] !== null && (!this.st.board[this.sel[o]] || this.st.board[this.sel[o]].c !== o)) this.sel[o] = null;
+    this.version++;
+    const kind = m.type === 'shoot' ? 'shoot' : n.capture ? 'capture' : m.type === 'castle' ? 'castle' : 'move';
+    if (this.o.onSound) this.o.onSound(kind);
+    if (this.E.kingSq(n.board, o) < 0) this.finish({ winner: c, reason: 'king' }, t);
+    if (this.o.onChange) this.o.onChange('move');
+    return true;
+  }
+  score(c) { return this.st.captured[c].reduce((a, x) => a + (TVAL[x] || 0), 0); }
+  tick(t) {
+    t = t || Date.now();
+    if (!this.result && t >= this.end) {
+      const sw = this.score('w'), sb = this.score('b');
+      this.finish(sw === sb ? { winner: null, reason: 'time' } : { winner: sw > sb ? 'w' : 'b', reason: 'points' }, this.end);
+    }
+  }
+  finish(r, t) { if (this.result) return; this.result = Object.assign({ at: t || Date.now() }, r); this.sel = { w: null, b: null }; this.version++; if (this.o.onSound) this.o.onSound('end'); if (this.o.onEnd) this.o.onEnd(this.result); if (this.o.onChange) this.o.onChange('end'); }
+  resultText(my) {
+    const r = this.result; if (!r) return '';
+    const name = (c) => my ? (c === my ? 'ניצחת' : 'היריב ניצח') : (c === 'w' ? 'לבן ניצח' : 'שחור ניצח');
+    if (!r.winner) return r.reason === 'time' ? 'תיקו — הזמן נגמר בשוויון נקודות' : 'תיקו';
+    return name(r.winner) + (r.reason === 'king' ? ' — המלך נאכל! 👑' : r.reason === 'points' ? ' בנקודות כשהזמן נגמר' : r.reason === 'resign' ? ' — כניעה' : r.reason === 'abandon' ? ' — היריב עזב' : '');
+  }
+  /* ---- network (host -> mirror) ---- */
+  serialize(t) {
+    t = t || Date.now();
+    const cd = {}; Object.keys(this.cd).forEach((k) => { const left = this.cd[k] - t; if (left > 0) cd[k] = left; });
+    return { board: this.st.board, captured: this.st.captured, jw: this.juice('w', t), jb: this.juice('b', t), remain: this.remain(t), cd, result: this.result ? { winner: this.result.winner, reason: this.result.reason } : null, last: this.last ? { from: this.last.from, to: this.last.to, type: this.last.type, c: this.last.c, ago: t - this.last.at } : null, v: this.version };
+  }
+  load(s) {
+    const t = Date.now();
+    const prevV = this.version;
+    this.st = Object.assign({}, this.st, { board: s.board, captured: s.captured });
+    this.end = t + s.remain; this.t0 = this.end - TEMPO.DUR;
+    this.j = { w: { v: s.jw, at: t }, b: { v: s.jb, at: t } };
+    this.cd = {}; Object.keys(s.cd || {}).forEach((k) => { this.cd[k] = t + s.cd[k]; });
+    const newLast = s.last && (!this.last || s.v !== prevV) ? { from: s.last.from, to: s.last.to, type: s.last.type, c: s.last.c, at: t - (s.last.ago || 0) } : this.last;
+    if (s.v !== prevV && s.last && this.o.onSound && (!this.last || this.last.from !== s.last.from || this.last.to !== s.last.to || (t - newLast.at) < 600)) this.o.onSound(s.last.type === 'shoot' ? 'shoot' : 'move');
+    this.last = newLast; this.version = s.v;
+    ['w', 'b'].forEach((c) => { const q = this.sel[c]; if (q !== null && (!s.board[q] || s.board[q].c !== c)) this.sel[c] = null; });
+    if (s.result && !this.result) { this.result = { winner: s.result.winner, reason: s.result.reason, at: t }; if (this.o.onSound) this.o.onSound('end'); if (this.o.onEnd) this.o.onEnd(this.result); }
+    if (this.o.onChange) this.o.onChange('load');
+  }
+  /* ---- simple real-time AI ---- */
+  aiStep(c, level) {
+    const t = Date.now(); if (this.result || t < this.aiNext) return;
+    const delay = 3200 - level * 260; // level 1: ~2.9s between moves, level 10: ~0.6s
+    this.aiNext = t + delay * (0.75 + Math.random() * 0.5);
+    const E = this.E, board = this.st.board, o = c === 'w' ? 'b' : 'w', juice = this.juice(c, t);
+    const myK = E.kingSq(board, c);
+    const kingThreat = myK >= 0 && E.isAttacked(board, myK, o);
+    let best = null, bestS = -1e9;
+    for (let s = 0; s < 64; s++) {
+      const p = board[s]; if (!p || p.c !== c) continue;
+      for (const m of this.movesFrom(c, s, t)) {
+        const cost = this.costOf(s, m); if (cost > juice) continue;
+        const tgt = board[m.to];
+        let sc = Math.random() * (11 - level) * 6;
+        if (tgt && tgt.c === o && (m.type === 'cap' || m.type === 'shoot')) { if (tgt.t === 'K') sc += 100000; sc += (TVAL[tgt.t] || 1) * 100; }
+        sc -= cost * 6;
+        if (level >= 3) {
+          const n = E.apply(Object.assign({}, this.st, { turn: c, ep: null }), m);
+          const k2 = E.kingSq(n.board, c);
+          if (k2 >= 0 && E.isAttacked(n.board, k2, o)) sc -= kingThreat ? 2000 : 6000;
+          else if (kingThreat) sc += 5000;
+          const land = m.type === 'shoot' || m.type === 'charge' ? m.from : m.to;
+          if (n.board[land] && n.board[land].c === c && E.isAttacked(n.board, land, o)) sc -= (TVAL[p.t] || 1) * (level >= 6 ? 90 : 45);
+          if (level >= 6 && n.board[land]) { const ok = E.kingSq(n.board, o); if (ok >= 0 && E.attacks && E.attacks(n.board, land).indexOf && E.attacks(n.board, land).indexOf(ok) !== -1) sc += 400; }
+        }
+        if (p.t === 'P') sc += 6;
+        if (level >= 4 && p.t !== 'K' && m.type !== 'charge') { const ek = E.kingSq(board, o); if (ek >= 0) { const d = (a) => Math.max(Math.abs((a % 8) - (ek % 8)), Math.abs((a >> 3) - (ek >> 3))); sc += (d(m.from) - d(m.to)) * 5; } }
+        if (sc > bestS) { bestS = sc; best = m; }
+      }
+    }
+    if (!best) return;
+    const quiet = bestS < 80 && !kingThreat;
+    if (quiet && juice < 3 + level * 0.7) return; // save a little juice for something good
+    this.tryMove(c, best, t);
+  }
+}
+
+/* ---------- session wrapper used by local / AI / online ---------- */
+let TG = null; // { m: TempoMatch, kind: 'local'|'ai'|'host'|'mirror', my, ai, level, loop }
+function tempoStart(kind, white, black, extra) {
+  tempoStop();
+  const m = new TempoMatch({ white, black, onSound: playSound, onChange: () => { tempoChanged(); }, onEnd: (r) => { if (TG && TG.onEnd) TG.onEnd(r); } });
+  TG = Object.assign({ m, kind, my: null, ai: null, level: 5, drawn: -1 }, extra || {});
+  TG.loop = setInterval(tempoLoop, 100);
+  return TG;
+}
+function tempoStop() { if (TG && TG.loop) clearInterval(TG.loop); if (TG && TG.sync) clearInterval(TG.sync); TG = null; }
+function tempoChanged() {
+  if (!TG) return;
+  if (TG.kind === 'host') tempoBroadcast();
+  scheduleRender();
+}
+function tempoBroadcast() { if (TG && TG.kind === 'host') send({ t: 'tstate', s: TG.m.serialize() }); }
+function tempoLoop() {
+  if (!TG) return;
+  const m = TG.m;
+  if (TG.kind !== 'mirror') m.tick();
+  if (TG.kind === 'ai' && TG.ai && !m.result) m.aiStep(TG.ai, TG.level);
+  tempoPaint();
+}
+/* fast path: juice bars, timer, cooldown rings — no full re-render */
+function tempoPaint() {
+  if (!TG) return;
+  const m = TG.m, t = Date.now();
+  document.querySelectorAll('[data-jbar]').forEach((el) => {
+    const c = el.getAttribute('data-jbar'), v = m.juice(c, t);
+    const fill = el.querySelector('.jfill'); if (fill) fill.style.width = (v / TEMPO.MAX * 100).toFixed(1) + '%';
+    const num = el.querySelector('.jnum'); if (num) num.textContent = Math.floor(v + 1e-9);
+  });
+  const tm = document.querySelector('[data-ttimer]');
+  if (tm) { const r = m.result ? m.remain(m.result.at) : m.remain(t); const s = Math.ceil(r / 1000); tm.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); tm.classList.toggle('dbl', m.doubleTime(t)); tm.classList.toggle('low', r < 15000 && !m.result); }
+  // affordability + cooldown can change with time: re-render a few times a second only if something crossed a threshold
+  const sig = ['w', 'b'].map((c) => Math.floor(m.juice(c, t))).join(',') + '|' + Object.keys(m.cd).filter((k) => m.cd[k] > t).join(',') + '|' + m.doubleTime(t) + '|' + m.version;
+  if (sig !== TG.drawn) { TG.drawn = sig; scheduleRender(); }
+}
+function tempoCanControl(c) { if (!TG) return false; if (TG.m.result) return false; if (TG.kind === 'local') return true; return c === TG.my; }
+function tempoTap(s) {
+  if (!TG) return;
+  const m = TG.m, t = Date.now(), p = m.st.board[s];
+  // 1) a pending selection that can go there (most recent first)
+  const order = ['w', 'b'].filter((c) => tempoCanControl(c) && m.sel[c] !== null).sort((a, b) => m.selAt[b] - m.selAt[a]);
+  for (const c of order) {
+    const from = m.sel[c];
+    const mv = m.movesFrom(c, from, t).find((x) => x.to === s && x.type !== 'charge') || (s === from ? m.movesFrom(c, from, t).find((x) => x.type === 'charge') : null);
+    if (mv && !(p && p.c === c && s !== from)) {
+      if (p && tempoCanControl(p.c) && p.c !== c && TG.kind === 'local' && order[0] !== c) break; // local: tapping the other player's piece selects it
+      const cost = m.costOf(from, mv);
+      if (m.juice(c, t) + 1e-9 < cost) { TG.note = 'אין מספיק TempoJuice ⚡ (צריך ' + cost + ')'; TG.noteAt = t; scheduleRender(); return; }
+      if (TG.kind === 'mirror') { send({ t: 'tmove', m: { from, to: mv.to, type: mv.type } }); m.sel[c] = null; scheduleRender(); return; }
+      if (m.tryMove(c, mv, t)) return;
+    }
+  }
+  // 2) select / deselect
+  if (p && tempoCanControl(p.c) && p.t !== 'RO') {
+    if (m.sel[p.c] === s && !m.movesFrom(p.c, s, t).some((x) => x.type === 'charge')) m.sel[p.c] = null;
+    else { m.sel[p.c] = s; m.selAt[p.c] = t; }
+    TG.info = p.t; scheduleRender(); return;
+  }
+  ['w', 'b'].forEach((c) => { if (tempoCanControl(c)) m.sel[c] = null; }); scheduleRender();
+}
+function tempoCells() {
+  const m = TG.m, t = Date.now(), T = theme();
+  const flipped = TG.my === 'b';
+  const rows = flipped ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0], cols = flipped ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
+  const files = 'abcdefgh';
+  const angle = (a, b) => { let dx = (b % 8) - (a % 8), dy = -((b >> 3) - (a >> 3)); if (flipped) { dx = -dx; dy = -dy; } return Math.round(Math.atan2(dy, dx) * 180 / Math.PI); };
+  const rope = (rid) => { const r = { mid: -1, ends: [] }; m.st.board.forEach((q, i) => { if (q && q.rid === rid) { if (q.t === 'ROE') r.ends.push(i); else if (q.t === 'RO') r.mid = i; } }); return r; };
+  const targets = {}; // sq -> {cost, ok, cap}
+  ['w', 'b'].forEach((c) => {
+    const from = m.sel[c]; if (from === null || !tempoCanControl(c)) return;
+    const j = m.juice(c, t);
+    m.movesFrom(c, from, t).forEach((mv) => { const cost = m.costOf(from, mv); targets[mv.to] = { cost, ok: j + 1e-9 >= cost, cap: mv.type === 'cap' || mv.type === 'shoot', shoot: mv.type === 'shoot', charge: mv.type === 'charge' }; });
+  });
+  const cells = [];
+  rows.forEach((r) => cols.forEach((f) => {
+    const s = r * 8 + f, p = m.st.board[s], dark = (f + r) % 2 === 0;
+    let bg = dark ? T.dark : T.light;
+    if (m.last && (s === m.last.from || s === m.last.to) && t - m.last.at < 2500) bg = dark ? T.hiD : T.hiL;
+    if (m.sel.w === s || m.sel.b === s) bg = dark ? T.selD : T.selL;
+    let kind = p ? p.t : 'P', rot = 0, rot2 = 180;
+    if (p && p.t === 'RO') { const rp = rope(p.rid); kind = 'ROM'; rot = rp.ends[0] !== undefined ? angle(s, rp.ends[0]) : 0; rot2 = rp.ends[1] !== undefined ? angle(s, rp.ends[1]) : 180; }
+    else if (p && p.t === 'ROE') { const rp = rope(p.rid); rot = rp.mid >= 0 ? angle(s, rp.mid) : 0; }
+    const tg = targets[s];
+    const mine = p && tempoCanControl(p.c) && p.t !== 'RO';
+    const cdLeft = p ? Math.max(0, (m.cd[s] || 0) - t) : 0;
+    const affordable = mine ? m.juice(p.c, t) + 1e-9 >= m.costOf(s) : true;
+    cells.push({ s, has: !!p, kind, rot, rot2, side: p && p.c === 'b' ? 'black' : 'white', size: p && (p.t === 'RO' || p.t === 'ROE') ? 45 : 40, bg,
+      coordFile: r === rows[7] ? files[f] : '', coordRank: f === cols[0] ? String(r + 1) : '', coordInk: dark ? T.light : T.dark,
+      dot: !!tg && !tg.cap && !tg.charge && tg.ok, ring: !!tg && tg.cap, ringColor: tg && tg.shoot ? '#FF5A45' : (tg && !tg.ok ? 'rgba(120,110,150,.6)' : 'rgba(15,27,45,0.55)'),
+      preDot: !!tg && !tg.cap && !tg.ok, charge: !!tg && tg.charge,
+      hpShow: !!p && p.t === 'GR', hp: p && p.t === 'GR' ? p.hp : 0,
+      badge: mine && p.t !== 'ROE' ? { color: affordable ? '#13A9C9' : '#4A4466', sym: String(m.costOf(s)) } : null,
+      cdLeft, dim: mine && (!affordable || cdLeft > 0),
+      isLast: !!m.last && s === m.last.to && t - m.last.at < 400,
+      drag: !!mine && !m.result, selected: m.sel.w === s || m.sel.b === s,
+      aria: files[f] + (r + 1) + (p ? ' ' + (p.c === 'w' ? 'לבן' : 'שחור') + ' ' + pieceMeta(p.t === 'ROE' ? 'RO' : p.t).name : ' ריקה'),
+      tap: () => tempoTap(s) });
+  }));
+  return cells;
+}
+function juiceBar(c, label, me) {
+  const segs = []; for (let i = 0; i < TEMPO.MAX; i++) segs.push(h('i', {}));
+  return h('div', { class: 'jbar' + (me ? ' me' : ''), 'data-jbar': c }, [
+    h('div', { class: 'jhead' }, [h('span', { class: 'jlabel', text: label }), h('span', { dir: 'ltr', style: 'display:inline-flex;align-items:baseline;gap:3px' }, [h('span', { class: 'jdrop', text: '⚡' }), h('b', { class: 'jnum', text: String(Math.floor(TG.m.juice(c))) }), h('span', { class: 'jmax', text: '/' + TEMPO.MAX })])]),
+    h('div', { class: 'jtrack' }, [h('div', { class: 'jfill', style: 'width:' + (TG.m.juice(c) / TEMPO.MAX * 100).toFixed(1) + '%' }), h('div', { class: 'jsegs' }, segs)])
+  ]);
+}
+function tempoView(opts) {
+  opts = opts || {};
+  const m = TG.m, t = Date.now();
+  const my = TG.my, top = my === 'b' ? 'w' : 'b', bottom = my === 'b' ? 'b' : 'w';
+  const lab = (c) => TG.kind === 'local' ? (c === 'w' ? 'לבן' : 'שחור') : (c === my ? 'אתה' : (TG.kind === 'ai' ? 'מחשב · רמה ' + TG.level : (ON.oppName || 'יריב')));
+  const sc = (c) => h('span', { class: 'tscore', text: '+' + m.score(c) });
+  const cells = tempoCells();
+  const board = boardEl(cells, { animate: true, drag: !m.result, shot: m.last && m.last.type === 'shoot' ? { from: m.last.from, to: m.last.to, key: 't' + m.version, recoil: true } : null });
+  const exit = () => { if (opts.onExit) opts.onExit(); };
+  const note = TG.note && t - TG.noteAt < 1800 ? TG.note : '';
+  const phone = h('div', { class: 'phone wide tempo', style: 'gap:10px' }, [
+    topBar(opts.title || 'Tempo', m.result ? exit : () => { if (CONFIRM.what === 'texit' && Date.now() - CONFIRM.at < 3000) { CONFIRM.what = null; exit(); return; } CONFIRM.what = 'texit'; CONFIRM.at = Date.now(); APP.toast = 'לחץ שוב כדי לצאת מהמשחק'; scheduleRender(); setTimeout(() => { if (APP.toast === 'לחץ שוב כדי לצאת מהמשחק') { APP.toast = ''; scheduleRender(); } }, 3000); }, []),
+    opts.bar || null,
+    h('div', { class: 'row', style: 'gap:8px;align-items:stretch' }, [juiceBar(top, lab(top), false), sc(top)]),
+    h('div', { class: 'ttimer-wrap' }, [h('div', { class: 'ttimer', 'data-ttimer': '1', text: '3:00' }), m.doubleTime(t) ? h('span', { class: 'tdbl', text: '⚡×2' }) : null]),
+    board,
+    h('div', { class: 'row', style: 'gap:8px;align-items:stretch' }, [juiceBar(bottom, lab(bottom), true), sc(bottom)]),
+    note ? h('div', { class: 'tnote', text: note }) : null,
+    m.result ? h('div', { class: 'tresult' }, [h('div', { style: 'font-size:20px;font-weight:800', text: m.resultText(TG.kind === 'local' ? null : my) }),
+      h('div', { class: 'muted', style: 'font-size:13px', text: 'נקודות שנאכלו — לבן ' + m.score('w') + ' · שחור ' + m.score('b') }),
+      h('div', { class: 'row' }, [opts.onAgain ? h('button', { class: 'btn primary', style: 'flex:1', onclick: opts.onAgain, text: 'שחק שוב' }) : null, h('button', { class: 'btn', style: 'flex:1', onclick: exit, text: 'יציאה' })])])
+      : h('div', { class: 'row' }, [h('button', { class: 'btn danger', style: 'flex:1', onclick: () => { if (opts.onResign) opts.onResign(); }, text: 'כניעה' })]),
+    h('div', { class: 'panel', style: 'gap:6px' }, [h('div', { style: 'font-size:14px;font-weight:800', text: TG.info ? pieceMeta(TG.info === 'ROE' ? 'RO' : TG.info).name + ' · ⚡' + tCost(TG.info) : 'איך משחקים Tempo' }),
+      h('div', { class: 'soft', style: 'font-size:12.5px;line-height:1.55', text: TG.info ? pieceMeta(TG.info === 'ROE' ? 'RO' : TG.info).desc : 'אין תורות — מזיזים מתי שרוצים, כל עוד יש TempoJuice ⚡. המספר על כל כלי הוא מחיר התזוזה שלו. אחרי תזוזה הכלי נח שנייה וחצי. אוכלים את המלך = ניצחון. בדקה האחרונה הטעינה כפולה.' })])
+  ]);
+  return phone;
+}
+
+/* ---------- local + AI ---------- */
+function startLocalTempo(white, black) {
+  tempoStart('local', white, black, { my: null, onEnd: (r) => {} });
+  APP.mode = 'tempo'; TEMPO_BACK = 'local'; showAd(() => { if (TG) TG.m.reset(); scheduleRender(); });
+  renderApp();
+}
+let TEMPO_BACK = 'menu';
+function startAITempo(white, black, human, level) {
+  tempoStart('ai', white, black, { my: human, ai: human === 'w' ? 'b' : 'w', level });
+  APP.mode = 'tempo'; TEMPO_BACK = 'ai-setup';
+  showAd(() => { if (TG) { TG.m.reset(); TG.m.aiNext = Date.now() + 1500; } scheduleRender(); });
+  renderApp();
+}
+EXTRA_VIEWS['tempo'] = (stage) => {
+  if (!TG) { go('menu'); return; }
+  stage.appendChild(tempoView({ title: TG.kind === 'ai' ? 'Tempo נגד המחשב' : 'Tempo · מכשיר אחד',
+    onExit: () => { tempoStop(); if (TEMPO_BACK === 'local') { main.renderVals().onExit(); go('local'); } else go(TEMPO_BACK); },
+    onAgain: () => { TG.m.reset(); TG.m.aiNext = Date.now() + 1500; TG.drawn = -1; showAd(() => { if (TG) { TG.m.reset(); TG.m.aiNext = Date.now() + 1500; } scheduleRender(); }); scheduleRender(); },
+    onResign: () => { const c = TG.kind === 'local' ? null : TG.my; if (c) TG.m.finish({ winner: c === 'w' ? 'b' : 'w', reason: 'resign' }); else { APP.toast = 'במשחק על מכשיר אחד — צאו עם החץ למעלה'; scheduleRender(); setTimeout(() => { APP.toast = ''; scheduleRender(); }, 2200); } } }));
+};
+
+/* ---------- online (host is the referee) ---------- */
+function tempoOnlineStart(white, black) {
+  if (ON.myColor === 'w') {
+    tempoStart('host', white, black, { my: 'w', onEnd: () => {} });
+    TG.sync = setInterval(tempoBroadcast, 1000);
+    showAd(() => { if (TG) { TG.m.reset(); tempoBroadcast(); } scheduleRender(); });
+    tempoBroadcast();
+  } else {
+    tempoStart('mirror', white, black, { my: 'b' });
+    showAd(() => scheduleRender());
+  }
+}
+function tempoOnMessage(msg) {
+  if (!TG) return false;
+  if (msg.t === 'tstate' && TG.kind === 'mirror' && msg.s) { TG.m.load(msg.s); return true; }
+  if (msg.t === 'tmove' && TG.kind === 'host' && msg.m) { const ok = TG.m.tryMove('b', { from: +msg.m.from, to: +msg.m.to, type: String(msg.m.type || '') }); if (!ok) tempoBroadcast(); return true; }
+  if (msg.t === 'tresign') { if (TG.kind === 'host') TG.m.finish({ winner: 'w', reason: 'resign' }); return true; }
+  if (msg.t === 'tagain' && TG.kind === 'host') { TG.m.reset(); tempoBroadcast(); scheduleRender(); return true; }
+  return false;
+}
+function tempoOnlineView() {
+  return tempoView({ title: 'Tempo אונליין', bar: onlineBar(),
+    onExit: () => { send({ t: 'leave' }); tempoStop(); backToOnlineBuilder(); },
+    onAgain: () => { if (TG.kind === 'host') { TG.m.reset(); tempoBroadcast(); } else send({ t: 'tagain' }); scheduleRender(); },
+    onResign: () => { if (TG.kind === 'host') TG.m.finish({ winner: 'b', reason: 'resign' }); else send({ t: 'tresign' }); } });
+}
+
 
 /* ---------- profile & saved games ---------- */
 let PROFILES = store.get('profiles', null);
@@ -3419,7 +3770,7 @@ function builderView(b, opts) {
     h('div', { class: 'pbox' }, [piece(c.id, side, 40)]),
     h('div', { class: 'mini' }, c.cells.map((cell) => h('span', { style: 'background:' + cell.bg }))),
     h('div', { class: 'cname', text: c.name }),
-    h('div', { class: 'row', style: 'gap:4px' }, [h('span', { class: 'pill', style: 'background:' + c.pillBg, text: String(c.pts) }), h('span', { class: 'muted', style: 'font-size:11px;direction:ltr', text: c.count + '/' + b.maxC })])
+    h('div', { class: 'row', style: 'gap:4px' }, [h('span', { class: 'pill', style: 'background:' + (b.budget >= 999 ? '#62E8FF' : c.pillBg), text: b.budget >= 999 && typeof tCost === 'function' ? '⚡' + tCost(c.id) : String(c.pts) }), h('span', { class: 'muted', style: 'font-size:11px;direction:ltr', text: c.count + '/' + b.maxC })])
   ])));
   const legend = (special) => h('div', { class: 'legend' }, [
     h('span', {}, [h('i', { style: 'background:#5FA8FF' }), 'תנועה לאורך קו']),
@@ -3430,11 +3781,11 @@ function builderView(b, opts) {
     topBar('בניית דק · ' + b.sideLabel, opts && opts.onBack, [h('div', { class: 'chip', style: 'font-size:12px;background:' + b.accent + ';color:#0D0B1C', text: (opts && opts.badge) || 'COMPLICHESS' })]),
     h('div', { class: 'panel', style: 'border-radius:18px;gap:10px' }, [
       h('div', { class: 'row', style: 'justify-content:space-between;align-items:baseline' }, [
-        h('div', { class: 'muted', style: 'font-size:14px;font-weight:500', text: 'תקציב נקודות (עד ' + b.budget + ')' }),
-        h('div', { style: 'font-size:28px;font-weight:800;direction:ltr' }, [h('span', { style: 'color:' + b.accent, text: String(b.used) }), h('span', { class: 'dim', style: 'font-size:20px', text: ' / ' + b.budget })])
+        h('div', { class: 'muted', style: 'font-size:14px;font-weight:500', text: b.budget >= 999 ? '⚡ מצב Tempo · אין תקרת נקודות' : 'תקציב נקודות (עד ' + b.budget + ')' }),
+        b.budget >= 999 ? h('div', { style: 'font-size:26px;font-weight:800;color:#62E8FF', text: '∞' }) : h('div', { style: 'font-size:28px;font-weight:800;direction:ltr' }, [h('span', { style: 'color:' + b.accent, text: String(b.used) }), h('span', { class: 'dim', style: 'font-size:20px', text: ' / ' + b.budget })])
       ]),
-      h('div', { style: 'height:12px;background:#0D0B1C;border-radius:999px;overflow:hidden;direction:ltr' }, [h('div', { style: 'height:12px;border-radius:999px;background:' + b.accent + ';width:' + b.barPct + '%' })]),
-      h('div', { class: 'muted', style: 'font-size:13px;font-weight:500', text: b.status })
+      b.budget >= 999 ? null : h('div', { style: 'height:12px;background:#0D0B1C;border-radius:999px;overflow:hidden;direction:ltr' }, [h('div', { style: 'height:12px;border-radius:999px;background:' + b.accent + ';width:' + b.barPct + '%' })]),
+      h('div', { class: 'muted', style: 'font-size:13px;font-weight:500', text: b.budget >= 999 ? 'בחר כל כלי שתרצה (עד 2 מכל סוג). המספר ⚡ על כל קלף = כמה TempoJuice עולה להזיז אותו.' : b.status })
     ]),
     h('div', { style: 'display:flex;flex-direction:column;gap:8px' }, [
       board,
@@ -3595,13 +3946,14 @@ function boardEl(cells, opts) {
       c.ring ? h('span', { class: 'marker-ring', style: 'border:4px solid ' + c.ringColor }) : null,
       c.preDot ? h('span', { class: 'marker-dot pre' }) : null,
       c.preRing ? h('span', { class: 'marker-ring pre' }) : null,
+      c.cdLeft > 0 ? h('span', { class: 'tcd', style: 'animation-delay:-' + Math.round(1500 - c.cdLeft) + 'ms' }) : null,
       c.hpShow ? heartsEl(c.hp) : null,
       c.charge ? h('span', { class: 'charge-mark', 'aria-hidden': 'true', text: '+½♥' }) : null,
       SET.coords && c.coordFile ? h('span', { class: 'coord f', style: 'color:' + c.coordInk, text: c.coordFile }) : null,
       SET.coords && c.coordRank ? h('span', { class: 'coord r', style: 'color:' + c.coordInk, text: c.coordRank }) : null,
       c.badge ? h('span', { class: 'badge', style: 'background:' + c.badge.color, text: c.badge.sym }) : null
     ];
-    const cls = 'sqr' + (c.size > 40 ? ' wide' : '') + (c.isLast && opts.animate && !(opts.shot) ? ' pop' : '') + (dragging && i === DRAG.fromIdx ? ' dragsrc' : '') + (dragging && i === DRAG.over && i !== DRAG.fromIdx ? ' dragover' : '');
+    const cls = 'sqr' + (c.size > 40 ? ' wide' : '') + (c.isLast && opts.animate && !(opts.shot) ? ' pop' : '') + (dragging && i === DRAG.fromIdx ? ' dragsrc' : '') + (dragging && i === DRAG.over && i !== DRAG.fromIdx ? ' dragover' : '') + (c.dim ? ' tdim' : '');
     return h('button', { class: cls, 'data-i': String(i), 'aria-label': c.aria, oncontextmenu: c.has && !opts.noInfo ? () => openPieceInfo(c.kind, c.side) : null, style: 'background:' + c.bg + (c.hint ? ';box-shadow: inset 0 0 0 4px #3B82F6' : ''),
       onclick: c.tap ? () => { if (Date.now() - DRAG.suppress < 350) return; c.tap(); } : null }, kids);
   }));
@@ -3628,6 +3980,14 @@ function modePicker(opts) {
     kids.push(h('div', { class: 'dim', style: 'font-size:12px', text: 'דק של עד 35 נקודות.' + (opts.noClock ? '' : ' בחר שעון:') }));
     if (!opts.noClock) kids.push(h('div', { style: 'display:grid;grid-template-columns:repeat(4,1fr);gap:6px' }, TCS.map(([v, label]) => h('button', { class: 'btn' + (SET.tc === v ? ' primary' : ''), style: 'min-height:40px;padding:0 4px;font-size:13px', onclick: () => { SET.tc = v; saveSettings(); scheduleRender(); }, text: label }))));
   } else {
+    kids.push(h('div', { class: 'tabs kindtabs' }, [['custom', 'גרסת 35 · מותאם אישית'], ['tempo', '⚡ גרסת Tempo · 20']].map(([v, label]) => h('button', {
+      class: (SET.specialKind || 'custom') === v ? 'on' : '', 'aria-pressed': String((SET.specialKind || 'custom') === v), onclick: () => { SET.specialKind = v; saveSettings(); scheduleRender(); }, text: label }))));
+  }
+  if (sp && SET.specialKind === 'tempo') {
+    kids.push(h('div', { class: 'tempo-intro' }, [
+      h('div', { style: 'font-weight:800;font-size:15px', text: '⚡ Tempo — בזמן אמת, כמו קלאש רויאל' }),
+      h('div', { class: 'soft', style: 'font-size:12.5px;line-height:1.6', text: 'אין תורות ואין תקרת נקודות לדק. כל תזוזה עולה TempoJuice שנטען עד 20 (פי 2 בדקה האחרונה). 3 דקות; אוכלים את המלך = ניצחון, ואם הזמן נגמר — מנצח מי שאכל יותר. באונליין צריך קליטה טובה בשני המכשירים.' })]));
+  } else if (sp) {
     kids.push(stepper('אליקסיר לכל שחקן', budgetNow(), 'נק׳', (v) => { SET.budget = Math.max(1, Math.min(99, v)); }, null, budgetNow() === 35 ? 'המומלץ ✓' : 'המומלץ: 35'));
     if (!opts.noClock) {
       kids.push(h('div', { class: 'row', style: 'justify-content:space-between' }, [h('span', { style: 'font-size:14px;font-weight:700', text: 'שעון שחמט' }),
@@ -3841,7 +4201,8 @@ function resetOnline() {
   if (typeof VOICE !== 'undefined' && VOICE.state !== 'off') voiceEnd(true);
   if (typeof MM !== 'undefined' && MM.state === 'searching') stopMatchmaking(true);
   if (ON.abandonTimer) { clearTimeout(ON.abandonTimer); ON.abandonTimer = 0; }
-  Object.assign(ON, { ranked: false, matchId: null, oppUid: null, oppRating: 0, rankNote: '' });
+  if (typeof TG !== 'undefined' && TG && (TG.kind === 'host' || TG.kind === 'mirror')) tempoStop();
+  Object.assign(ON, { tempo: false, ranked: false, matchId: null, oppUid: null, oppRating: 0, rankNote: '' });
   try { if (ON.conn) ON.conn.close(); } catch (e) {}
   try { if (ON.peer) ON.peer.destroy(); } catch (e) {}
   Object.assign(ON, { peer: null, conn: null, code: '', myColor: null, status: '', myDeck: null, oppDeck: null, started: false, oppHere: false, builder: null, game: null, oppName: '', budget: DEFAULT_BUDGET, wasConnected: false, rejoinTries: 0 });
@@ -3859,6 +4220,7 @@ function maybeStartOnline() {
   ON.started = true;
   const white = ON.myColor === 'w' ? ON.myDeck : ON.oppDeck;
   const black = ON.myColor === 'w' ? ON.oppDeck : ON.myDeck;
+  if (ON.tempo && typeof tempoOnlineStart === 'function') { ON.game = null; playSound('notify'); tempoOnlineStart(white, black); scheduleRender(); return; }
   ON.game = new GameC({
     whiteDeck: white, blackDeck: black, myColor: ON.myColor, theme: theme(), onSound: playSound, clock: tcOf(ON.tc),
     onMove: (m) => { send({ t: 'move', m }); if (ON.myColor === 'w') setTimeout(() => specBroadcast({ t: 'spec-move', m }), 0); },
@@ -3877,15 +4239,16 @@ function backToOnlineBuilder() { ON.oppDeck = null; newOnlineBuilder(); schedule
 function wireConn(conn) {
   ON.conn = conn;
   conn.on('open', () => { if (ON.conn !== conn) { try { conn.close(); } catch (e) {} return; } ON.rejoinTries = 0; const again = !!ON.wasConnected; ON.wasConnected = true; ON.oppHere = true; ON.status = again ? 'החיבור חזר ✓' : 'מחובר';
-    if (ON.game) send({ t: 'sync', record: ON.game.state.record.map((r) => ({ from: r.from, to: r.to, type: r.type, promoTo: r.promoTo || null })) }); send({ t: 'hello', v: 2, name: (typeof CLOUD !== 'undefined' && CLOUD.profile && ON.ranked) ? CLOUD.profile.username : curName(), tc: ON.myColor === 'w' ? ON.tc : undefined, budget: ON.myColor === 'w' ? ON.budget : undefined,
+    if (ON.game) send({ t: 'sync', record: ON.game.state.record.map((r) => ({ from: r.from, to: r.to, type: r.type, promoTo: r.promoTo || null })) }); send({ t: 'hello', v: 2, name: (typeof CLOUD !== 'undefined' && CLOUD.profile && ON.ranked) ? CLOUD.profile.username : curName(), tc: ON.myColor === 'w' ? ON.tc : undefined, budget: ON.myColor === 'w' ? ON.budget : undefined, tempo: ON.myColor === 'w' ? !!ON.tempo : undefined,
       matchId: ON.ranked ? ON.matchId : undefined, uid: ON.ranked && CLOUD.user ? CLOUD.user.id : undefined, rating: ON.ranked && CLOUD.profile ? CLOUD.profile.rating : undefined });
     if (ON.abandonTimer) { clearTimeout(ON.abandonTimer); ON.abandonTimer = 0; }
     if (typeof rankedOnConnected === 'function') rankedOnConnected(); if (ON.myDeck) send({ t: 'ready', deck: ON.myDeck }); playSound('notify'); scheduleRender(); });
   conn.on('data', (msg) => {
     if (!msg || typeof msg !== 'object') return;
     const g = ON.game;
+    if (ON.tempo && typeof tempoOnMessage === 'function' && /^t(state|move|resign|again)$/.test(msg.t)) { tempoOnMessage(msg); return; }
     if (msg.t && msg.t.indexOf('voice-') === 0) { if (typeof voiceOnMessage === 'function') voiceOnMessage(msg); return; }
-    if (msg.t === 'hello') { ON.oppName = String(msg.name || '').slice(0, 20); if (typeof rankedHello === 'function') rankedHello(msg); if (ON.myColor === 'b' && msg.tc && validTc(msg.tc)) ON.tc = msg.tc; if (ON.myColor === 'b' && msg.budget) { ON.budget = Math.max(1, Math.min(99, +msg.budget | 0)); if (ON.builder) ON.builder.props.budget = ON.budget; } }
+    if (msg.t === 'hello') { ON.oppName = String(msg.name || '').slice(0, 20); if (typeof rankedHello === 'function') rankedHello(msg); if (ON.myColor === 'b' && msg.tc && validTc(msg.tc)) ON.tc = msg.tc; if (ON.myColor === 'b') ON.tempo = !!msg.tempo; if (ON.myColor === 'b' && msg.budget) { ON.budget = msg.budget >= 999 ? 999 : Math.max(1, Math.min(99, +msg.budget | 0)); if (ON.builder) ON.builder.props.budget = ON.budget; } }
     else if (msg.t === 'ready' && Array.isArray(msg.deck) && msg.deck.length === 16) { ON.oppDeck = msg.deck.map(String); maybeStartOnline(); }
     else if (msg.t === 'unready') { ON.oppDeck = null; }
     else if (msg.t === 'move' && g && msg.m) { const mm = { from: +msg.m.from, to: +msg.m.to, type: String(msg.m.type), promoTo: msg.m.promoTo ? String(msg.m.promoTo) : null }; g.applyRemote(mm); if (ON.myColor === 'w') specBroadcast({ t: 'spec-move', m: mm }); }
@@ -3893,7 +4256,7 @@ function wireConn(conn) {
     else if (msg.t === 'resign' && g) { g.resign(ON.myColor === 'w' ? 'b' : 'w'); }
     else if (msg.t === 'draw-offer' && g) { g.incomingDraw(); playSound('notify'); }
     else if (msg.t === 'draw-reply' && g) { if (msg.ok) g.finish({ reason: 'agreed', winner: null }); else g.drawDeclined(); }
-    else if (msg.t === 'leave') { backToOnlineBuilder(); }
+    else if (msg.t === 'leave') { if (ON.tempo && typeof tempoStop === 'function') tempoStop(); backToOnlineBuilder(); }
     else if (msg.t === 'sync' && g && Array.isArray(msg.record)) {
       // after a dropped connection: replay any moves we missed (the other side's history is longer and starts like ours)
       const mine = g.state.record, theirs = msg.record;
@@ -3909,7 +4272,7 @@ function wireConn(conn) {
 function hostRoom() {
   if (typeof Peer === 'undefined') { APP.menuError = 'אין חיבור לאינטרנט'; renderApp(); return; }
   resetOnline();
-  ON.myColor = 'w'; ON.code = newCode(); ON.tc = tcNow(); ON.budget = budgetNow(); ON.status = 'יוצר חדר...';
+  ON.myColor = 'w'; ON.code = newCode(); ON.tc = tcNow(); ON.budget = budgetNow(); ON.tempo = typeof isTempo === 'function' && isTempo(); ON.status = 'יוצר חדר...';
   APP.mode = 'online'; newOnlineBuilder();
   const peer = new Peer(PREFIX + ON.code, PEER_OPTS); ON.peer = peer; keepPeerAlive(peer); peer.on('call', (c) => onVoiceCall(c));
   peer.on('open', () => { ON.status = 'ממתין לחבר'; scheduleRender(); });
@@ -4177,7 +4540,8 @@ function renderApp() {
   }
   else if (APP.mode === 'online-menu') stage.appendChild(onlineMenuView());
   else if (APP.mode === 'online') {
-    if (ON.started && ON.game) { ON.game.props.theme = T; stage.appendChild(gameView(ON.game.renderVals(), { title: 'אונליין', bar: onlineBar() })); }
+    if (ON.started && ON.tempo && typeof TG !== 'undefined' && TG) { stage.appendChild(tempoOnlineView()); }
+    else if (ON.started && ON.game) { ON.game.props.theme = T; stage.appendChild(gameView(ON.game.renderVals(), { title: 'אונליין', bar: onlineBar() })); }
     else if (ON.builder) { ON.builder.props.theme = T; ON.builder.props.budget = ON.budget || DEFAULT_BUDGET; stage.appendChild(col([h('div', { class: 'phone', style: 'gap:10px' }, [topBar('אונליין', goMenu), onlineBar()]), builderView(ON.builder.renderVals(), { builder: ON.builder })])); }
   } else if (APP.mode === 'local') {
     const mv = main.renderVals();
@@ -4193,6 +4557,7 @@ function renderApp() {
       stage.appendChild(builderView(builders.black.renderVals(), { onBack: goMenu, builder: builders.black }));
     } else {
       builders = null;
+      if (typeof isTempo === 'function' && isTempo()) { if (!TG) { startLocalTempo(mv.decks.white, mv.decks.black); } return; }
       if (!game) { game = new GameC({ whiteDeck: mv.decks.white, blackDeck: mv.decks.black, theme: T, onSound: playSound, clock: tcOf(tcNow()), onRestart: () => showAd(),
         onEnd: (rec) => recordResult(rec, 'local', null), onReview: (rec) => { if (typeof openReview === 'function') openReview(rec); }, onExit: () => main.renderVals().onExit() }); showAd(); }
       game.props.theme = T;
