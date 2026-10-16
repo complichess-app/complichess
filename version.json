@@ -1,0 +1,11 @@
+{
+  "version": "2.1.0",
+  "notes": {
+    "he": "דק אקראי בכפתור אחד, כלים שמחליקים על הלוח, ועדכונים בלי להוריד מחדש.",
+    "en": "One-tap random deck, pieces that glide across the board, and updates without reinstalling.",
+    "ar": "تشكيلة عشوائية بلمسة واحدة، قطع تنزلق على الرقعة، وتحديثات دون إعادة التثبيت.",
+    "ru": "Случайная колода одним нажатием, плавное движение фигур и обновления без переустановки.",
+    "es": "Mazo aleatorio con un toque, piezas que se deslizan por el tablero y actualizaciones sin reinstalar.",
+    "fr": "Deck aléatoire en un geste, pièces qui glissent sur l’échiquier et mises à jour sans réinstaller."
+  }
+}

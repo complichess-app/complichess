@@ -12,3 +12,16 @@ drawn from fairy-chess pawn types. Both players get the same army.
 
 © 2026 Bar Lvovski — all rights reserved. See [LICENSE](LICENSE).
 Contact: complichess.app@gmail.com
+
+## Updates without reinstalling
+
+The game is a web app with a service worker (`sw.js`). Every launch asks the server first, so
+players always get the newest version; the cached copy is used only offline. While the game is
+open it checks `version.json` and shows an update bar between games.
+
+To ship an update:
+
+```
+node tools/release.mjs 2.2.0 "מה חדש"
+git commit -am "v2.2.0" && git push
+```
