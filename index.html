@@ -563,6 +563,107 @@
   body.a11y-rm .mv-ghost, body.a11y-rm .fx-burst, body.a11y-rm .fx-ring { display: none !important; }
   body.a11y-rm .sqr.mv-hide > :first-child { visibility: visible; }
   @media (prefers-reduced-motion: reduce) { .board8.deal .sqr > :first-child, .upd-bar, .sqr.check-pulse::after { animation: none !important; } }
+
+  /* ================= v2.3: progression — currency bar, arena, quests, shop, trophy road, reward card ================= */
+  .curbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .cur-pill { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; border-radius: 999px; border: 1px solid var(--line); background: #10241C; color: var(--text); font-size: 16px; padding: 0 10px; }
+  .cur-pill b { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .cur-pill .cur-ico { font-size: 18px; line-height: 1; }
+  .cur-pill.tr b { color: #F2C25A; } .cur-pill.co b { color: #F6D77A; }
+  .cur-pill.fl.hot { border-color: rgba(255,140,40,.6); background: linear-gradient(180deg, rgba(255,120,30,.22), rgba(255,120,30,.06)); }
+  .cur-pill.fl.hot b { color: #FFB15A; }
+  .cur-pill.fl.cold .cur-ico { filter: grayscale(1); opacity: .55; }
+  .cur-pill.fl.hot .cur-ico { animation: flameWob 1.6s ease-in-out infinite; display: inline-block; }
+  .cur-pill.pulse { animation: coinPulse .7s ease-out; }
+  @keyframes flameWob { 50% { transform: scale(1.18) rotate(-6deg); } }
+  @keyframes coinPulse { 0% { transform: scale(1); } 35% { transform: scale(1.12); box-shadow: 0 0 0 4px rgba(246,215,122,.35); } 100% { transform: scale(1); } }
+  .arena-card { display: flex; align-items: center; gap: 12px; width: 100%; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; padding: 12px 14px; color: #fff; text-align: start; position: relative; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
+  .arena-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.13) 45%, transparent 60%); transform: translateX(-100%); animation: arShine 4.5s ease-in-out infinite; pointer-events: none; }
+  @keyframes arShine { 0%, 60% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .ar-badge { flex: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px rgba(255,255,255,.18), 0 6px 16px rgba(0,0,0,.35); line-height: 1; }
+  .ac-k { font-size: 11.5px; font-weight: 700; opacity: .8; letter-spacing: .3px; }
+  .ac-n { font-size: 17px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ac-s { font-size: 12px; opacity: .85; }
+  .ac-bar { display: block; height: 8px; border-radius: 999px; background: rgba(0,0,0,.35); overflow: hidden; }
+  .ac-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #F2C25A, #FFE7A3); transition: width .6s ease; }
+  .ac-bar.q { background: rgba(255,255,255,.08); height: 7px; }
+  .ac-bar.q i { background: linear-gradient(90deg, #4FB27A, #8FE0AE); }
+  .arena-card .mc-arrow { opacity: .7; font-size: 20px; }
+  html[dir=ltr] .arena-card .mc-arrow { transform: scaleX(-1); }
+  .nudge { font-size: 13px; font-weight: 700; padding: 9px 12px; border-radius: 12px; background: #10241C; border: 1px dashed var(--line); color: var(--muted); text-align: center; }
+  .nudge.risk { border: 1px solid rgba(255,140,40,.55); color: #FFC58A; background: rgba(255,120,30,.08); animation: nudgeGlow 2.4s ease-in-out infinite; }
+  @keyframes nudgeGlow { 50% { box-shadow: 0 0 14px rgba(255,140,40,.25); } }
+  .qrow { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: #10241C; border: 1px solid var(--line); }
+  .qrow.done { border-color: rgba(210,165,74,.7); box-shadow: 0 0 0 1px rgba(210,165,74,.25); }
+  .qrow.got { opacity: .6; }
+  .q-claim { min-height: 38px !important; padding: 0 12px; font-size: 13px; white-space: nowrap; animation: claimBob 1.2s ease-in-out infinite; }
+  @keyframes claimBob { 50% { transform: translateY(-2px) scale(1.04); } }
+  .q-rew { font-size: 12.5px; font-weight: 800; color: #F6D77A; white-space: nowrap; }
+  .q-rr { background: none; border: 0; font-size: 15px; padding: 2px 4px; opacity: .7; min-height: 28px; }
+  .q-ok { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--green); color: #0C2016; font-weight: 900; }
+  .chest { min-height: 46px; font-size: 15px; animation: claimBob 1.2s ease-in-out infinite; }
+  .shop-card { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 14px; text-align: start; width: 100%; }
+  .sk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sk-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); text-align: center; }
+  .sk-card.on { border-color: var(--brass); box-shadow: 0 0 0 1px var(--brass) inset; }
+  .sk-card.lock .skin-pv, .sk-card.lock .bsw { filter: grayscale(.85) brightness(.75); }
+  .sk-name { font-size: 12.5px; font-weight: 800; line-height: 1.2; min-height: 30px; display: flex; align-items: center; }
+  .sk-btn { min-height: 34px !important; font-size: 12.5px; padding: 0 10px; width: 100%; }
+  .sk-tag { font-size: 11px; font-weight: 700; color: var(--dim); line-height: 1.3; min-height: 34px; display: flex; align-items: center; }
+  .sk-tag.on { color: var(--brass); font-size: 12.5px; }
+  .skin-pv { display: inline-flex; align-items: center; justify-content: center; gap: 0; padding: 4px 6px; border-radius: 10px; background: #5E8A6E; background: linear-gradient(90deg, #E9E2CF 50%, #5E8A6E 50%); }
+  .bsw { display: inline-grid; grid-template-columns: 1fr 1fr; border-radius: 4px; overflow: hidden; flex: none; }
+  .bsw i { display: block; }
+  .road { display: flex; flex-direction: column; gap: 10px; }
+  .road-a { border-radius: 16px; padding: 12px 14px; color: #fff; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(255,255,255,.12); }
+  .road-a.lock { filter: saturate(.35) brightness(.7); }
+  .road-a.here { box-shadow: 0 0 0 2px var(--brass), 0 8px 22px rgba(0,0,0,.35); }
+  .road-st { font-size: 13px; font-weight: 800; white-space: nowrap; }
+  .road-a.here .road-st { background: var(--brass); color: var(--brass-ink); padding: 4px 10px; border-radius: 999px; }
+  .streak-ms { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .streak-ms .sm { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px; border-radius: 10px; background: #10241C; border: 1px solid var(--line); font-size: 13px; }
+  .streak-ms .sm small { font-size: 10px; color: var(--dim); text-align: center; line-height: 1.15; }
+  .streak-ms .sm.on { border-color: rgba(255,140,40,.6); }
+  .streak-ms .sm.got { background: rgba(255,120,30,.14); }
+  .rw-ov { z-index: 40; }
+  .rw-val, .rw-delta, .rw-gift, .q-rew, .q-claim b, .cur-pill b { direction: ltr; unicode-bidi: isolate; }
+  .rw-card.old, .rw-card.old .rw-row, .rw-card.old .rw-big, .rw-card.old .rw-arena, .rw-card.old .rw-bar i { animation: none !important; }
+  .rw-card { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 10px; width: 360px; text-align: center; animation: rwIn .45s cubic-bezier(.2,1.4,.4,1) both; }
+  .rw-card.win { border-color: var(--brass) !important; box-shadow: 0 0 0 1px var(--brass), 0 0 40px rgba(242,194,90,.25), 0 16px 40px rgba(0,0,0,.5) !important; }
+  @keyframes rwIn { from { transform: scale(.7) translateY(20px); opacity: 0; } }
+  .rw-title { font-size: 26px; font-weight: 900; letter-spacing: -.3px; position: relative; z-index: 1; }
+  .rw-title.win { color: #F6D77A; text-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .rw-trophy { display: flex; align-items: center; justify-content: center; gap: 14px; position: relative; z-index: 1; }
+  .rw-big { font-size: 46px; line-height: 1; animation: trophyPop .6s .2s cubic-bezier(.2,1.6,.4,1) both; }
+  @keyframes trophyPop { from { transform: scale(.2) rotate(-25deg); opacity: 0; } }
+  .rw-trophy .rw-val { font-size: 34px; font-weight: 900; color: #F2C25A; font-variant-numeric: tabular-nums; }
+  .rw-delta { font-size: 15px; font-weight: 900; }
+  .rw-delta.up { color: #6FD39A; } .rw-delta.down { color: #F0A08C; }
+  .rw-prog { display: flex; flex-direction: column; gap: 4px; }
+  .rw-bar { height: 10px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+  .rw-bar i { display: block; height: 100%; background: linear-gradient(90deg, #F2C25A, #FFE7A3); border-radius: 999px; animation: barGrow 1.1s .3s ease-out both; }
+  @keyframes barGrow { from { width: 0 !important; } }
+  .rw-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #10241C; border: 1px solid var(--line); text-align: start; position: relative; z-index: 1; animation: rowIn .35s ease-out both; }
+  .rw-row:nth-of-type(2) { animation-delay: .15s; } .rw-row:nth-of-type(3) { animation-delay: .3s; } .rw-row:nth-of-type(4) { animation-delay: .45s; } .rw-row:nth-of-type(5) { animation-delay: .6s; }
+  @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } }
+  .rw-row.q { border-color: rgba(210,165,74,.6); }
+  .rw-ico { font-size: 20px; }
+  .rw-lbl { flex: 1; font-size: 13.5px; font-weight: 700; }
+  .rw-val { font-weight: 900; color: #F6D77A; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .rw-streak { display: flex; align-items: center; gap: 12px; text-align: start; padding: 10px 12px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,120,30,.22), rgba(255,60,20,.06)); border: 1px solid rgba(255,140,40,.5); position: relative; z-index: 1; }
+  .rw-flame { font-size: 38px; line-height: 1; animation: flameWob 1.2s ease-in-out infinite; display: inline-block; }
+  .rw-skin { display: flex; justify-content: center; }
+  .rw-arena { border-radius: 16px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 1; animation: arenaIn .7s .2s cubic-bezier(.2,1.4,.4,1) both; box-shadow: 0 0 0 2px var(--brass), 0 0 30px rgba(242,194,90,.35); }
+  @keyframes arenaIn { from { transform: scale(.5) rotate(-4deg); opacity: 0; } }
+  .rw-arena-k { font-size: 12px; font-weight: 900; letter-spacing: 1px; color: #FFE7A3; text-transform: uppercase; }
+  .rw-arena-gifts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .rw-gift { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 10px; background: rgba(0,0,0,.3); color: #fff; font-size: 12.5px; font-weight: 800; }
+  .rw-gift .skin-pv { padding: 2px 3px; }
+  .rw-conf { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+  .rw-conf i { position: absolute; top: -12px; width: 8px; height: 12px; border-radius: 2px; opacity: 0; animation: confFall 1.8s ease-in both; }
+  @keyframes confFall { 0% { opacity: 1; transform: translate(0, 0) rotate(0); } 100% { opacity: 0; transform: translate(var(--dx), 520px) rotate(var(--rot)); } }
+  body.a11y-rm .rw-conf, body.a11y-rm .arena-card::after { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .rw-conf, .arena-card::after { display: none; } .cur-pill .cur-ico, .q-claim, .chest, .rw-flame, .nudge.risk { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -604,6 +705,7 @@ Object.assign(I18N.ar = I18N.ar || {}, {" פרשים": " أحصنة", "סיכו�
 Object.assign(I18N.ru = I18N.ru || {}, {" פרשים": " коней", "סיכויי פתיחה: ": "Шансы в начале: ", "אין לכלי הזה מהלכים": "У этой фигуры нет ходов", "מלך נאכל! נשארו ": "Король взят! Осталось королей: ", " מלכים": " королей", "מט! ": "Мат! ", " ניצח — היריב נכנע": " побеждает — соперник сдался", "פט — תיקו": "Пат — ничья", "תיקו — חזרה משולשת": "Ничья — троекратное повторение", "תיקו — 50 מהלכים בלי אכילה": "Ничья — 50 ходов без взятий", "לבן: ": "Белые: ", "שחור: ": "Чёрные: ", "המחשב חושב…": "Компьютер думает…", "תור לבן": "Ход белых", "תור שחור": "Ход чёрных", " · שח!": " · Шах!", " · אונליין": " · Онлайн", " · נגד המחשב": " · против компьютера", "ממציא שני צבאות ומאזן את הסיכויים…": "Придумываем две армии и уравниваем шансы…", "מקבל את הלוח מהמארח…": "Получаем доску от хозяина…", " — לחץ למפת התנועות": " — нажмите, чтобы увидеть карту ходов", "🏳 כניעה": "🏳 Сдаться", "🎲 צבאות חדשים": "🎲 Новые армии", "🎲 עוד משחק": "🎲 Ещё партия", "רמה: ": "Уровень: ", "קלה": "Лёгкий", "רגילה": "Обычный", "קשה": "Сложный", "החוקים של Brainmaxing Pro": "Правила Brainmaxing Pro", "למה להכתיר?": "Во что превратить?", "לוח 12 על 12. לכל צד צבא אחר שהמשחק ממציא: 9 כלים אקראיים (random1–random9, ממוספרים מימין לשמאל מצד השחקן) ו־3 מלכים במקומות אקראיים בשורה האחורית, ומלפנים 12 רגלים אקראיים. כל עוד יש לך יותר ממלך אחד — אפשר לאכול לך מלך. המלך האחרון הוא מלך רגיל: שח, מט ופט כמו בשחמט. אם סיכויי הפתיחה גרועים מ־60–40, הצד החלש מקבל פרשים במקום רגלים, מימין לשמאל, עד שזה 60–40 או מאוזן יותר. לחיצה ארוכה על כלי מראה את מפת התנועות שלו.": "Доска 12×12. У каждой стороны своя армия, которую придумывает игра: 9 случайных фигур (random1–random9, нумерация справа налево со стороны игрока) и 3 короля на случайных полях последнего ряда, а перед ними 12 случайных пешек. Пока у вас больше одного короля, вашего короля можно взять. Последний король — обычный: шах, мат и пат как в шахматах. Если стартовые шансы хуже 60–40, слабая сторона получает коней вместо пешек справа налево, пока не станет 60–40 или ровнее. Долгое нажатие на фигуру показывает карту её ходов.", " — מסומן": " — отмечено", " משבצות יעד · לחץ על משבצות ברשת כדי לסמן איך הוא הולך": " полей · нажимайте на клетки сетки, чтобы задать ходы", "מפת תנועות": "Карта ходов", "🎲 תנועות אקראיות": "🎲 Случайные ходы", "סימטרי ↔↕": "Симметрично ↔↕", "משחק מעמדה · אונליין": "Партия с позиции · Онлайн", "שלח לחבר את הקישור — כשהוא ייכנס, המשחק יתחיל מהעמדה הזו.": "Отправьте другу ссылку — когда он войдёт, партия начнётся с этой позиции.", "אתה משחק בלבן. בתור: ": "Вы играете белыми. Ход: ", " · קוד החדר: ": " · Код комнаты: ", "🔗 שלח קישור למשחק": "🔗 Отправить ссылку на партию", " (אחד מכל מספר לכל צבע)": " (по одной каждого номера на цвет)", "🎮 שלח לחבר קישור למשחק מהעמדה הזו": "🎮 Отправить другу ссылку на партию с этой позиции", "Brainmaxing Pro: לוח 12×12 ו־3 מלכים": "Brainmaxing Pro: доска 12×12 и 3 короля", "היריב יצא מהמשחק": "Соперник вышел из партии", "12×12 · 3 מלכים · צבא שונה לכל צד": "12×12 · 3 короля · у каждой стороны своя армия", "ללבן נוספו ": "Белые получили ", "לשחור נוספו ": "Чёрные получили ", "איזון סיכויים: ": "Уравнивание шансов: "});
 Object.assign(I18N.es = I18N.es || {}, {" פרשים": " caballos", "סיכויי פתיחה: ": "Probabilidades iniciales: ", "אין לכלי הזה מהלכים": "Esta pieza no tiene movimientos", "מלך נאכל! נשארו ": "¡Rey capturado! Reyes restantes: ", " מלכים": " reyes", "מט! ": "¡Jaque mate! ", " ניצח — היריב נכנע": " gana — el rival abandonó", "פט — תיקו": "Ahogado — tablas", "תיקו — חזרה משולשת": "Tablas — triple repetición", "תיקו — 50 מהלכים בלי אכילה": "Tablas — 50 jugadas sin captura", "לבן: ": "Blancas: ", "שחור: ": "Negras: ", "המחשב חושב…": "La computadora está pensando…", "תור לבן": "Juegan blancas", "תור שחור": "Juegan negras", " · שח!": " · ¡Jaque!", " · אונליין": " · En línea", " · נגד המחשב": " · contra la computadora", "ממציא שני צבאות ומאזן את הסיכויים…": "Inventando dos ejércitos y equilibrando las probabilidades…", "מקבל את הלוח מהמארח…": "Recibiendo el tablero del anfitrión…", " — לחץ למפת התנועות": " — toca para ver su mapa de movimientos", "🏳 כניעה": "🏳 Rendirse", "🎲 צבאות חדשים": "🎲 Ejércitos nuevos", "🎲 עוד משחק": "🎲 Otra partida", "רמה: ": "Nivel: ", "קלה": "Fácil", "רגילה": "Normal", "קשה": "Difícil", "החוקים של Brainmaxing Pro": "Reglas de Brainmaxing Pro", "למה להכתיר?": "¿Coronar a qué?", "לוח 12 על 12. לכל צד צבא אחר שהמשחק ממציא: 9 כלים אקראיים (random1–random9, ממוספרים מימין לשמאל מצד השחקן) ו־3 מלכים במקומות אקראיים בשורה האחורית, ומלפנים 12 רגלים אקראיים. כל עוד יש לך יותר ממלך אחד — אפשר לאכול לך מלך. המלך האחרון הוא מלך רגיל: שח, מט ופט כמו בשחמט. אם סיכויי הפתיחה גרועים מ־60–40, הצד החלש מקבל פרשים במקום רגלים, מימין לשמאל, עד שזה 60–40 או מאוזן יותר. לחיצה ארוכה על כלי מראה את מפת התנועות שלו.": "Tablero de 12×12. Cada bando recibe un ejército distinto que inventa el juego: 9 piezas aleatorias (random1–random9, numeradas de derecha a izquierda desde el lado del jugador) y 3 reyes en casillas aleatorias de la fila trasera, con 12 peones aleatorios delante. Mientras tengas más de un rey, te pueden capturar un rey. Tu último rey es un rey normal: jaque, jaque mate y ahogado como en el ajedrez. Si las probabilidades iniciales son peores que 60–40, el bando más débil recibe caballos en lugar de peones, de derecha a izquierda, hasta quedar en 60–40 o más parejo. Mantén pulsada una pieza para ver su mapa de movimientos.", " — מסומן": " — marcada", " משבצות יעד · לחץ על משבצות ברשת כדי לסמן איך הוא הולך": " casillas de destino · toca casillas de la cuadrícula para marcar cómo se mueve", "מפת תנועות": "Mapa de movimientos", "🎲 תנועות אקראיות": "🎲 Movimientos aleatorios", "סימטרי ↔↕": "Simétrico ↔↕", "משחק מעמדה · אונליין": "Partida desde una posición · En línea", "שלח לחבר את הקישור — כשהוא ייכנס, המשחק יתחיל מהעמדה הזו.": "Envía el enlace a tu amigo: cuando entre, la partida empezará desde esta posición.", "אתה משחק בלבן. בתור: ": "Juegas con blancas. Mueven: ", " · קוד החדר: ": " · Código de sala: ", "🔗 שלח קישור למשחק": "🔗 Enviar enlace de la partida", " (אחד מכל מספר לכל צבע)": " (uno de cada número por color)", "🎮 שלח לחבר קישור למשחק מהעמדה הזו": "🎮 Enviar a un amigo un enlace para jugar desde esta posición", "Brainmaxing Pro: לוח 12×12 ו־3 מלכים": "Brainmaxing Pro: tablero de 12×12 y 3 reyes", "היריב יצא מהמשחק": "El rival salió de la partida", "12×12 · 3 מלכים · צבא שונה לכל צד": "12×12 · 3 reyes · un ejército distinto para cada bando", "ללבן נוספו ": "Blancas recibieron ", "לשחור נוספו ": "Negras recibieron ", "איזון סיכויים: ": "Equilibrio de probabilidades: "});
 Object.assign(I18N.fr = I18N.fr || {}, {" פרשים": " cavaliers", "סיכויי פתיחה: ": "Chances au départ : ", "אין לכלי הזה מהלכים": "Cette pièce n’a aucun coup", "מלך נאכל! נשארו ": "Un roi a été pris ! Rois restants : ", " מלכים": " rois", "מט! ": "Échec et mat ! ", " ניצח — היריב נכנע": " gagne — l’adversaire a abandonné", "פט — תיקו": "Pat — nulle", "תיקו — חזרה משולשת": "Nulle — triple répétition", "תיקו — 50 מהלכים בלי אכילה": "Nulle — 50 coups sans prise", "לבן: ": "Blancs : ", "שחור: ": "Noirs : ", "המחשב חושב…": "L’ordinateur réfléchit…", "תור לבן": "Trait aux blancs", "תור שחור": "Trait aux noirs", " · שח!": " · Échec !", " · אונליין": " · En ligne", " · נגד המחשב": " · contre l’ordinateur", "ממציא שני צבאות ומאזן את הסיכויים…": "Invention de deux armées et équilibrage des chances…", "מקבל את הלוח מהמארח…": "Réception de l’échiquier de l’hôte…", " — לחץ למפת התנועות": " — touchez pour voir sa carte de coups", "🏳 כניעה": "🏳 Abandonner", "🎲 צבאות חדשים": "🎲 Nouvelles armées", "🎲 עוד משחק": "🎲 Rejouer", "רמה: ": "Niveau : ", "קלה": "Facile", "רגילה": "Normal", "קשה": "Difficile", "החוקים של Brainmaxing Pro": "Règles de Brainmaxing Pro", "למה להכתיר?": "Promouvoir en ?", "לוח 12 על 12. לכל צד צבא אחר שהמשחק ממציא: 9 כלים אקראיים (random1–random9, ממוספרים מימין לשמאל מצד השחקן) ו־3 מלכים במקומות אקראיים בשורה האחורית, ומלפנים 12 רגלים אקראיים. כל עוד יש לך יותר ממלך אחד — אפשר לאכול לך מלך. המלך האחרון הוא מלך רגיל: שח, מט ופט כמו בשחמט. אם סיכויי הפתיחה גרועים מ־60–40, הצד החלש מקבל פרשים במקום רגלים, מימין לשמאל, עד שזה 60–40 או מאוזן יותר. לחיצה ארוכה על כלי מראה את מפת התנועות שלו.": "Un échiquier de 12×12. Chaque camp reçoit une armée différente inventée par le jeu : 9 pièces aléatoires (random1–random9, numérotées de droite à gauche depuis la place du joueur) et 3 rois sur des cases aléatoires de la dernière rangée, avec 12 pions aléatoires devant. Tant que vous avez plus d’un roi, un de vos rois peut être pris. Votre dernier roi est un roi normal : échec, mat et pat comme aux échecs. Si les chances de départ sont pires que 60–40, le camp le plus faible reçoit des cavaliers à la place de pions, de droite à gauche, jusqu’à 60–40 ou plus équilibré. Un appui long sur une pièce montre sa carte de coups.", " — מסומן": " — marquée", " משבצות יעד · לחץ על משבצות ברשת כדי לסמן איך הוא הולך": " cases cibles · touchez les cases de la grille pour indiquer comment elle se déplace", "מפת תנועות": "Carte des coups", "🎲 תנועות אקראיות": "🎲 Coups aléatoires", "סימטרי ↔↕": "Symétrique ↔↕", "משחק מעמדה · אונליין": "Partie depuis une position · En ligne", "שלח לחבר את הקישור — כשהוא ייכנס, המשחק יתחיל מהעמדה הזו.": "Envoyez le lien à votre ami : quand il rejoint, la partie commence depuis cette position.", "אתה משחק בלבן. בתור: ": "Vous jouez les blancs. Trait : ", " · קוד החדר: ": " · Code de la salle : ", "🔗 שלח קישור למשחק": "🔗 Envoyer le lien de la partie", " (אחד מכל מספר לכל צבע)": " (une de chaque numéro par couleur)", "🎮 שלח לחבר קישור למשחק מהעמדה הזו": "🎮 Envoyer à un ami un lien pour jouer depuis cette position", "Brainmaxing Pro: לוח 12×12 ו־3 מלכים": "Brainmaxing Pro : échiquier 12×12 et 3 rois", "היריב יצא מהמשחק": "L’adversaire a quitté la partie", "12×12 · 3 מלכים · צבא שונה לכל צד": "12×12 · 3 rois · une armée différente par camp", "ללבן נוספו ": "Les blancs ont reçu ", "לשחור נוספו ": "Les noirs ont reçu ", "איזון סיכויים: ": "Équilibrage des chances : "});
+/* v2.3 additions: progression (only fills keys a language does not have yet) */ (function () { const A = {"en": {" — נעול": " — locked", "חנות · סקינים ולוחות": "Shop · skins & boards", "יש לך ": "You have ", "קלאסי": "Classic", "שיש": "Marble", "אודם וספיר": "Ruby & Sapphire", "ברקת": "Emerald", "זהב וכסף": "Gold & Silver", "קרח": "Frost", "מלכותי": "Royal", "לבה": "Lava", "להבה": "Flame", "עוף החול": "Phoenix", "אגדה": "Legend", "מרתף העץ": "Wooden Cellar", "גן הפרשים": "Knights' Garden", "מבצר החבלים": "Rope Fortress", "מדבר הרובים": "Gunslinger Desert", "אגם הקרח": "Frozen Lake", "פסגת הכבידה": "Gravity Peak", "מקדש הקצינים": "Officers' Temple", "עיר הניאון": "Neon City", "הר הגעש": "Volcano", "ארמון השמיים": "Sky Palace", "שחק 3 משחקים": "Play 3 games", "אכול 10 כלים של היריב": "Capture 10 enemy pieces", "סיים משחק של 30 מהלכים לפחות": "Finish a game of at least 30 moves", "נצח משחק": "Win a game", "נצח 2 משחקים": "Win 2 games", "נצח את המחשב ברמה 5 ומעלה": "Beat the computer at level 5+", "שחק משחק Tempo": "Play a Tempo game", "שחק משחק Brainmaxing": "Play a Brainmaxing game", "שחק משחק אונליין": "Play an online game", "משימה הושלמה": "Quest complete", "תיבת היום": "Daily chest", "בונוס ניצחון ראשון היום": "First win of the day bonus", " ניצחונות ברצף": " wins in a row", "שער הארנה הגן עליך — אי אפשר לרדת ממנה": "The arena gate protected you — you can't drop out of it", "גביעים ": "Trophies ", "מטבעות +": "Coins +", "רצף יומי: ": "Daily streak: ", "ניצחון!": "Victory!", "הפסד — הפעם": "Defeat — this time", "המשחק נגמר": "Game over", "עוד ": "Only ", " 🏆 עד ": " 🏆 more to ", "סה״כ מטבעות": "Total coins", "התחלת רצף יומי!": "You started a daily streak!", "רצף של ": "A ", " ימים!": "-day streak!", "השתמשת בהקפאת רצף ❄️ כדי לשמור עליו": "A streak freeze ❄️ kept it alive", "שחק גם מחר כדי להמשיך את הרצף": "Play again tomorrow to keep it going", "פרס רצף: ": "Streak reward: ", "סקין חדש: ": "New skin: ", "ארנה חדשה נפתחה!": "New arena unlocked!", "לוח חדש": "New board", "משימה הושלמה: ": "Quest complete: ", "המשך": "Continue", "לשביל הגביעים": "Trophy road", "לאסוף פרסים": "Collect rewards", "גביעים: ": "Trophies: ", " — שביל הגביעים": " — trophy road", " — שיחקת היום": " — played today", " — עוד לא שיחקת היום": " — not played yet today", "מטבעות: ": "Coins: ", " — לחנות": " — to the shop", "ארנה ": "Arena ", " גביעים": " trophies", ". הבאה: ": ". Next: ", " ב־": " at ", "הבאה: ": "Next: ", "הגעת לארנה האחרונה! 👑": "You reached the final arena! 👑", "🔥 שחק משחק היום כדי לשמור על רצף של ": "🔥 Play a game today to keep your streak of ", " ימים": " days", " (תשתמש ב־❄️)": " (uses a ❄️)", "הרצף של ": "Your ", " ימים נשבר… שחק היום והתחל רצף חדש 🔥": "-day streak ended… play today to start a new one 🔥", "🔥 שחק היום והתחל רצף יומי — פרסים ב־3, 7, 14 ו־30 ימים": "🔥 Play today to start a daily streak — rewards at 3, 7, 14 and 30 days", " שע׳": " h", "משימות יומיות": "Daily quests", "מתחדשות בעוד ": "New in ", "נאסף": "Collected", "אסוף ": "Collect ", " מטבעות": " coins", "אסוף": "Collect", "החלף משימה (פעם ביום)": "Swap quest (once a day)", "אספת הכול היום 🎉 מחר יש משימות חדשות": "All collected today 🎉 New quests tomorrow", "🎁 פתח את תיבת היום · +": "🎁 Open the daily chest · +", "השלם את שלוש המשימות וקבל תיבה של ": "Finish all three quests for a chest of ", " או ": " or ", "חסרים ": "You need ", " 🪙 — נצח משחקים והשלם משימות": " more 🪙 — win games and finish quests", "הסקין \"": "The \"", "\" שלך!": "\" skin is yours!", "✓ בשימוש": "✓ In use", "בחר": "Use", "לקנות? ✓": "Buy? ✓", "חנות": "Shop", "סקינים לכלים": "Piece skins", "הסקין משנה את הכלים שלך בכל המצבים. חלק נקנים במטבעות, חלק נפתחים בארנות וברצף יומי.": "A skin restyles your pieces in every mode. Some are bought with coins, others unlock in arenas and daily streaks.", "לוחות ארנה": "Arena boards", "❄️ הקפאת רצף": "❄️ Streak freeze", "פספסת יום? הקפאה נכנסת לפעולה לבד ושומרת על הרצף היומי שלך.": "Missed a day? A freeze kicks in by itself and saves your daily streak.", "מלא": "Full", "קנה הקפאה · 🪙 ": "Buy a freeze · 🪙 ", "כל הפרסים במשחק חינמיים — מרוויחים אותם רק במשחק, בלי כסף אמיתי.": "All rewards are free — earned only by playing, never with real money.", "אתה כאן": "You're here", "לוח": "Board", "שביל הגביעים": "Trophy road", "איך מרוויחים גביעים": "How to earn trophies", "שיא: ": "Best: ", "ניצחון נגד המחשב: יותר גביעים ברמות גבוהות. אונליין: +28 (מדורג +34). רצף ניצחונות מוסיף עד +12. הפסד מוריד גביעים, אבל אף פעם לא מתחת לשער של הארנה שלך.": "Beating the computer: more trophies at higher levels. Online: +28 (ranked +34). Win streaks add up to +12. Losses take trophies, but never below your arena's gate.", "🔥 רצף יומי: ": "🔥 Daily streak: ", "משחק אחד ביום (כל מצב) שומר על הרצף.": "One game a day (any mode) keeps the streak alive.", "חדש: ארנות, סקינים ורצף יומי! קיבלת 100 🪙 מתנה": "New: arenas, skins and daily streaks! Here's 100 🪙 to start"}, "ar": {" — נעול": " — مقفل", "חנות · סקינים ולוחות": "المتجر · أشكال ورقع", "יש לך ": "لديك ", "קלאסי": "كلاسيكي", "שיש": "رخام", "אודם וספיר": "ياقوت وزفير", "ברקת": "زمرد", "זהב וכסף": "ذهب وفضة", "קרח": "جليد", "מלכותי": "ملكي", "לבה": "حمم", "להבה": "لهب", "עוף החול": "العنقاء", "אגדה": "أسطورة", "מרתף העץ": "القبو الخشبي", "גן הפרשים": "حديقة الفرسان", "מבצר החבלים": "قلعة الحبال", "מדבר הרובים": "صحراء البنادق", "אגם הקרח": "البحيرة المتجمدة", "פסגת הכבידה": "قمة الجاذبية", "מקדש הקצינים": "معبد الضباط", "עיר הניאון": "مدينة النيون", "הר הגעש": "البركان", "ארמון השמיים": "قصر السماء", "שחק 3 משחקים": "العب 3 مباريات", "אכול 10 כלים של היריב": "التقط 10 قطع للخصم", "סיים משחק של 30 מהלכים לפחות": "أنهِ مباراة من 30 نقلة على الأقل", "נצח משחק": "افز بمباراة", "נצח 2 משחקים": "افز بمباراتين", "נצח את המחשב ברמה 5 ומעלה": "اهزم الحاسوب في المستوى 5 أو أعلى", "שחק משחק Tempo": "العب مباراة Tempo", "שחק משחק Brainmaxing": "العب مباراة Brainmaxing", "שחק משחק אונליין": "العب مباراة أونلاين", "משימה הושלמה": "اكتملت المهمة", "תיבת היום": "صندوق اليوم", "בונוס ניצחון ראשון היום": "مكافأة أول فوز اليوم", " ניצחונות ברצף": " انتصارات متتالية", "שער הארנה הגן עליך — אי אפשר לרדת ממנה": "بوابة الساحة حمتك — لا يمكنك النزول منها", "גביעים ": "الكؤوس ", "מטבעות +": "عملات +", "רצף יומי: ": "السلسلة اليومية: ", "ניצחון!": "فوز!", "הפסד — הפעם": "خسارة — هذه المرة", "המשחק נגמר": "انتهت المباراة", "עוד ": "باقي ", " 🏆 עד ": " 🏆 حتى ", "סה״כ מטבעות": "مجموع العملات", "התחלת רצף יומי!": "بدأت سلسلة يومية!", "רצף של ": "سلسلة ", " ימים!": " أيام!", "השתמשת בהקפאת רצף ❄️ כדי לשמור עליו": "استُخدم تجميد السلسلة ❄️ للحفاظ عليها", "שחק גם מחר כדי להמשיך את הרצף": "العب غدًا أيضًا لتستمر السلسلة", "פרס רצף: ": "جائزة السلسلة: ", "סקין חדש: ": "شكل جديد: ", "ארנה חדשה נפתחה!": "فُتحت ساحة جديدة!", "לוח חדש": "رقعة جديدة", "משימה הושלמה: ": "اكتملت المهمة: ", "המשך": "متابعة", "לשביל הגביעים": "طريق الكؤوس", "לאסוף פרסים": "اجمع الجوائز", "גביעים: ": "الكؤوس: ", " — שביל הגביעים": " — طريق الكؤوس", " — שיחקת היום": " — لعبت اليوم", " — עוד לא שיחקת היום": " — لم تلعب اليوم بعد", "מטבעות: ": "العملات: ", " — לחנות": " — إلى المتجر", "ארנה ": "الساحة ", " גביעים": " كأس", ". הבאה: ": ". التالية: ", " ב־": " عند ", "הבאה: ": "التالية: ", "הגעת לארנה האחרונה! 👑": "وصلت إلى الساحة الأخيرة! 👑", "🔥 שחק משחק היום כדי לשמור על רצף של ": "🔥 العب مباراة اليوم لتحافظ على سلسلة ", " ימים": " أيام", " (תשתמש ב־❄️)": " (سيُستخدم ❄️)", "הרצף של ": "انقطعت سلسلة ", " ימים נשבר… שחק היום והתחל רצף חדש 🔥": " أيام… العب اليوم وابدأ سلسلة جديدة 🔥", "🔥 שחק היום והתחל רצף יומי — פרסים ב־3, 7, 14 ו־30 ימים": "🔥 العب اليوم وابدأ سلسلة يومية — جوائز عند 3 و7 و14 و30 يومًا", " שע׳": " س", "משימות יומיות": "المهام اليومية", "מתחדשות בעוד ": "تتجدد بعد ", "נאסף": "تم الجمع", "אסוף ": "اجمع ", " מטבעות": " عملة", "אסוף": "اجمع", "החלף משימה (פעם ביום)": "استبدل المهمة (مرة يوميًا)", "אספת הכול היום 🎉 מחר יש משימות חדשות": "جمعت كل شيء اليوم 🎉 مهام جديدة غدًا", "🎁 פתח את תיבת היום · +": "🎁 افتح صندوق اليوم · +", "השלם את שלוש המשימות וקבל תיבה של ": "أكمل المهام الثلاث واحصل على صندوق فيه ", " או ": " أو ", "חסרים ": "ينقصك ", " 🪙 — נצח משחקים והשלם משימות": " 🪙 — افز بالمباريات وأكمل المهام", "הסקין \"": "الشكل \"", "\" שלך!": "\" أصبح لك!", "✓ בשימוש": "✓ مستخدم", "בחר": "اختر", "לקנות? ✓": "شراء؟ ✓", "חנות": "المتجر", "סקינים לכלים": "أشكال القطع", "הסקין משנה את הכלים שלך בכל המצבים. חלק נקנים במטבעות, חלק נפתחים בארנות וברצף יומי.": "يغيّر الشكل قطعك في كل الأنماط. بعضها يُشترى بالعملات، وبعضها يُفتح في الساحات والسلاسل اليومية.", "לוחות ארנה": "رقع الساحات", "❄️ הקפאת רצף": "❄️ تجميد السلسلة", "פספסת יום? הקפאה נכנסת לפעולה לבד ושומרת על הרצף היומי שלך.": "فاتك يوم؟ يعمل التجميد تلقائيًا ويحافظ على سلسلتك.", "מלא": "ممتلئ", "קנה הקפאה · 🪙 ": "اشترِ تجميدًا · 🪙 ", "כל הפרסים במשחק חינמיים — מרוויחים אותם רק במשחק, בלי כסף אמיתי.": "كل الجوائز مجانية — تُكسب باللعب فقط، دون مال حقيقي.", "אתה כאן": "أنت هنا", "לוח": "رقعة", "שביל הגביעים": "طريق الكؤوس", "איך מרוויחים גביעים": "كيف تكسب الكؤوس", "שיא: ": "الأفضل: ", "ניצחון נגד המחשב: יותר גביעים ברמות גבוהות. אונליין: +28 (מדורג +34). רצף ניצחונות מוסיף עד +12. הפסד מוריד גביעים, אבל אף פעם לא מתחת לשער של הארנה שלך.": "الفوز على الحاسوب: كؤوس أكثر في المستويات الأعلى. أونلاين: +28 (المصنّفة +34). سلسلة الانتصارات تضيف حتى +12. الخسارة تُنقص الكؤوس، لكن أبدًا ليس تحت بوابة ساحتك.", "🔥 רצף יומי: ": "🔥 السلسلة اليومية: ", "משחק אחד ביום (כל מצב) שומר על הרצף.": "مباراة واحدة يوميًا (أي نمط) تحافظ على السلسلة.", "חדש: ארנות, סקינים ורצף יומי! קיבלת 100 🪙 מתנה": "جديد: ساحات وأشكال وسلاسل يومية! حصلت على 100 🪙 هدية"}, "ru": {" — נעול": " — закрыто", "חנות · סקינים ולוחות": "Магазин · скины и доски", "יש לך ": "У вас ", "קלאסי": "Классика", "שיש": "Мрамор", "אודם וספיר": "Рубин и сапфир", "ברקת": "Изумруд", "זהב וכסף": "Золото и серебро", "קרח": "Лёд", "מלכותי": "Королевский", "לבה": "Лава", "להבה": "Пламя", "עוף החול": "Феникс", "אגדה": "Легенда", "מרתף העץ": "Деревянный погреб", "גן הפרשים": "Сад коней", "מבצר החבלים": "Крепость канатов", "מדבר הרובים": "Пустыня стрелков", "אגם הקרח": "Ледяное озеро", "פסגת הכבידה": "Пик гравитации", "מקדש הקצינים": "Храм офицеров", "עיר הניאון": "Неоновый город", "הר הגעש": "Вулкан", "ארמון השמיים": "Небесный дворец", "שחק 3 משחקים": "Сыграйте 3 партии", "אכול 10 כלים של היריב": "Возьмите 10 фигур соперника", "סיים משחק של 30 מהלכים לפחות": "Завершите партию из 30+ ходов", "נצח משחק": "Выиграйте партию", "נצח 2 משחקים": "Выиграйте 2 партии", "נצח את המחשב ברמה 5 ומעלה": "Победите компьютер на уровне 5+", "שחק משחק Tempo": "Сыграйте в Tempo", "שחק משחק Brainmaxing": "Сыграйте в Brainmaxing", "שחק משחק אונליין": "Сыграйте онлайн", "משימה הושלמה": "Задание выполнено", "תיבת היום": "Сундук дня", "בונוס ניצחון ראשון היום": "Бонус за первую победу дня", " ניצחונות ברצף": " побед подряд", "שער הארנה הגן עליך — אי אפשר לרדת ממנה": "Ворота арены защитили вас — из неё нельзя выпасть", "גביעים ": "Кубки ", "מטבעות +": "Монеты +", "רצף יומי: ": "Серия дней: ", "ניצחון!": "Победа!", "הפסד — הפעם": "Поражение — в этот раз", "המשחק נגמר": "Игра окончена", "עוד ": "Ещё ", " 🏆 עד ": " 🏆 до ", "סה״כ מטבעות": "Всего монет", "התחלת רצף יומי!": "Вы начали серию дней!", "רצף של ": "Серия ", " ימים!": " дней!", "השתמשת בהקפאת רצף ❄️ כדי לשמור עליו": "Заморозка ❄️ сохранила серию", "שחק גם מחר כדי להמשיך את הרצף": "Сыграйте завтра, чтобы продолжить", "פרס רצף: ": "Награда за серию: ", "סקין חדש: ": "Новый скин: ", "ארנה חדשה נפתחה!": "Новая арена открыта!", "לוח חדש": "Новая доска", "משימה הושלמה: ": "Задание выполнено: ", "המשך": "Продолжить", "לשביל הגביעים": "Путь кубков", "לאסוף פרסים": "Забрать награды", "גביעים: ": "Кубки: ", " — שביל הגביעים": " — путь кубков", " — שיחקת היום": " — сегодня сыграно", " — עוד לא שיחקת היום": " — сегодня ещё не играли", "מטבעות: ": "Монеты: ", " — לחנות": " — в магазин", "ארנה ": "Арена ", " גביעים": " кубков", ". הבאה: ": ". Следующая: ", " ב־": " на ", "הבאה: ": "Далее: ", "הגעת לארנה האחרונה! 👑": "Вы на последней арене! 👑", "🔥 שחק משחק היום כדי לשמור על רצף של ": "🔥 Сыграйте сегодня, чтобы сохранить серию ", " ימים": " дн.", " (תשתמש ב־❄️)": " (уйдёт ❄️)", "הרצף של ": "Серия из ", " ימים נשבר… שחק היום והתחל רצף חדש 🔥": " дн. прервалась… сыграйте сегодня и начните новую 🔥", "🔥 שחק היום והתחל רצף יומי — פרסים ב־3, 7, 14 ו־30 ימים": "🔥 Сыграйте сегодня и начните серию — награды за 3, 7, 14 и 30 дней", " שע׳": " ч", "משימות יומיות": "Ежедневные задания", "מתחדשות בעוד ": "Обновятся через ", "נאסף": "Получено", "אסוף ": "Забрать ", " מטבעות": " монет", "אסוף": "Забрать", "החלף משימה (פעם ביום)": "Сменить задание (раз в день)", "אספת הכול היום 🎉 מחר יש משימות חדשות": "Всё собрано 🎉 Завтра новые задания", "🎁 פתח את תיבת היום · +": "🎁 Открыть сундук дня · +", "השלם את שלוש המשימות וקבל תיבה של ": "Выполните три задания — сундук на ", " או ": " или ", "חסרים ": "Не хватает ", " 🪙 — נצח משחקים והשלם משימות": " 🪙 — побеждайте и выполняйте задания", "הסקין \"": "Скин «", "\" שלך!": "» теперь ваш!", "✓ בשימוש": "✓ Выбран", "בחר": "Выбрать", "לקנות? ✓": "Купить? ✓", "חנות": "Магазин", "סקינים לכלים": "Скины фигур", "הסקין משנה את הכלים שלך בכל המצבים. חלק נקנים במטבעות, חלק נפתחים בארנות וברצף יומי.": "Скин меняет фигуры во всех режимах. Часть покупается за монеты, часть открывается на аренах и за серии.", "לוחות ארנה": "Доски арен", "❄️ הקפאת רצף": "❄️ Заморозка серии", "פספסת יום? הקפאה נכנסת לפעולה לבד ושומרת על הרצף היומי שלך.": "Пропустили день? Заморозка сработает сама и сохранит серию.", "מלא": "Максимум", "קנה הקפאה · 🪙 ": "Купить заморозку · 🪙 ", "כל הפרסים במשחק חינמיים — מרוויחים אותם רק במשחק, בלי כסף אמיתי.": "Все награды бесплатны — только за игру, без реальных денег.", "אתה כאן": "Вы здесь", "לוח": "Доска", "שביל הגביעים": "Путь кубков", "איך מרוויחים גביעים": "Как получать кубки", "שיא: ": "Рекорд: ", "ניצחון נגד המחשב: יותר גביעים ברמות גבוהות. אונליין: +28 (מדורג +34). רצף ניצחונות מוסיף עד +12. הפסד מוריד גביעים, אבל אף פעם לא מתחת לשער של הארנה שלך.": "Победа над компьютером: больше кубков на высоких уровнях. Онлайн: +28 (рейтинговая +34). Серия побед даёт до +12. Поражение отнимает кубки, но не ниже ворот вашей арены.", "🔥 רצף יומי: ": "🔥 Серия дней: ", "משחק אחד ביום (כל מצב) שומר על הרצף.": "Одна партия в день (любой режим) сохраняет серию.", "חדש: ארנות, סקינים ורצף יומי! קיבלת 100 🪙 מתנה": "Новое: арены, скины и серии! Вам 100 🪙 в подарок"}, "es": {" — נעול": " — bloqueado", "חנות · סקינים ולוחות": "Tienda · skins y tableros", "יש לך ": "Tienes ", "קלאסי": "Clásico", "שיש": "Mármol", "אודם וספיר": "Rubí y zafiro", "ברקת": "Esmeralda", "זהב וכסף": "Oro y plata", "קרח": "Hielo", "מלכותי": "Real", "לבה": "Lava", "להבה": "Llama", "עוף החול": "Fénix", "אגדה": "Leyenda", "מרתף העץ": "Sótano de madera", "גן הפרשים": "Jardín de caballos", "מבצר החבלים": "Fortaleza de cuerdas", "מדבר הרובים": "Desierto de pistoleros", "אגם הקרח": "Lago helado", "פסגת הכבידה": "Pico de gravedad", "מקדש הקצינים": "Templo de oficiales", "עיר הניאון": "Ciudad neón", "הר הגעש": "Volcán", "ארמון השמיים": "Palacio del cielo", "שחק 3 משחקים": "Juega 3 partidas", "אכול 10 כלים של היריב": "Captura 10 piezas rivales", "סיים משחק של 30 מהלכים לפחות": "Termina una partida de 30 jugadas o más", "נצח משחק": "Gana una partida", "נצח 2 משחקים": "Gana 2 partidas", "נצח את המחשב ברמה 5 ומעלה": "Vence al ordenador en nivel 5+", "שחק משחק Tempo": "Juega una partida Tempo", "שחק משחק Brainmaxing": "Juega una partida Brainmaxing", "שחק משחק אונליין": "Juega una partida online", "משימה הושלמה": "Misión completada", "תיבת היום": "Cofre del día", "בונוס ניצחון ראשון היום": "Bono primera victoria del día", " ניצחונות ברצף": " victorias seguidas", "שער הארנה הגן עליך — אי אפשר לרדת ממנה": "La puerta de la arena te protegió: no puedes bajar de ella", "גביעים ": "Trofeos ", "מטבעות +": "Monedas +", "רצף יומי: ": "Racha diaria: ", "ניצחון!": "¡Victoria!", "הפסד — הפעם": "Derrota… esta vez", "המשחק נגמר": "Partida terminada", "עוד ": "Faltan ", " 🏆 עד ": " 🏆 para ", "סה״כ מטבעות": "Monedas en total", "התחלת רצף יומי!": "¡Empezaste una racha diaria!", "רצף של ": "¡Racha de ", " ימים!": " días!", "השתמשת בהקפאת רצף ❄️ כדי לשמור עליו": "Una congelación ❄️ la mantuvo viva", "שחק גם מחר כדי להמשיך את הרצף": "Juega mañana para seguir la racha", "פרס רצף: ": "Premio de racha: ", "סקין חדש: ": "Nuevo skin: ", "ארנה חדשה נפתחה!": "¡Nueva arena desbloqueada!", "לוח חדש": "Nuevo tablero", "משימה הושלמה: ": "Misión completada: ", "המשך": "Continuar", "לשביל הגביעים": "Camino de trofeos", "לאסוף פרסים": "Recoger premios", "גביעים: ": "Trofeos: ", " — שביל הגביעים": " — camino de trofeos", " — שיחקת היום": " — jugaste hoy", " — עוד לא שיחקת היום": " — aún no has jugado hoy", "מטבעות: ": "Monedas: ", " — לחנות": " — a la tienda", "ארנה ": "Arena ", " גביעים": " trofeos", ". הבאה: ": ". Siguiente: ", " ב־": " en ", "הבאה: ": "Siguiente: ", "הגעת לארנה האחרונה! 👑": "¡Llegaste a la arena final! 👑", "🔥 שחק משחק היום כדי לשמור על רצף של ": "🔥 Juega hoy para mantener tu racha de ", " ימים": " días", " (תשתמש ב־❄️)": " (usará un ❄️)", "הרצף של ": "Tu racha de ", " ימים נשבר… שחק היום והתחל רצף חדש 🔥": " días se rompió… juega hoy y empieza otra 🔥", "🔥 שחק היום והתחל רצף יומי — פרסים ב־3, 7, 14 ו־30 ימים": "🔥 Juega hoy y empieza una racha — premios a los 3, 7, 14 y 30 días", " שע׳": " h", "משימות יומיות": "Misiones diarias", "מתחדשות בעוד ": "Nuevas en ", "נאסף": "Recogido", "אסוף ": "Recoger ", " מטבעות": " monedas", "אסוף": "Recoger", "החלף משימה (פעם ביום)": "Cambiar misión (una vez al día)", "אספת הכול היום 🎉 מחר יש משימות חדשות": "Todo recogido hoy 🎉 Mañana hay nuevas misiones", "🎁 פתח את תיבת היום · +": "🎁 Abrir el cofre del día · +", "השלם את שלוש המשימות וקבל תיבה של ": "Completa las tres misiones y gana un cofre de ", " או ": " o ", "חסרים ": "Te faltan ", " 🪙 — נצח משחקים והשלם משימות": " 🪙 — gana partidas y completa misiones", "הסקין \"": "¡El skin \"", "\" שלך!": "\" es tuyo!", "✓ בשימוש": "✓ En uso", "בחר": "Usar", "לקנות? ✓": "¿Comprar? ✓", "חנות": "Tienda", "סקינים לכלים": "Skins de piezas", "הסקין משנה את הכלים שלך בכל המצבים. חלק נקנים במטבעות, חלק נפתחים בארנות וברצף יומי.": "El skin cambia tus piezas en todos los modos. Unos se compran con monedas y otros se desbloquean en arenas y rachas.", "לוחות ארנה": "Tableros de arena", "❄️ הקפאת רצף": "❄️ Congelar racha", "פספסת יום? הקפאה נכנסת לפעולה לבד ושומרת על הרצף היומי שלך.": "¿Te saltaste un día? La congelación se activa sola y salva tu racha.", "מלא": "Lleno", "קנה הקפאה · 🪙 ": "Comprar congelación · 🪙 ", "כל הפרסים במשחק חינמיים — מרוויחים אותם רק במשחק, בלי כסף אמיתי.": "Todos los premios son gratis: se ganan jugando, nunca con dinero real.", "אתה כאן": "Estás aquí", "לוח": "Tablero", "שביל הגביעים": "Camino de trofeos", "איך מרוויחים גביעים": "Cómo ganar trofeos", "שיא: ": "Récord: ", "ניצחון נגד המחשב: יותר גביעים ברמות גבוהות. אונליין: +28 (מדורג +34). רצף ניצחונות מוסיף עד +12. הפסד מוריד גביעים, אבל אף פעם לא מתחת לשער של הארנה שלך.": "Vencer al ordenador: más trofeos en niveles altos. Online: +28 (clasificatoria +34). Las rachas suman hasta +12. Perder resta trofeos, pero nunca por debajo de la puerta de tu arena.", "🔥 רצף יומי: ": "🔥 Racha diaria: ", "משחק אחד ביום (כל מצב) שומר על הרצף.": "Una partida al día (cualquier modo) mantiene la racha.", "חדש: ארנות, סקינים ורצף יומי! קיבלת 100 🪙 מתנה": "Nuevo: ¡arenas, skins y rachas diarias! Te regalamos 100 🪙"}, "fr": {" — נעול": " — verrouillé", "חנות · סקינים ולוחות": "Boutique · skins et plateaux", "יש לך ": "Vous avez ", "קלאסי": "Classique", "שיש": "Marbre", "אודם וספיר": "Rubis et saphir", "ברקת": "Émeraude", "זהב וכסף": "Or et argent", "קרח": "Givre", "מלכותי": "Royal", "לבה": "Lave", "להבה": "Flamme", "עוף החול": "Phénix", "אגדה": "Légende", "מרתף העץ": "Cave de bois", "גן הפרשים": "Jardin des cavaliers", "מבצר החבלים": "Forteresse des cordes", "מדבר הרובים": "Désert des pistoleros", "אגם הקרח": "Lac gelé", "פסגת הכבידה": "Pic de gravité", "מקדש הקצינים": "Temple des officiers", "עיר הניאון": "Ville néon", "הר הגעש": "Volcan", "ארמון השמיים": "Palais céleste", "שחק 3 משחקים": "Jouez 3 parties", "אכול 10 כלים של היריב": "Capturez 10 pièces adverses", "סיים משחק של 30 מהלכים לפחות": "Terminez une partie d'au moins 30 coups", "נצח משחק": "Gagnez une partie", "נצח 2 משחקים": "Gagnez 2 parties", "נצח את המחשב ברמה 5 ומעלה": "Battez l'ordinateur au niveau 5+", "שחק משחק Tempo": "Jouez une partie Tempo", "שחק משחק Brainmaxing": "Jouez une partie Brainmaxing", "שחק משחק אונליין": "Jouez une partie en ligne", "משימה הושלמה": "Quête terminée", "תיבת היום": "Coffre du jour", "בונוס ניצחון ראשון היום": "Bonus première victoire du jour", " ניצחונות ברצף": " victoires d'affilée", "שער הארנה הגן עליך — אי אפשר לרדת ממנה": "La porte de l'arène vous protège : impossible d'en redescendre", "גביעים ": "Trophées ", "מטבעות +": "Pièces +", "רצף יומי: ": "Série quotidienne : ", "ניצחון!": "Victoire !", "הפסד — הפעם": "Défaite — cette fois", "המשחק נגמר": "Partie terminée", "עוד ": "Encore ", " 🏆 עד ": " 🏆 avant ", "סה״כ מטבעות": "Total des pièces", "התחלת רצף יומי!": "Vous avez lancé une série quotidienne !", "רצף של ": "Série de ", " ימים!": " jours !", "השתמשת בהקפאת רצף ❄️ כדי לשמור עליו": "Un gel de série ❄️ l'a sauvée", "שחק גם מחר כדי להמשיך את הרצף": "Rejouez demain pour la continuer", "פרס רצף: ": "Récompense de série : ", "סקין חדש: ": "Nouveau skin : ", "ארנה חדשה נפתחה!": "Nouvelle arène débloquée !", "לוח חדש": "Nouveau plateau", "משימה הושלמה: ": "Quête terminée : ", "המשך": "Continuer", "לשביל הגביעים": "Route des trophées", "לאסוף פרסים": "Récupérer les récompenses", "גביעים: ": "Trophées : ", " — שביל הגביעים": " — route des trophées", " — שיחקת היום": " — joué aujourd'hui", " — עוד לא שיחקת היום": " — pas encore joué aujourd'hui", "מטבעות: ": "Pièces : ", " — לחנות": " — vers la boutique", "ארנה ": "Arène ", " גביעים": " trophées", ". הבאה: ": ". Suivante : ", " ב־": " à ", "הבאה: ": "Suivante : ", "הגעת לארנה האחרונה! 👑": "Vous avez atteint la dernière arène ! 👑", "🔥 שחק משחק היום כדי לשמור על רצף של ": "🔥 Jouez aujourd'hui pour garder votre série de ", " ימים": " jours", " (תשתמש ב־❄️)": " (utilise un ❄️)", "הרצף של ": "Votre série de ", " ימים נשבר… שחק היום והתחל רצף חדש 🔥": " jours est terminée… jouez aujourd'hui pour en lancer une 🔥", "🔥 שחק היום והתחל רצף יומי — פרסים ב־3, 7, 14 ו־30 ימים": "🔥 Jouez aujourd'hui pour lancer une série — récompenses à 3, 7, 14 et 30 jours", " שע׳": " h", "משימות יומיות": "Quêtes du jour", "מתחדשות בעוד ": "Nouvelles dans ", "נאסף": "Récupéré", "אסוף ": "Récupérer ", " מטבעות": " pièces", "אסוף": "Récupérer", "החלף משימה (פעם ביום)": "Changer de quête (une fois par jour)", "אספת הכול היום 🎉 מחר יש משימות חדשות": "Tout récupéré 🎉 Nouvelles quêtes demain", "🎁 פתח את תיבת היום · +": "🎁 Ouvrir le coffre du jour · +", "השלם את שלוש המשימות וקבל תיבה של ": "Terminez les trois quêtes pour un coffre de ", " או ": " ou ", "חסרים ": "Il manque ", " 🪙 — נצח משחקים והשלם משימות": " 🪙 — gagnez des parties et finissez des quêtes", "הסקין \"": "Le skin « ", "\" שלך!": " » est à vous !", "✓ בשימוש": "✓ Utilisé", "בחר": "Utiliser", "לקנות? ✓": "Acheter ? ✓", "חנות": "Boutique", "סקינים לכלים": "Skins de pièces", "הסקין משנה את הכלים שלך בכל המצבים. חלק נקנים במטבעות, חלק נפתחים בארנות וברצף יומי.": "Le skin change vos pièces dans tous les modes. Certains s'achètent avec des pièces, d'autres se débloquent dans les arènes et les séries.", "לוחות ארנה": "Plateaux d'arène", "❄️ הקפאת רצף": "❄️ Gel de série", "פספסת יום? הקפאה נכנסת לפעולה לבד ושומרת על הרצף היומי שלך.": "Un jour manqué ? Le gel s'active tout seul et sauve votre série.", "מלא": "Plein", "קנה הקפאה · 🪙 ": "Acheter un gel · 🪙 ", "כל הפרסים במשחק חינמיים — מרוויחים אותם רק במשחק, בלי כסף אמיתי.": "Toutes les récompenses sont gratuites — gagnées en jouant, jamais avec de l'argent réel.", "אתה כאן": "Vous êtes ici", "לוח": "Plateau", "שביל הגביעים": "Route des trophées", "איך מרוויחים גביעים": "Comment gagner des trophées", "שיא: ": "Record : ", "ניצחון נגד המחשב: יותר גביעים ברמות גבוהות. אונליין: +28 (מדורג +34). רצף ניצחונות מוסיף עד +12. הפסד מוריד גביעים, אבל אף פעם לא מתחת לשער של הארנה שלך.": "Battre l'ordinateur : plus de trophées aux niveaux élevés. En ligne : +28 (classé +34). Les séries de victoires ajoutent jusqu'à +12. Une défaite retire des trophées, mais jamais sous la porte de votre arène.", "🔥 רצף יומי: ": "🔥 Série quotidienne : ", "משחק אחד ביום (כל מצב) שומר על הרצף.": "Une partie par jour (n'importe quel mode) garde la série.", "חדש: ארנות, סקינים ורצף יומי! קיבלת 100 🪙 מתנה": "Nouveau : arènes, skins et séries ! 100 🪙 offertes"}}; Object.keys(A).forEach((l) => { const D = I18N[l] = I18N[l] || {}; Object.keys(A[l]).forEach((k) => { if (!(k in D)) D[k] = A[l][k]; }); }); })();
 const LANGS = [['he', 'עברית'], ['en', 'English'], ['ar', 'العربية'], ['ru', 'Русский'], ['es', 'Español'], ['fr', 'Français']];
 const LANG = (() => { try { const q = /[?&]lang=(\w\w)/.exec(location.search); if (q && LANGS.some((l) => l[0] === q[1])) return q[1]; } catch (e) {} try { const s = JSON.parse(localStorage.getItem('complices.lang') || 'null'); if (s) return s; } catch (e) {} const n = (navigator.language || 'he').slice(0, 2); return LANGS.some((l) => l[0] === n) ? n : 'he'; })();
 const LANG_DICT = LANG === 'he' ? null : (I18N[LANG] || null);
@@ -705,27 +807,30 @@ function buzz(kind) {
 
 /* ---------- piece drawings ---------- */
 const PIECE_SVG = {"K":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M22.5 4 V11 M19.5 7 H25.5\" fill=\"none\" stroke-width=\"2\"></path><path d=\"M22.5 11 C20 13 19 16 22.5 20 C26 16 25 13 22.5 11 Z\"></path><path d=\"M11 30 C9 22 14 17 19 19 L22.5 21 L26 19 C31 17 36 22 34 30 C29 28 16 28 11 30 Z\"></path><path d=\"M11 30 C16 28 29 28 34 30 L34 33 C29 31 16 31 11 33 Z\"></path><path d=\"M11 33 H34 V36 H11 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","P":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"22.5\" cy=\"13\" r=\"5\"></circle><path d=\"M18.5 18 H26.5 L25 22 C28 24 30 29 30.5 33 H14.5 C15 29 17 24 20 22 Z\"></path><path d=\"M13 33 H32 V36 H13 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","OF":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"22.5\" cy=\"14.5\" r=\"4.6\"></circle><path d=\"M16.5 11.5 C16.5 5.5 28.5 5.5 28.5 11.5 Z\"></path><path d=\"M14.5 11.5 H30.5 L29 13.5 H16 Z\"></path><circle cx=\"22.5\" cy=\"8.5\" r=\"1\" fill=\"{{ink}}\" stroke=\"none\"></circle><path d=\"M18.5 19 H26.5 L25 22 C28 24 30 29 30.5 33 H14.5 C15 29 17 24 20 22 Z\"></path><path d=\"M19 28.5 L22.5 25.5 L26 28.5\" fill=\"none\"></path><path d=\"M13 33 H32 V36 H13 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","Q":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"9\" cy=\"13\" r=\"2\"></circle><circle cx=\"15.5\" cy=\"10\" r=\"2\"></circle><circle cx=\"22.5\" cy=\"9\" r=\"2\"></circle><circle cx=\"29.5\" cy=\"10\" r=\"2\"></circle><circle cx=\"36\" cy=\"13\" r=\"2\"></circle><path d=\"M9 15 L14 29 Q22.5 27 31 29 L36 15 L30 25 L29.5 12 L25 25 L22.5 11 L20 25 L15.5 12 L15 25 Z\"></path><path d=\"M14 29 Q22.5 27 31 29 L32 33 Q22.5 31 13 33 Z\"></path><path d=\"M12 33 H33 V36 H12 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","R":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M12 9 H16 V12 H19.5 V9 H25.5 V12 H29 V9 H33 V15 L30 18 V30 L33 33 V36 H12 V33 L15 30 V18 L12 15 Z\"></path><path d=\"M15 18 H30 M15 30 H30\" fill=\"none\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","B":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"22.5\" cy=\"8\" r=\"2.5\"></circle><path d=\"M22.5 11 C17 15 15 20 16.5 24 C17.5 27 20 28 22.5 28 C25 28 27.5 27 28.5 24 C30 20 28 15 22.5 11 Z\"></path><path d=\"M25.5 15 L21 21\" fill=\"none\"></path><path d=\"M17 28 H28 L27 31 H18 Z\"></path><path d=\"M14 36 C14 34 15 32 16 31 H29 C30 32 31 34 31 36 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","N":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle><circle cx=\"13.5\" cy=\"22\" r=\"0.8\" fill=\"{{ink}}\" stroke=\"none\"></circle><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","AM":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(10.1 5.76) scale(0.84)\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle></g><g transform=\"translate(-2.9 5.76) scale(0.84)\"><circle cx=\"9\" cy=\"13\" r=\"2\"></circle><circle cx=\"15.5\" cy=\"10\" r=\"2\"></circle><circle cx=\"22.5\" cy=\"9\" r=\"2\"></circle><circle cx=\"29.5\" cy=\"10\" r=\"2\"></circle><circle cx=\"36\" cy=\"13\" r=\"2\"></circle><path d=\"M9 15 L14 29 Q22.5 27 31 29 L36 15 L30 25 L29.5 12 L25 25 L22.5 11 L20 25 L15.5 12 L15 25 Z\"></path><path d=\"M14 29 Q22.5 27 31 29 L32 33 Q22.5 31 13 33 Z\"></path><path d=\"M12 33 H33 V36 H12 Z\"></path></g><rect x=\"5\" y=\"36\" width=\"35\" height=\"3\" rx=\"1\"></rect></g></svg>","CH":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(10.1 5.76) scale(0.84)\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle></g><g transform=\"translate(-2.9 5.76) scale(0.84)\"><path d=\"M12 9 H16 V12 H19.5 V9 H25.5 V12 H29 V9 H33 V15 L30 18 V30 L33 33 V36 H12 V33 L15 30 V18 L12 15 Z\"></path><path d=\"M15 18 H30 M15 30 H30\" fill=\"none\"></path></g><rect x=\"5\" y=\"36\" width=\"35\" height=\"3\" rx=\"1\"></rect></g></svg>","AR":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(10.1 5.76) scale(0.84)\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle></g><g transform=\"translate(-2.9 5.76) scale(0.84)\"><circle cx=\"22.5\" cy=\"8\" r=\"2.5\"></circle><path d=\"M22.5 11 C17 15 15 20 16.5 24 C17.5 27 20 28 22.5 28 C25 28 27.5 27 28.5 24 C30 20 28 15 22.5 11 Z\"></path><path d=\"M25.5 15 L21 21\" fill=\"none\"></path><path d=\"M17 28 H28 L27 31 H18 Z\"></path><path d=\"M14 36 C14 34 15 32 16 31 H29 C30 32 31 34 31 36 Z\"></path></g><rect x=\"5\" y=\"36\" width=\"35\" height=\"3\" rx=\"1\"></rect></g></svg>","CE":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(10.1 5.76) scale(0.84)\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle></g><g transform=\"translate(-2.9 5.76) scale(0.84)\"><circle cx=\"22.5\" cy=\"14\" r=\"3.2\"></circle><path d=\"M11 30 C9 22 14 17 19 19 L22.5 21 L26 19 C31 17 36 22 34 30 C29 28 16 28 11 30 Z\"></path><path d=\"M11 30 C16 28 29 28 34 30 L34 33 C29 31 16 31 11 33 Z\"></path><path d=\"M11 33 H34 V36 H11 Z\"></path></g><rect x=\"5\" y=\"36\" width=\"35\" height=\"3\" rx=\"1\"></rect></g></svg>","NR":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle><circle cx=\"13.5\" cy=\"22\" r=\"0.8\" fill=\"{{ink}}\" stroke=\"none\"></circle><path d=\"M11 2.5 A6.5 6.5 0 1 0 17.5 11.5 A5 5 0 1 1 11 2.5 Z\" fill=\"{{ink}}\" stroke=\"{{ink}}\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","MA":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"22.5\" cy=\"13\" r=\"3.6\"></circle><path d=\"M11 30 C9 22 14 17 19 19 L22.5 21 L26 19 C31 17 36 22 34 30 C29 28 16 28 11 30 Z\"></path><path d=\"M11 30 C16 28 29 28 34 30 L34 33 C29 31 16 31 11 33 Z\"></path><path d=\"M11 33 H34 V36 H11 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","CA":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M13 36 C13 30 15 27 18 25 L16 20 C15 17 15 14 16 12 C17 10 15 8 13 8 L10 9 L11 6 C14 4 19 5 20 8 C21 11 20 15 21 18 C23 14 26 13 28 15 C31 12 34 14 34 18 C35 24 34 30 33 36 Z\"></path><circle cx=\"16\" cy=\"7\" r=\"0.9\" fill=\"{{ink}}\" stroke=\"none\"></circle><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","ZE":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M20 16 L25 14.5 M19 21.5 L27 19 M16.5 27 L29 24 M15.5 32 L31 30\" fill=\"none\" stroke-width=\"2\"></path><circle cx=\"23\" cy=\"11.5\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","WA":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"22.5\" cy=\"8\" r=\"1.8\"></circle><path d=\"M14 17 C14 9 31 9 31 17 C27 19 18 19 14 17 Z\"></path><path d=\"M15 15 Q22.5 17 30 15\" fill=\"none\"></path><path d=\"M19 19 H26 L25 22 H20 Z\"></path><path d=\"M17 22 H28 C30 26 31 31 31 36 H14 C14 31 15 26 17 22 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","FE":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M22.5 5 L27.5 11.5 L22.5 18 L17.5 11.5 Z\"></path><path d=\"M19 18 H26 L25 21 H20 Z\"></path><path d=\"M18 21 H27 C29 25 30.5 30 31 36 H14 C14.5 30 16 25 18 21 Z\"></path><path d=\"M18.5 26 H26.5\" fill=\"none\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","AL":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M14 36 C14 30 16 27 18 25 C15 25 13 27 12 30 C10 30 9 27 10 24 C11 20 14 18 16 16 C15 12 17 8 22 7 C28 6 33 10 34 16 C35 22 34 30 33 36 Z\"></path><path d=\"M24 12 C30 10 33 16 31 22 C29 25 25 24 24 21 Z\"></path><circle cx=\"20\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle><path d=\"M17.5 19.5 L13.5 21.5\" fill=\"none\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","DA":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M27 23 L38 18 L39.2 20.6 L28.2 25.6 Z\"></path><path d=\"M16 28 C16 20 29 20 29 28 Z\"></path><path d=\"M10 36 L12.5 28 H32.5 L35 36 Z\"></path><circle cx=\"16\" cy=\"32.5\" r=\"2\"></circle><circle cx=\"22.5\" cy=\"32.5\" r=\"2\"></circle><circle cx=\"29\" cy=\"32.5\" r=\"2\"></circle><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","MN":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(5.625 9) scale(0.75)\"><path d=\"M14 36 C14 30 16 26 19 23 C17 22 14 23 11 25 C10 23 10 21 12 19 L18 13 C19 10 21 8 22 6 L24 9 L26 7 L27 10 C32 12 35 18 34 26 C33.5 30 33 33 33 36 Z\"></path><path d=\"M27 12 C30 16 31 22 30 30\" fill=\"none\"></path><circle cx=\"23\" cy=\"13\" r=\"1.1\" fill=\"{{ink}}\" stroke=\"none\"></circle></g><rect x=\"13\" y=\"36\" width=\"19\" height=\"3\" rx=\"1\"></rect><g transform=\"rotate(-12 23.5 13.2)\" fill=\"#D2A54A\" stroke=\"{{ink}}\" stroke-width=\"1.3\"><rect x=\"19.5\" y=\"5.999999999999999\" width=\"8\" height=\"7.2\" rx=\"1\"></rect><rect x=\"19.5\" y=\"10.0\" width=\"8\" height=\"1.8\" fill=\"#7A3B30\" stroke=\"none\"></rect><ellipse cx=\"23.5\" cy=\"13.2\" rx=\"7\" ry=\"1.8\"></ellipse></g></g></svg>","MB":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(5.625 9) scale(0.75)\"><circle cx=\"22.5\" cy=\"8\" r=\"2.5\"></circle><path d=\"M22.5 11 C17 15 15 20 16.5 24 C17.5 27 20 28 22.5 28 C25 28 27.5 27 28.5 24 C30 20 28 15 22.5 11 Z\"></path><path d=\"M25.5 15 L21 21\" fill=\"none\"></path><path d=\"M17 28 H28 L27 31 H18 Z\"></path><path d=\"M14 36 C14 34 15 32 16 31 H29 C30 32 31 34 31 36 Z\"></path></g><rect x=\"13\" y=\"36\" width=\"19\" height=\"3\" rx=\"1\"></rect><g transform=\"rotate(0 22.5 12.6)\" fill=\"#D2A54A\" stroke=\"{{ink}}\" stroke-width=\"1.3\"><rect x=\"18.5\" y=\"5.3999999999999995\" width=\"8\" height=\"7.2\" rx=\"1\"></rect><rect x=\"18.5\" y=\"9.399999999999999\" width=\"8\" height=\"1.8\" fill=\"#7A3B30\" stroke=\"none\"></rect><ellipse cx=\"22.5\" cy=\"12.6\" rx=\"7\" ry=\"1.8\"></ellipse></g></g></svg>","MR":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"translate(5.625 9) scale(0.75)\"><path d=\"M12 9 H16 V12 H19.5 V9 H25.5 V12 H29 V9 H33 V15 L30 18 V30 L33 33 V36 H12 V33 L15 30 V18 L12 15 Z\"></path><path d=\"M15 18 H30 M15 30 H30\" fill=\"none\"></path></g><rect x=\"13\" y=\"36\" width=\"19\" height=\"3\" rx=\"1\"></rect><g transform=\"rotate(0 22.5 15.4)\" fill=\"#D2A54A\" stroke=\"{{ink}}\" stroke-width=\"1.3\"><rect x=\"18.5\" y=\"8.2\" width=\"8\" height=\"7.2\" rx=\"1\"></rect><rect x=\"18.5\" y=\"12.2\" width=\"8\" height=\"1.8\" fill=\"#7A3B30\" stroke=\"none\"></rect><ellipse cx=\"22.5\" cy=\"15.4\" rx=\"7\" ry=\"1.8\"></ellipse></g></g></svg>","RO":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M-2 22.5 H47\" fill=\"none\" stroke=\"{{ink}}\" stroke-width=\"6\"></path><path d=\"M-2 22.5 H47\" fill=\"none\" stroke=\"{{fill}}\" stroke-width=\"3\" stroke-dasharray=\"4 2\"></path><circle cx=\"22.5\" cy=\"22.5\" r=\"7.5\"></circle><path d=\"M18.5 18.5 L26.5 26.5 M26.5 18.5 L18.5 26.5\" fill=\"none\" stroke-width=\"2\"></path></g></svg>","ROM":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"rotate({{rot}} 22.5 22.5)\"><path d=\"M22.5 22.5 H60\" fill=\"none\" stroke=\"{{ink}}\" stroke-width=\"6\"></path><path d=\"M22.5 22.5 H60\" fill=\"none\" stroke=\"{{fill}}\" stroke-width=\"3\" stroke-dasharray=\"4 2\"></path></g><g transform=\"rotate({{rot2}} 22.5 22.5)\"><path d=\"M22.5 22.5 H60\" fill=\"none\" stroke=\"{{ink}}\" stroke-width=\"6\"></path><path d=\"M22.5 22.5 H60\" fill=\"none\" stroke=\"{{fill}}\" stroke-width=\"3\" stroke-dasharray=\"4 2\"></path></g><circle cx=\"22.5\" cy=\"22.5\" r=\"7.5\"></circle><path d=\"M18.5 18.5 L26.5 26.5 M26.5 18.5 L18.5 26.5\" fill=\"none\" stroke-width=\"2\"></path></g></svg>","ROE":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"rotate({{rot}} 22.5 22.5)\"><path d=\"M22.5 22.5 H60\" fill=\"none\" stroke=\"{{ink}}\" stroke-width=\"6\"></path><path d=\"M22.5 22.5 H60\" fill=\"none\" stroke=\"{{fill}}\" stroke-width=\"3\" stroke-dasharray=\"4 2\"></path></g><rect x=\"15.5\" y=\"15.5\" width=\"14\" height=\"14\" rx=\"3\"></rect><circle cx=\"22.5\" cy=\"22.5\" r=\"2.5\" fill=\"{{ink}}\" stroke=\"none\"></circle></g></svg>","ROL":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M22.5 22.5 H47\" fill=\"none\" stroke=\"{{ink}}\" stroke-width=\"6\"></path><path d=\"M22.5 22.5 H47\" fill=\"none\" stroke=\"{{fill}}\" stroke-width=\"3\" stroke-dasharray=\"4 2\"></path><rect x=\"15.5\" y=\"15.5\" width=\"14\" height=\"14\" rx=\"3\"></rect><circle cx=\"22.5\" cy=\"22.5\" r=\"2.5\" fill=\"{{ink}}\" stroke=\"none\"></circle></g></svg>","ROR":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M-2 22.5 H22.5\" fill=\"none\" stroke=\"{{ink}}\" stroke-width=\"6\"></path><path d=\"M-2 22.5 H22.5\" fill=\"none\" stroke=\"{{fill}}\" stroke-width=\"3\" stroke-dasharray=\"4 2\"></path><rect x=\"15.5\" y=\"15.5\" width=\"14\" height=\"14\" rx=\"3\"></rect><circle cx=\"22.5\" cy=\"22.5\" r=\"2.5\" fill=\"{{ink}}\" stroke=\"none\"></circle></g></svg>","GU":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M8 11 H35 V16.5 H21 L19 24 C18.6 26 17.4 27 15.5 27 H12 L14.5 16.5 H8 Z\"></path><path d=\"M21 16.5 C21 20.5 25 20.5 25.5 16.5\" fill=\"none\"></path><path d=\"M28 13.8 H33\" fill=\"none\"></path><path d=\"M15 30 H30 L32 36 H13 Z\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>","GR":"<svg width=\"{{size}}\" height=\"{{size}}\" viewBox=\"0 0 45 45\" aria-hidden=\"true\"><g fill=\"{{fill}}\" stroke=\"{{ink}}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><ellipse cx=\"22.5\" cy=\"16\" rx=\"15\" ry=\"4.2\" fill=\"none\" transform=\"rotate(-18 22.5 16)\"></ellipse><circle cx=\"22.5\" cy=\"16\" r=\"8\"></circle><path d=\"M8.2 20.6 C14 24.5 32 18.5 36.8 11.4\" fill=\"none\"></path><path d=\"M18.5 12.5 C19.5 11 21 10.3 22.5 10.2\" fill=\"none\"></path><path d=\"M16 28 H29 L32 36 H13 Z\"></path><path d=\"M22.5 24 V28\" fill=\"none\"></path><rect x=\"10\" y=\"36\" width=\"25\" height=\"3\" rx=\"1\"></rect></g></svg>"};
-function piece(kind, side, size, rot, rot2) {
+function piece(kind, side, size, rot, rot2, skinId) {
   if (bmIsZ(kind)) return bmDisc(kind, side, size);
   if (kind !== 'P' && kind !== 'OF' && typeof BM_PAWN_INFO !== 'undefined' && BM_PAWN_INFO[kind]) return bmPawnPiece(kind, side, size);
   const black = side === 'black';
   const tpl = PIECE_SVG[kind] || '';
   // body fills get a soft top-lit gradient; strokes that use the fill colour (rope) stay solid
-  const gid = black ? 'pgB' : 'pgW';
-  const defs = black ? '<defs><linearGradient id="pgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B3631"/><stop offset=".55" stop-color="#1B1816"/><stop offset="1" stop-color="#080707"/></linearGradient></defs>'
-    : '<defs><linearGradient id="pgW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#F3EEE4"/><stop offset="1" stop-color="#D9D0BF"/></linearGradient></defs>';
+  // v2.3: piece skins — each skin is a palette per side (gradient, solid fill, ink, optional glow)
+  const SK = (typeof PIECE_SKINS !== 'undefined' && PIECE_SKINS && typeof skinPal === 'function') ? skinPal(skinId) : null;
+  const pal = SK ? (black ? SK.b : SK.w) : (black ? ['#3B3631', '#1B1816', '#080707', '#1A1715', '#77706A'] : ['#FFFFFF', '#F3EEE4', '#D9D0BF', '#F4F1EA', '#1A1208']);
+  const gid = (black ? 'pgB' : 'pgW') + (SK && SK.id !== 'classic' ? '_' + SK.id : '');
+  const defs = '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + pal[0] + '"/><stop offset="' + (black ? '.55' : '.6') + '" stop-color="' + pal[1] + '"/><stop offset="1" stop-color="' + pal[2] + '"/></linearGradient></defs>';
   const svg = tpl
     .replace(/<svg([^>]*)>/, '<svg$1>' + defs)
     .split('{{size}}').join(String(size))
     .split('fill="{{fill}}"').join('fill="url(#' + gid + ')"')
-    .split('{{fill}}').join(black ? '#1A1715' : '#F4F1EA')
-    .split('{{ink}}').join(black ? '#77706A' : '#1A1208')
+    .split('{{fill}}').join(pal[3])
+    .split('{{ink}}').join(pal[4])
     .split('{{rot}}').join(String(rot || 0))
     .split('{{rot2}}').join(String(rot2 === undefined ? 180 : rot2));
   const s = document.createElement('span');
   s.className = 'piece';
   s.style.width = size + 'px'; s.style.height = size + 'px';
   s.innerHTML = svg;
+  if (pal[5]) s.style.filter = 'drop-shadow(0 0 2.5px ' + pal[5] + ')';
   return s;
 }
 
@@ -3189,7 +3294,7 @@ function ratingGraph(hist) {
   return s;
 }
 function exportProfile() {
-  const data = { app: 'complichess', v: 2, name: curName(), profile: PROFILE, games: savedGames(), decks: pget('decks', []), decks3: deckSlots(), lastDeck: pget('lastDeck', null), exported: Date.now() };
+  const data = { app: 'complichess', v: 2, name: curName(), profile: PROFILE, games: savedGames(), decks: pget('decks', []), decks3: deckSlots(), lastDeck: pget('lastDeck', null), prog: pget('prog', null), exported: Date.now() };
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'complichess-' + curName().replace(/[^\w֐-׿-]+/g, '_') + '.json';
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
@@ -3203,7 +3308,7 @@ function importProfile(file) {
       const id = 'p' + Date.now();
       PROFILES.push({ id, name: String(d.name || __('שחקן')).slice(0, 20) }); store.set('profiles', PROFILES);
       const put = (k, v) => store.set('p.' + id + '.' + k, v);
-      put('profile', d.profile); put('games', Array.isArray(d.games) ? d.games.slice(0, 60) : []); put('decks', Array.isArray(d.decks) ? d.decks.slice(0, 8) : []); if (Array.isArray(d.decks3)) put('decks3', d.decks3.slice(0, 3)); if (d.lastDeck) put('lastDeck', d.lastDeck);
+      put('profile', d.profile); put('games', Array.isArray(d.games) ? d.games.slice(0, 60) : []); put('decks', Array.isArray(d.decks) ? d.decks.slice(0, 8) : []); if (Array.isArray(d.decks3)) put('decks3', d.decks3.slice(0, 3)); if (d.lastDeck) put('lastDeck', d.lastDeck); if (d.prog && typeof d.prog === 'object') put('prog', d.prog);
       APP.profileMsg = __('הפרופיל "') + d.name + __('" יובא'); switchProfile(id);
     } catch (e) { APP.profileMsg = __('הקובץ לא נראה כמו פרופיל של Complichess'); scheduleRender(); }
   };
@@ -4709,7 +4814,7 @@ function proDo(m, mine) {
   if (kingTaken) a11ySay(__('מלך נאכל! נשארו ') + E.kingCount(g.st.board, target.c) + __(' מלכים'));
   if (mine && g.kind === 'online') send({ t: 'pro-move', m: { from: m.from, to: m.to, type: m.type, promoTo: m.promoTo || null } });
   const st = E.status(g.st);
-  if (st.over) { g.result = st; playSound('end'); }
+  if (st.over) { g.result = st; playSound('end'); if (typeof progFromPro === 'function') progFromPro(g); }
   else if (st.check) playSound('check');
   scheduleRender(); proMaybeAI();
 }
@@ -5695,10 +5800,11 @@ let SETTINGS_OPEN = false;
 function openSettings() { SETTINGS_OPEN = true; scheduleRender(); }
 function settingsOverlay() {
   const swatch = (k) => {
-    const t = THEMES[k]; const on = SET.theme === k;
-    return h('button', { 'aria-label': t.name, onclick: () => { SET.theme = k; saveSettings(); scheduleRender(); }, style: 'display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:12px;background:' + (on ? '#1E3D32' : 'transparent') + ';border:2px solid ' + (on ? 'var(--accent)' : 'transparent') }, [
+    const t = THEMES[k]; const on = SET.theme === k; const lk = typeof themeLocked === 'function' && themeLocked(k);
+    return h('button', { 'aria-label': t.name + (lk ? __(' — נעול') : ''), onclick: () => { if (lk) { SETTINGS_OPEN = false; go('road'); return; } SET.theme = k; saveSettings(); scheduleRender(); }, style: 'display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:12px;position:relative;background:' + (on ? '#1E3D32' : 'transparent') + ';border:2px solid ' + (on ? 'var(--accent)' : 'transparent') + (lk ? ';opacity:.45' : '') }, [
       h('div', { style: 'width:52px;height:52px;display:grid;grid-template-columns:1fr 1fr;border-radius:8px;overflow:hidden' }, [t.light, t.dark, t.dark, t.light].map((c) => h('div', { style: 'background:' + c }))),
-      h('span', { style: 'font-size:12px;font-weight:700', text: t.name })
+      lk ? h('span', { 'aria-hidden': 'true', style: 'position:absolute;top:22px;font-size:18px', text: '🔒' }) : null,
+      h('span', { style: 'font-size:12px;font-weight:700;text-align:center;line-height:1.2', text: t.name })
     ]);
   };
   const tog = (key, label) => h('div', { class: 'row', style: 'justify-content:space-between' }, [h('span', { style: 'font-size:15px', text: label }),
@@ -5735,7 +5841,7 @@ function settingsOverlay() {
    server first, so every launch gets the newest version. While the app is open it checks
    version.json; when a newer version is out it shows a bar and swaps in the update between games.
    To release: bump APP_VERSION here and "version" in version.json (tools/release.mjs does both). */
-const APP_VERSION = '2.2.0';
+const APP_VERSION = '2.3.0';
 const UPD = { latest: null, notes: '', ready: false, checking: false, msg: '', dismissed: '', reg: null, installEvt: null };
 function verNewer(a, b) { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++) { if ((x[i] || 0) > (y[i] || 0)) return true; if ((x[i] || 0) < (y[i] || 0)) return false; } return false; }
 function inMatch() {
@@ -6202,11 +6308,14 @@ function menuView() {
   if (rand) { const sub = h('span', { class: 'tile-sub' }, [h('span', { class: 'live-dot' }), h('span', { 'data-online': '1', text: onlineText() })]); rand.appendChild(sub); }
   return h('div', { class: 'phone home', style: 'gap:14px' }, [
     homeTop(),
+    typeof currencyBar === 'function' ? currencyBar() : null,
     storiesRow(),
     (() => { const hero = h('div', { class: 'nx-hero arena' }, [
       h('h1', { class: 'nx-word', style: 'margin:0', 'aria-label': 'Complichess' }), h('div', { class: 'nx-sub', text: __('שחמט עם דק שאתה בונה') }),
       h('div', { class: 'arena-mode', role: 'status' }, [h('span', { 'aria-hidden': 'true', text: m.icon + ' ' }), h('b', { text: m.label }), h('span', { class: 'muted', text: ' · ' + m.sub })])]);
       hero.firstChild.textContent = 'Complichess'; return hero; })(),
+    typeof arenaCard === 'function' ? arenaCard() : null,
+    typeof streakNudge === 'function' ? streakNudge() : null,
     hasAI ? h('button', { class: 'menu-card primary battle', 'data-k': 'ai', onclick: () => isPro() ? proStart('ai', 'w') : go('ai-setup') }, [
       h('span', { class: 'battle-ico', 'aria-hidden': 'true' }, [svgIcon(MICON.ai, 28)]),
       h('span', { style: 'display:flex;flex-direction:column;gap:2px;flex:1' }, [h('span', { class: 'battle-lbl', text: __('שחק נגד המחשב') }), h('span', { class: 'tile-sub', text: __('10 רמות · מכיר את כל הכלים') })])
@@ -6217,6 +6326,8 @@ function menuView() {
       tileBtn('local', __('על המכשיר הזה'), __('2 שחקנים, מסך אחד'), () => isPro() ? proStart('local', 'w') : go('local')),
       EXTRA_VIEWS_HAS('editor') ? tileBtn('editor', __('עורך עמדות'), __('בנה, שתף, נתח'), () => openEditorFrom(null)) : null
     ]),
+    typeof questsPanel === 'function' ? questsPanel() : null,
+    EXTRA_VIEWS_HAS('shop') ? h('button', { class: 'menu-card shop-card', onclick: () => go('shop') }, [h('span', { class: 'menu-ico', 'aria-hidden': 'true', style: 'font-size:24px', text: '🎨' }), h('span', { style: 'flex:1;display:flex;flex-direction:column;gap:2px' }, [h('span', { style: 'font-size:16px;font-weight:800', text: __('חנות · סקינים ולוחות') }), h('span', { class: 'tile-sub', text: __('יש לך ') + PROG.coins + ' 🪙' })]), h('span', { class: 'mc-arrow', 'aria-hidden': 'true', text: '‹' })]) : null,
     APP.menuError ? h('div', { role: 'alert', style: 'font-size:14px;font-weight:700;color:#E89A84', text: APP.menuError }) : null,
     !loggedIn() && typeof cloudOn === 'function' && cloudOn() ? h('button', { class: 'btn mecard-cta', onclick: () => openAuth('menu', 'signup') }, [h('span', { text: __('הירשם או התחבר') }), h('span', { class: 'dim', style: 'font-size:12px;font-weight:600', text: __(' · דירוג אונליין ויריבים אקראיים') })]) : null,
     EXTRA_VIEWS_HAS('about') ? h('button', { class: 'btn about-btn', onclick: () => go('about'), text: __('אודות · תודות · קוד פתוח') }) : null,
@@ -6359,6 +6470,473 @@ function renderApp() {
   a11yRestore(fkey);
   if (APP.toast && APP.toast !== A11Y.toast) { A11Y.toast = APP.toast; a11ySay(APP.toast); }
 }
+/* ================= v2.3: progression — trophies & arenas, coins, piece skins, daily streak, daily quests ================= */
+/* Everything lives on this device, per local profile (pget/pset), and travels with "export profile". */
+var PIECE_SKINS = {
+  /* per side: [gradient top, mid, bottom, solid fill, ink, glow?] */
+  classic: { name: __('קלאסי'), w: ['#FFFFFF', '#F3EEE4', '#D9D0BF', '#F4F1EA', '#1A1208'], b: ['#3B3631', '#1B1816', '#080707', '#1A1715', '#77706A'] },
+  marble:  { name: __('שיש'), price: 150, w: ['#FFFFFF', '#EEF0F4', '#C3C9D2', '#F2F4F7', '#2B2F36'], b: ['#5A6069', '#2C3038', '#101216', '#2A2E35', '#B8C0CC'] },
+  ruby:    { name: __('אודם וספיר'), price: 500, w: ['#F4FCFF', '#BFE6FA', '#76B3D8', '#D4EEFB', '#0E3550'], b: ['#D2405A', '#80152A', '#3A0710', '#8E1A30', '#FFC2CC'] },
+  emerald: { name: __('ברקת'), price: 700, w: ['#F6FFF9', '#C9F2D9', '#7FCB9E', '#DDF7E7', '#0D3B22'], b: ['#2C6B4A', '#123A27', '#04140C', '#174A31', '#9FF0C2'] },
+  gold:    { name: __('זהב וכסף'), price: 1000, w: ['#FFFFFF', '#DCE1E7', '#98A1AC', '#E8ECF0', '#2E333A'], b: ['#D9A845', '#8A5F17', '#3F2806', '#9C6C1E', '#FFE7A3', '#F2C25A'] },
+  frost:   { name: __('קרח'), arena: 4, w: ['#FFFFFF', '#E3F4FF', '#A9D3F0', '#EAF6FF', '#23506E', '#BFE6FF'], b: ['#35587A', '#172C42', '#06111C', '#1C344D', '#BFE6FF'] },
+  royal:   { name: __('מלכותי'), arena: 6, w: ['#FFFDF4', '#F3E3B5', '#D2A54A', '#F6EACB', '#3B2A08'], b: ['#5A3490', '#2A1450', '#0E0520', '#34195E', '#E2C98A', '#B58CFF'] },
+  neon:    { name: __('ניאון'), arena: 7, w: ['#EFFFFE', '#A8F4FF', '#3FC2DD', '#C9F8FF', '#06323C', '#5BE6FF'], b: ['#3E1658', '#1C0830', '#08020F', '#260B3E', '#FF6BD6', '#FF4FD0'] },
+  lava:    { name: __('לבה'), arena: 8, w: ['#FFF6DC', '#FFC36B', '#E0702A', '#FFD79A', '#5A1E04', '#FFB347'], b: ['#47170A', '#200804', '#080100', '#2C0C05', '#FF7A2E', '#FF5A1F'] },
+  flame:   { name: __('להבה'), streak: 7, w: ['#FFFBE6', '#FFD27A', '#FF9A3C', '#FFE3A6', '#6A2A00', '#FFB040'], b: ['#5E1C0B', '#2E0A04', '#100302', '#3A0F06', '#FFB15A', '#FF7A1A'] },
+  phoenix: { name: __('עוף החול'), streak: 30, w: ['#FFFFFF', '#FFE3A8', '#FF8C42', '#FFEBC4', '#5C1A00', '#FFC94A'], b: ['#7A1636', '#3A0618', '#12020A', '#4A0A22', '#FFC94A', '#FF5A7A'] },
+  legend:  { name: __('אגדה'), arena: 10, streak: 100, w: ['#FFFFFF', '#E9D7FF', '#A57BFF', '#F1E6FF', '#2A0F5E', '#C9A8FF'], b: ['#221452', '#0B0622', '#020108', '#130A33', '#F2D58A', '#F2C25A'] }
+};
+var SKIN_ORDER = ['classic', 'marble', 'ruby', 'emerald', 'gold', 'flame', 'frost', 'royal', 'neon', 'lava', 'phoenix', 'legend'];
+function skinPal(id) {
+  const k = id || (PROG && PROG.skin) || 'classic';
+  const s = PIECE_SKINS[k] || PIECE_SKINS.classic;
+  return { id: PIECE_SKINS[k] ? k : 'classic', w: s.w, b: s.b };
+}
+
+/* ---- arenas: the trophy road ---- */
+var ARENAS = [
+  { id: 'cellar',  at: 0,    ico: '🪵', name: __('מרתף העץ'),           bg: ['#4A3424', '#1E140C'] },
+  { id: 'garden',  at: 150,  ico: '🌿', name: __('גן הפרשים'),          bg: ['#3F7A4B', '#12301C'], board: ['#E8F0D8', '#6C9A5B', '#3A2A18'], coins: 100 },
+  { id: 'rope',    at: 400,  ico: '🪢', name: __('מבצר החבלים'),        bg: ['#8A6A45', '#2E2014'], board: ['#EADBC0', '#8A6A45', '#3B2614'], coins: 150 },
+  { id: 'desert',  at: 800,  ico: '🏜️', name: __('מדבר הרובים'),        bg: ['#C48A4E', '#4A2A10'], board: ['#F2DFB8', '#C48A4E', '#5A3416'], coins: 200 },
+  { id: 'frost',   at: 1300, ico: '❄️', name: __('אגם הקרח'),           bg: ['#5D8FB8', '#14283D'], board: ['#EAF6FF', '#7FA7C9', '#2C4A66'], coins: 200, skin: 'frost' },
+  { id: 'gravity', at: 1900, ico: '🌌', name: __('פסגת הכבידה'),        bg: ['#5B4B9A', '#140F33'], board: ['#D9D3F2', '#5B4B9A', '#22184A'], coins: 300 },
+  { id: 'temple',  at: 2600, ico: '🏛️', name: __('מקדש הקצינים'),       bg: ['#A08A5A', '#2E2412'], board: ['#F4ECD6', '#A08A5A', '#4A3A1C'], coins: 300, skin: 'royal' },
+  { id: 'neon',    at: 3400, ico: '🌃', name: __('עיר הניאון'),          bg: ['#4B3A9E', '#0A0620'], board: ['#CFC8F5', '#4B3A9E', '#1A1040'], coins: 400, skin: 'neon' },
+  { id: 'volcano', at: 4300, ico: '🌋', name: __('הר הגעש'),            bg: ['#B5442A', '#2A0A04'], board: ['#F3D3BD', '#9A3B22', '#3A1208'], coins: 500, skin: 'lava' },
+  { id: 'sky',     at: 5300, ico: '☁️', name: __('ארמון השמיים'),        bg: ['#7FA6D8', '#1C3358'], board: ['#F7FBFF', '#8FB3E0', '#3A5A86'], coins: 600 },
+  { id: 'nexus',   at: 6500, ico: '🧠', name: 'Brainmaxing Nexus',        bg: ['#2B2B2B', '#050505'], board: ['#EDE6D3', '#3A3A3A', '#151515'], coins: 1000, skin: 'legend' }
+];
+ARENAS.forEach((a, i) => { if (a.board) THEMES['a_' + a.id] = { name: a.name, light: a.board[0], dark: a.board[1], frame: a.board[2], hiL: '#E6D884', hiD: '#B39A48', selL: '#F1CF63', selD: '#C79A35', check: '#E06A5A', arena: i }; });
+function arenaIdx(tr) { let i = 0; ARENAS.forEach((a, j) => { if (tr >= a.at) i = j; }); return i; }
+function themeLocked(k) { const t = THEMES[k]; return !!(t && t.arena && (!PROG || PROG.arenaMax < t.arena)); }
+var STREAK_REWARDS = { 3: { coins: 50 }, 7: { coins: 100, skin: 'flame' }, 14: { coins: 150, freeze: 1 }, 30: { coins: 300, skin: 'phoenix' }, 50: { coins: 500 }, 100: { coins: 1000, skin: 'legend' } };
+var FREEZE_PRICE = 200, FREEZE_MAX = 2;
+
+/* ---- daily quests ---- */
+const qWin = (e) => (e.score === 1 && e.kind !== 'local' ? 1 : 0);
+var QUESTS = {
+  play3:  { t: __('שחק 3 משחקים'), n: 3, c: 40, f: () => 1 },
+  caps10: { t: __('אכול 10 כלים של היריב'), n: 10, c: 40, f: (e) => e.caps || 0 },
+  long:   { t: __('סיים משחק של 30 מהלכים לפחות'), n: 1, c: 40, f: (e) => (e.plies >= 60 ? 1 : 0) },
+  win1:   { t: __('נצח משחק'), n: 1, c: 40, f: qWin },
+  win2:   { t: __('נצח 2 משחקים'), n: 2, c: 70, f: qWin },
+  aiHard: { t: __('נצח את המחשב ברמה 5 ומעלה'), n: 1, c: 60, f: (e) => (e.kind === 'ai' && e.level >= 5 && e.score === 1 ? 1 : 0) },
+  tempo:  { t: __('שחק משחק Tempo'), n: 1, c: 40, f: (e) => (e.tempo ? 1 : 0) },
+  brain:  { t: __('שחק משחק Brainmaxing'), n: 1, c: 40, f: (e) => (e.brain ? 1 : 0) },
+  online: { t: __('שחק משחק אונליין'), n: 1, c: 50, f: (e) => (e.kind === 'online' ? 1 : 0) }
+};
+var Q_SLOTS = [['play3', 'caps10', 'long'], ['win1', 'win2', 'aiHard'], ['tempo', 'brain', 'online']];
+var Q_BONUS = 100;
+
+/* ---- state ---- */
+var PROG = null;
+function progDefault() { return { v: 1, trophies: 0, best: 0, arenaMax: 0, coins: 100, owned: ['classic'], skin: 'classic', streak: { n: 0, last: '', best: 0, freezes: 0 }, ws: 0, sm: [], q: null, day: { d: '', firstWin: false, local: 0 }, welcome: false }; }
+function progLoad() { PROG = Object.assign(progDefault(), pget('prog', {})); PROG.streak = Object.assign(progDefault().streak, PROG.streak || {}); if (!Array.isArray(PROG.owned)) PROG.owned = ['classic']; }
+const progSave = () => pset('prog', PROG);
+progLoad();
+{ const _sw = switchProfile; switchProfile = function (id) { _sw(id); progLoad(); scheduleRender(); }; }
+
+function dayKey(t) { const d = t ? new Date(t) : new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function dayNum(k) { const p = String(k).split('-').map(Number); return Math.round(Date.UTC(p[0], p[1] - 1, p[2]) / 86400000); }
+function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+function streakNow() {
+  const s = PROG.streak; if (!s.last || !s.n) return { n: 0, today: false, fresh: true };
+  const gap = dayNum(dayKey()) - dayNum(s.last);
+  if (gap <= 0) return { n: s.n, today: true };
+  if (gap === 1) return { n: s.n, today: false, risk: true };
+  if (gap - 1 <= s.freezes) return { n: s.n, today: false, risk: true, freeze: gap - 1 };
+  return { n: 0, today: false, lost: s.n };
+}
+function streakTouch() {
+  const s = PROG.streak, t = dayKey();
+  if (s.last === t) return null;
+  const gap = s.last ? dayNum(t) - dayNum(s.last) : 0;
+  let used = 0;
+  if (s.last && gap === 1) s.n++;
+  else if (s.last && gap > 1 && gap - 1 <= s.freezes) { used = gap - 1; s.freezes -= used; s.n++; }
+  else s.n = 1;
+  s.last = t; s.best = Math.max(s.best || 0, s.n);
+  const out = { n: s.n, used };
+  const R = STREAK_REWARDS[s.n];
+  if (R && PROG.sm.indexOf(s.n) === -1) {
+    PROG.sm.push(s.n); out.reward = { coins: R.coins || 0 };
+    if (R.freeze) { s.freezes = Math.min(FREEZE_MAX, s.freezes + R.freeze); out.reward.freeze = R.freeze; }
+    if (R.skin && PROG.owned.indexOf(R.skin) === -1) { PROG.owned.push(R.skin); out.reward.skin = R.skin; }
+    PROG.coins += out.reward.coins;
+  }
+  return out;
+}
+function questsToday() {
+  const d = dayKey();
+  if (!PROG.q || PROG.q.d !== d) {
+    const hs = hashStr(d + '|' + CUR);
+    PROG.q = { d, list: Q_SLOTS.map((s, i) => ({ id: s[(hs >>> (i * 5)) % s.length], p: 0, done: false, got: false })), bonus: false, rr: false };
+    progSave();
+  }
+  PROG.q.list = PROG.q.list.filter((q) => QUESTS[q.id]);
+  return PROG.q;
+}
+function questReroll(i) {
+  const Q = questsToday(); const q = Q.list[i]; if (!q || q.got || Q.rr) return;
+  const have = Q.list.map((x) => x.id); const pool = Object.keys(QUESTS).filter((k) => have.indexOf(k) === -1);
+  if (!pool.length) return;
+  Q.list[i] = { id: pool[Math.floor(Math.random() * pool.length)], p: 0, done: false, got: false }; Q.rr = true;
+  progSave(); playSound('notify'); scheduleRender();
+}
+const COINFX = { at: 0 };
+function addCoins(n, why) {
+  PROG.coins += n; progSave(); COINFX.at = Date.now();
+  rewardTone('coin');
+  APP.toast = '+' + n + ' 🪙' + (why ? ' · ' + why : ''); scheduleRender();
+  setTimeout(() => { if (APP.toast && APP.toast.indexOf('+' + n + ' 🪙') === 0) { APP.toast = ''; scheduleRender(); } }, 1800);
+}
+function questClaim(i) {
+  const Q = questsToday(); const q = Q.list[i]; if (!q || !q.done || q.got) return;
+  q.got = true; addCoins(QUESTS[q.id].c, __('משימה הושלמה'));
+}
+function questBonus() {
+  const Q = questsToday(); if (Q.bonus || !Q.list.every((q) => q.got)) return;
+  Q.bonus = true; addCoins(Q_BONUS, __('תיבת היום'));
+}
+
+/* ---- rewards after a finished game ---- */
+function trophyDelta(e) {
+  if (e.kind === 'ai') { const L = Math.max(1, Math.min(10, e.level || 5)); return e.score === 1 ? 14 + 2 * L : e.score === 0.5 ? 4 : -Math.max(6, 22 - 2 * L); }
+  if (e.kind === 'online') return e.score === 1 ? (e.ranked ? 34 : 28) : e.score === 0.5 ? 5 : -18;
+  return 0;
+}
+function progOnGame(e) {
+  if (!PROG || !e || !e.minOk) return null;
+  const out = { score: e.score, kind: e.kind, coins: 0, trophies: 0, from: PROG.trophies, lines: [], quests: [], streak: null, arenas: [] };
+  const today = dayKey();
+  if (PROG.day.d !== today) PROG.day = { d: today, firstWin: false, local: 0 };
+  /* coins */
+  if (e.kind === 'local') { if (PROG.day.local < 5) { PROG.day.local++; out.coins += 5; } }
+  else out.coins += e.score === 1 ? 20 : e.score === 0.5 ? 10 : 5;
+  if (e.kind !== 'local' && e.score === 1 && !PROG.day.firstWin) { PROG.day.firstWin = true; out.coins += 50; out.lines.push(['🎁', __('בונוס ניצחון ראשון היום'), '+50 🪙']); }
+  /* trophies, win streak, arena gate */
+  if (e.kind !== 'local' && e.score !== null && e.score !== undefined) {
+    let t = trophyDelta(e);
+    if (e.score === 1) { PROG.ws = (PROG.ws || 0) + 1; if (PROG.ws >= 2) { const b = Math.min(12, (PROG.ws - 1) * 3); t += b; out.lines.push(['⚡', PROG.ws + __(' ניצחונות ברצף'), '+' + b + ' 🏆']); } }
+    else if (e.score === 0) PROG.ws = 0;
+    const before = PROG.trophies, floor = ARENAS[arenaIdx(before)].at;
+    PROG.trophies = Math.max(floor, before + t);
+    if (t < 0 && before + t < floor) out.lines.push(['🛡️', __('שער הארנה הגן עליך — אי אפשר לרדת ממנה'), '']);
+    out.trophies = PROG.trophies - before; PROG.best = Math.max(PROG.best || 0, PROG.trophies);
+    while (arenaIdx(PROG.trophies) > PROG.arenaMax) {
+      PROG.arenaMax++; const A = ARENAS[PROG.arenaMax];
+      if (A.coins) PROG.coins += A.coins;
+      if (A.skin && PROG.owned.indexOf(A.skin) === -1) PROG.owned.push(A.skin);
+      out.arenas.push(PROG.arenaMax);
+    }
+  }
+  /* daily streak */
+  out.streak = streakTouch();
+  /* daily quests */
+  const Q = questsToday();
+  Q.list.forEach((q) => { if (q.done) return; const def = QUESTS[q.id]; const add = def.f(e) || 0; if (add > 0) { q.p = Math.min(def.n, q.p + add); if (q.p >= def.n) { q.done = true; out.quests.push(q.id); } } });
+  PROG.coins += out.coins;
+  progSave();
+  rewardShow(out);
+  return out;
+}
+const otherC = (c) => (c === 'w' ? 'b' : 'w');
+function scoreFor(me, winner) { return !me ? null : !winner ? 0.5 : winner === me ? 1 : 0; }
+function progFromRec(rec, mode) {
+  const me = rec.myColor || (rec.aiColor ? otherC(rec.aiColor) : null);
+  const r = rec.record || [];
+  const caps = r.filter((x) => x.capture && (!me || x.color === me)).length;
+  const kind = mode === 'ai' ? 'ai' : mode === 'online' ? 'online' : 'local';
+  return progOnGame({ kind, score: scoreFor(me, rec.result && rec.result.winner), level: kind === 'ai' ? AIS.cxLevel : 0, plies: r.length, caps: me ? caps : Math.floor(caps / 2),
+    tempo: false, brain: typeof isBrain === 'function' && isBrain(), ranked: kind === 'online' && !!(typeof ON !== 'undefined' && ON.ranked), minOk: r.length >= 6 });
+}
+{ const _rr = recordResult; recordResult = function (rec, mode, opp) { const v = _rr(rec, mode, opp); try { progFromRec(rec, mode); } catch (e) { console.error(e); } return v; }; }
+{ const _ts = tempoStart; tempoStart = function (kind, white, black, extra) {
+  const ex = Object.assign({}, extra || {}); const prev = ex.onEnd;
+  ex.onEnd = (r) => {
+    try { if (prev) prev(r); } catch (e) {}
+    try {
+      const T = TG; const my = T ? T.my : null; const k = kind === 'ai' ? 'ai' : kind === 'local' ? 'local' : 'online';
+      const long = !T || kind === 'mirror' || Date.now() - (T.m.t0 || 0) > 20000;
+      progOnGame({ kind: k, score: scoreFor(my, r && r.winner), level: k === 'ai' ? (T && T.level) || 5 : 0, plies: 60, caps: 0, tempo: true, brain: !!SET.tempoBrain, minOk: long });
+    } catch (e) { console.error(e); }
+  };
+  return _ts(kind, white, black, ex);
+}; }
+function progFromPro(g) {
+  try {
+    const k = g.kind === 'ai' ? 'ai' : g.kind === 'online' ? 'online' : 'local';
+    const my = k === 'local' ? null : g.my;
+    progOnGame({ kind: k, score: scoreFor(my, g.result && g.result.winner), level: k === 'ai' ? (PRO.level || 1) * 3 : 0, plies: g.record.length, caps: 0, tempo: false, brain: true, minOk: g.record.length >= 6 });
+  } catch (e) { console.error(e); }
+}
+
+/* ---- sounds ---- */
+function rewardTone(kind) {
+  if (kind === 'coin') { tone([1318], 0.06, 'square', 0.04); tone([1760], 0.09, 'square', 0.04, 0.06); return; }
+  if (kind === 'win') { [523, 659, 784, 1046].forEach((f, i) => tone([f], 0.16, 'triangle', 0.09, i * 0.09)); return; }
+  if (kind === 'arena') { [392, 523, 659, 784, 1046, 1318].forEach((f, i) => tone([f, f * 1.5], 0.22, 'triangle', 0.06, i * 0.1)); return; }
+  tone([440, 554], 0.2, 'triangle', 0.06);
+}
+
+/* ---- the reward card ---- */
+var REWARD = { cur: null, t0: 0, raf: 0 };
+function rewardShow(out) {
+  setTimeout(() => {
+    REWARD.cur = out; REWARD.t0 = Date.now(); scheduleRender();
+    rewardTone(out.arenas.length ? 'arena' : out.score === 1 ? 'win' : 'other');
+    if (navigator.vibrate && SET.vibrate) try { navigator.vibrate(out.arenas.length ? [30, 40, 30, 40, 60] : [25, 30, 25]); } catch (e) {}
+    a11ySay(rewardTitle(out) + '. ' + (out.trophies ? __('גביעים ') + (out.trophies > 0 ? '+' : '') + out.trophies + '. ' : '') + __('מטבעות +') + out.coins + (out.streak ? '. ' + __('רצף יומי: ') + out.streak.n : ''));
+    countLoop();
+  }, 1100);
+}
+function rewardClose(to) { REWARD.cur = null; if (to) go(to); else scheduleRender(); }
+function rewardTitle(o) { return o.score === 1 ? __('ניצחון!') : o.score === 0.5 ? __('תיקו') : o.score === 0 ? __('הפסד — הפעם') : __('המשחק נגמר'); }
+/* numbers count up by updating the DOM directly, so re-renders don't restart them */
+function countLoop() {
+  cancelAnimationFrame(REWARD.raf);
+  const step = () => {
+    const k = Math.min(1, (Date.now() - REWARD.t0 - 250) / 1100), e = k <= 0 ? 0 : 1 - Math.pow(1 - k, 3);
+    document.querySelectorAll('[data-count]').forEach((el) => { const a = +el.dataset.from, b = +el.dataset.to, sgn = el.dataset.sign; const v = Math.round(a + (b - a) * e); el.textContent = (sgn && v > 0 ? '+' : '') + v; });
+    if (k < 1 && REWARD.cur) REWARD.raf = requestAnimationFrame(step);
+  };
+  REWARD.raf = requestAnimationFrame(step);
+}
+function confetti(n, t0) {
+  const cols = ['#D2A54A', '#F2C25A', '#4FB27A', '#C0583F', '#9FB7C9', '#FFFFFF', '#B58CFF'];
+  const el = h('div', { class: 'rw-conf', 'aria-hidden': 'true' });
+  const age = Date.now() - t0;
+  for (let i = 0; i < n; i++) {
+    const r = (hashStr(String(t0) + i) % 1000) / 1000, r2 = (hashStr(i + 'x' + t0) % 1000) / 1000;
+    el.appendChild(h('i', { style: 'left:' + Math.round(r * 100) + '%;background:' + cols[i % cols.length] + ';animation-delay:' + (Math.round(r2 * 500) - age) + 'ms;animation-duration:' + (1400 + Math.round(r * 900)) + 'ms;--dx:' + Math.round((r2 - .5) * 120) + 'px;--rot:' + Math.round(r * 720) + 'deg' }));
+  }
+  return el;
+}
+function arenaBadge(i, size) {
+  const A = ARENAS[i];
+  return h('span', { class: 'ar-badge', 'aria-hidden': 'true', style: 'width:' + size + 'px;height:' + size + 'px;font-size:' + Math.round(size * .52) + 'px;background:radial-gradient(circle at 50% 35%,' + A.bg[0] + ',' + A.bg[1] + ')', text: A.ico });
+}
+function boardSwatch(T, size) {
+  return h('span', { class: 'bsw', 'aria-hidden': 'true', style: 'width:' + size + 'px;height:' + size + 'px;box-shadow:0 0 0 3px ' + (T.frame || '#4A3424') }, [T.light, T.dark, T.dark, T.light, T.light, T.dark, T.dark, T.light, T.light].slice(0, 4).map((c) => h('i', { style: 'background:' + c })));
+}
+function skinPreview(id, size) {
+  return h('span', { class: 'skin-pv', 'aria-hidden': 'true' }, [piece('K', 'white', size, 0, 180, id), piece('N', 'black', size, 0, 180, id)]);
+}
+function rewardOverlay() {
+  const o = REWARD.cur; if (!o) return null;
+  const win = o.score === 1, age = Date.now() - REWARD.t0;
+  const row = (ico, label, val, cls) => h('div', { class: 'rw-row' + (cls ? ' ' + cls : '') }, [h('span', { class: 'rw-ico', 'aria-hidden': 'true', text: ico }), h('span', { class: 'rw-lbl', text: label }), val]);
+  const cnt = (from, to, sign) => h('b', { class: 'rw-val', 'data-count': '1', 'data-from': String(from), 'data-to': String(to), 'data-sign': sign ? '1' : '', text: (sign && from > 0 ? '+' : '') + (age > 1400 ? to : from) });
+  const kids = [];
+  if (win || o.arenas.length) kids.push(confetti(o.arenas.length ? 70 : 42, REWARD.t0));
+  kids.push(h('div', { class: 'rw-title' + (win ? ' win' : ''), text: rewardTitle(o) }));
+  if (o.kind !== 'local' && o.score !== null) {
+    const A = ARENAS[arenaIdx(PROG.trophies)], N = ARENAS[arenaIdx(PROG.trophies) + 1];
+    kids.push(h('div', { class: 'rw-trophy' }, [
+      h('span', { class: 'rw-big', 'aria-hidden': 'true', text: '🏆' }),
+      h('div', { style: 'display:flex;flex-direction:column;align-items:center' }, [cnt(o.from, PROG.trophies, false), h('span', { class: 'rw-delta ' + (o.trophies >= 0 ? 'up' : 'down'), text: (o.trophies >= 0 ? '+' : '') + o.trophies })]),
+    ]));
+    if (N) kids.push(h('div', { class: 'rw-prog' }, [h('div', { class: 'rw-bar' }, [h('i', { style: 'width:' + Math.round((PROG.trophies - A.at) / (N.at - A.at) * 100) + '%' })]), h('span', { class: 'dim', style: 'font-size:12px', text: __('עוד ') + (N.at - PROG.trophies) + __(' 🏆 עד ') + N.name })]));
+  }
+  kids.push(row('🪙', __('סה״כ מטבעות'), h('b', { class: 'rw-val' }, [h('span', { 'data-count': '1', 'data-from': '0', 'data-to': String(o.coins), 'data-sign': '1', text: age > 1400 ? '+' + o.coins : '+0' })])));
+  o.lines.forEach((l) => kids.push(row(l[0], l[1], h('b', { class: 'rw-val', text: l[2] }))));
+  if (o.streak) {
+    const s = o.streak;
+    kids.push(h('div', { class: 'rw-streak' }, [h('span', { class: 'rw-flame', 'aria-hidden': 'true', text: '🔥' }), h('div', {}, [
+      h('div', { style: 'font-weight:800;font-size:16px', text: s.n === 1 ? __('התחלת רצף יומי!') : __('רצף של ') + s.n + __(' ימים!') }),
+      h('div', { class: 'dim', style: 'font-size:12.5px', text: s.used ? __('השתמשת בהקפאת רצף ❄️ כדי לשמור עליו') : __('שחק גם מחר כדי להמשיך את הרצף') }),
+      s.reward ? h('div', { style: 'font-size:13px;font-weight:800;color:var(--brass);margin-top:2px', text: __('פרס רצף: ') + '+' + s.reward.coins + ' 🪙' + (s.reward.skin ? ' · ' + __('סקין חדש: ') + PIECE_SKINS[s.reward.skin].name : '') + (s.reward.freeze ? ' · +1 ❄️' : '') }) : null
+    ])]));
+    if (s.reward && s.reward.skin) kids.push(h('div', { class: 'rw-skin' }, [skinPreview(s.reward.skin, 40)]));
+  }
+  o.arenas.slice(-1).forEach((i) => {
+    const A = ARENAS[i];
+    kids.push(h('div', { class: 'rw-arena', style: 'background:linear-gradient(160deg,' + A.bg[0] + ',' + A.bg[1] + ')' }, [
+      h('div', { class: 'rw-arena-k', text: __('ארנה חדשה נפתחה!') }),
+      arenaBadge(i, 64),
+      h('div', { style: 'font-size:20px;font-weight:800;color:#fff', text: A.name }),
+      h('div', { class: 'rw-arena-gifts' }, [
+        THEMES['a_' + A.id] ? h('span', { class: 'rw-gift' }, [boardSwatch(THEMES['a_' + A.id], 30), h('span', { text: __('לוח חדש') })]) : null,
+        A.skin ? h('span', { class: 'rw-gift' }, [skinPreview(A.skin, 26), h('span', { text: PIECE_SKINS[A.skin].name })]) : null,
+        A.coins ? h('span', { class: 'rw-gift' }, [h('span', { style: 'font-size:22px', text: '🪙' }), h('span', { text: '+' + A.coins })]) : null
+      ])
+    ]));
+  });
+  o.quests.forEach((id) => kids.push(row('✅', __('משימה הושלמה: ') + QUESTS[id].t, h('b', { class: 'rw-val', text: '🪙 ' + QUESTS[id].c }), 'q')));
+  kids.push(h('div', { class: 'row', style: 'gap:8px;margin-top:4px' }, [
+    h('button', { class: 'btn primary', style: 'flex:1', onclick: () => rewardClose(), text: __('המשך') }),
+    o.arenas.length ? h('button', { class: 'btn', style: 'flex:1', onclick: () => rewardClose('road'), text: __('לשביל הגביעים') }) : (o.quests.length ? h('button', { class: 'btn', style: 'flex:1', onclick: () => rewardClose('menu'), text: __('לאסוף פרסים') }) : null)
+  ]));
+  return h('div', { class: 'overlay rw-ov', onclick: () => rewardClose() }, [h('div', { class: 'dialog rw-card' + (win ? ' win' : '') + (age > 1500 ? ' old' : ''), role: 'dialog', 'aria-modal': 'true', 'aria-label': rewardTitle(o), onclick: (e) => e.stopPropagation() }, kids)]);
+}
+
+/* ---- home pieces ---- */
+function currencyBar() {
+  const S = streakNow(), pulse = Date.now() - COINFX.at < 900;
+  const pill = (cls, ico, val, label, onclick) => h('button', { class: 'cur-pill ' + cls, 'aria-label': label, onclick }, [h('span', { class: 'cur-ico', 'aria-hidden': 'true', text: ico }), h('b', { text: String(val) })]);
+  return h('div', { class: 'curbar' }, [
+    pill('tr', '🏆', PROG.trophies, __('גביעים: ') + PROG.trophies + __(' — שביל הגביעים'), () => go('road')),
+    pill('fl' + (S.today ? ' hot' : ' cold'), '🔥', S.n, __('רצף יומי: ') + S.n + (S.today ? __(' — שיחקת היום') : __(' — עוד לא שיחקת היום')), () => go('road')),
+    pill('co' + (pulse ? ' pulse' : ''), '🪙', PROG.coins, __('מטבעות: ') + PROG.coins + __(' — לחנות'), () => go('shop'))
+  ]);
+}
+function arenaCard() {
+  const i = arenaIdx(PROG.trophies), A = ARENAS[i], N = ARENAS[i + 1];
+  const pct = N ? Math.round((PROG.trophies - A.at) / (N.at - A.at) * 100) : 100;
+  return h('button', { class: 'arena-card', style: 'background:linear-gradient(135deg,' + A.bg[0] + ',' + A.bg[1] + ')', 'aria-label': __('ארנה ') + (i + 1) + ': ' + A.name + '. ' + PROG.trophies + __(' גביעים') + (N ? __('. הבאה: ') + N.name + __(' ב־') + N.at : ''), onclick: () => go('road') }, [
+    arenaBadge(i, 56),
+    h('span', { style: 'flex:1;display:flex;flex-direction:column;gap:4px;min-width:0' }, [
+      h('span', { class: 'ac-k', text: __('ארנה ') + (i + 1) }),
+      h('span', { class: 'ac-n', text: A.name }),
+      h('span', { class: 'ac-bar' }, [h('i', { style: 'width:' + pct + '%' })]),
+      h('span', { class: 'ac-s', text: N ? PROG.trophies + ' / ' + N.at + ' 🏆 · ' + __('הבאה: ') + N.ico + ' ' + N.name : __('הגעת לארנה האחרונה! 👑') })
+    ]),
+    h('span', { class: 'mc-arrow', 'aria-hidden': 'true', text: '‹' })
+  ]);
+}
+function streakNudge() {
+  const S = streakNow();
+  if (S.today) return null;
+  const txt = S.risk ? __('🔥 שחק משחק היום כדי לשמור על רצף של ') + S.n + __(' ימים') + (S.freeze ? __(' (תשתמש ב־❄️)') : '')
+    : S.lost ? __('הרצף של ') + S.lost + __(' ימים נשבר… שחק היום והתחל רצף חדש 🔥') : __('🔥 שחק היום והתחל רצף יומי — פרסים ב־3, 7, 14 ו־30 ימים');
+  return h('div', { class: 'nudge' + (S.risk ? ' risk' : ''), role: 'status', text: txt });
+}
+function untilMidnight() { const n = new Date(), m = new Date(n); m.setHours(24, 0, 0, 0); const mins = Math.max(1, Math.round((m - n) / 60000)); return mins >= 60 ? Math.floor(mins / 60) + __(' שע׳') : mins + __(' דק׳'); }
+function questsPanel() {
+  const Q = questsToday(); const allGot = Q.list.every((q) => q.got);
+  return h('div', { class: 'panel quests', style: 'gap:10px' }, [
+    h('div', { class: 'row', style: 'justify-content:space-between' }, [h('span', { style: 'font-size:15px;font-weight:800', text: __('משימות יומיות') }), h('span', { class: 'dim', style: 'font-size:12px', text: __('מתחדשות בעוד ') + untilMidnight() })]),
+    ...Q.list.map((q, i) => {
+      const d = QUESTS[q.id];
+      return h('div', { class: 'qrow' + (q.got ? ' got' : q.done ? ' done' : '') }, [
+        h('div', { style: 'flex:1;display:flex;flex-direction:column;gap:5px;min-width:0' }, [
+          h('span', { style: 'font-size:13.5px;font-weight:700', text: d.t }),
+          h('span', { class: 'ac-bar q' }, [h('i', { style: 'width:' + Math.round(q.p / d.n * 100) + '%' })]),
+          h('span', { class: 'dim', style: 'font-size:11.5px', text: q.p + ' / ' + d.n })
+        ]),
+        q.got ? h('span', { class: 'q-ok', 'aria-label': __('נאסף'), text: '✓' })
+          : q.done ? h('button', { class: 'btn primary q-claim', onclick: () => questClaim(i), 'aria-label': __('אסוף ') + d.c + __(' מטבעות') }, [h('span', { text: __('אסוף') }), h('b', { text: ' 🪙' + d.c })])
+          : h('div', { style: 'display:flex;flex-direction:column;align-items:center;gap:4px' }, [h('span', { class: 'q-rew', text: '🪙 ' + d.c }), !Q.rr ? h('button', { class: 'q-rr', 'aria-label': __('החלף משימה (פעם ביום)'), title: __('החלף משימה (פעם ביום)'), onclick: () => questReroll(i), text: '🔄' }) : null])
+      ]);
+    }),
+    allGot ? (Q.bonus ? h('div', { class: 'dim', style: 'font-size:12.5px;text-align:center', text: __('אספת הכול היום 🎉 מחר יש משימות חדשות') })
+      : h('button', { class: 'btn good chest', onclick: questBonus, text: __('🎁 פתח את תיבת היום · +') + Q_BONUS + ' 🪙' }))
+      : h('div', { class: 'dim', style: 'font-size:12px;text-align:center', text: __('השלם את שלוש המשימות וקבל תיבה של ') + Q_BONUS + ' 🪙' })
+  ]);
+}
+
+/* ---- shop ---- */
+function skinStatus(id) {
+  const s = PIECE_SKINS[id];
+  if (PROG.skin === id) return 'on';
+  if (PROG.owned.indexOf(id) !== -1 || id === 'classic') return 'own';
+  if (s.price) return 'buy';
+  return 'lock';
+}
+function skinLockText(id) {
+  const s = PIECE_SKINS[id]; const parts = [];
+  if (s.arena) parts.push(ARENAS[s.arena].ico + ' ' + __('ארנה ') + (s.arena + 1));
+  if (s.streak) parts.push('🔥 ' + s.streak + __(' ימים'));
+  return '🔒 ' + parts.join(__(' או '));
+}
+const SHOP = { confirm: null };
+function buySkin(id) {
+  const s = PIECE_SKINS[id]; if (!s.price || PROG.owned.indexOf(id) !== -1) return;
+  if (PROG.coins < s.price) { APP.toast = __('חסרים ') + (s.price - PROG.coins) + __(' 🪙 — נצח משחקים והשלם משימות'); scheduleRender(); setTimeout(() => { APP.toast = ''; scheduleRender(); }, 2400); return; }
+  if (SHOP.confirm !== id) { SHOP.confirm = id; scheduleRender(); setTimeout(() => { if (SHOP.confirm === id) { SHOP.confirm = null; scheduleRender(); } }, 3000); return; }
+  SHOP.confirm = null; PROG.coins -= s.price; PROG.owned.push(id); PROG.skin = id; progSave(); rewardTone('win');
+  APP.toast = __('הסקין "') + s.name + __('" שלך!'); scheduleRender(); setTimeout(() => { APP.toast = ''; scheduleRender(); }, 2200);
+}
+function equipSkin(id) { PROG.skin = id; progSave(); playSound('move'); scheduleRender(); }
+function buyFreeze() {
+  const s = PROG.streak; if (s.freezes >= FREEZE_MAX) return;
+  if (PROG.coins < FREEZE_PRICE) { APP.toast = __('חסרים ') + (FREEZE_PRICE - PROG.coins) + ' 🪙'; scheduleRender(); setTimeout(() => { APP.toast = ''; scheduleRender(); }, 2000); return; }
+  PROG.coins -= FREEZE_PRICE; s.freezes++; progSave(); rewardTone('coin'); scheduleRender();
+}
+EXTRA_VIEWS['shop'] = (stage) => {
+  const card = (id) => {
+    const s = PIECE_SKINS[id], st = skinStatus(id);
+    const btn = st === 'on' ? h('span', { class: 'sk-tag on', text: __('✓ בשימוש') })
+      : st === 'own' ? h('button', { class: 'btn sk-btn', onclick: () => equipSkin(id), text: __('בחר') })
+      : st === 'buy' ? h('button', { class: 'btn sk-btn' + (SHOP.confirm === id ? ' good' : ' primary'), onclick: () => buySkin(id), text: SHOP.confirm === id ? __('לקנות? ✓') : '🪙 ' + s.price })
+      : h('span', { class: 'sk-tag', text: skinLockText(id) });
+    return h('div', { class: 'sk-card' + (st === 'on' ? ' on' : '') + (st === 'lock' ? ' lock' : '') }, [skinPreview(id, 34), h('span', { class: 'sk-name', text: s.name }), btn]);
+  };
+  const boards = ARENAS.map((A, i) => ({ A, i, k: 'a_' + A.id })).filter((x) => THEMES[x.k]);
+  stage.appendChild(h('div', { class: 'phone', style: 'gap:14px' }, [
+    topBar(__('חנות'), goMenu),
+    currencyBar(),
+    h('div', { style: 'font-size:15px;font-weight:800', text: __('סקינים לכלים') }),
+    h('div', { class: 'dim', style: 'font-size:12.5px;margin-top:-8px', text: __('הסקין משנה את הכלים שלך בכל המצבים. חלק נקנים במטבעות, חלק נפתחים בארנות וברצף יומי.') }),
+    h('div', { class: 'sk-grid' }, SKIN_ORDER.map(card)),
+    h('div', { style: 'font-size:15px;font-weight:800', text: __('לוחות ארנה') }),
+    h('div', { class: 'sk-grid' }, boards.map(({ A, i, k }) => {
+      const lk = themeLocked(k), on = SET.theme === k;
+      return h('div', { class: 'sk-card' + (on ? ' on' : '') + (lk ? ' lock' : '') }, [boardSwatch(THEMES[k], 40), h('span', { class: 'sk-name', text: A.name }),
+        on ? h('span', { class: 'sk-tag on', text: __('✓ בשימוש') }) : lk ? h('span', { class: 'sk-tag', text: '🔒 ' + A.at + ' 🏆' }) : h('button', { class: 'btn sk-btn', onclick: () => { SET.theme = k; saveSettings(); playSound('move'); scheduleRender(); }, text: __('בחר') })]);
+    })),
+    h('div', { class: 'panel', style: 'gap:8px' }, [
+      h('div', { class: 'row', style: 'justify-content:space-between' }, [h('span', { style: 'font-size:15px;font-weight:800', text: __('❄️ הקפאת רצף') }), h('span', { class: 'muted', style: 'font-size:13px', text: PROG.streak.freezes + ' / ' + FREEZE_MAX })]),
+      h('div', { class: 'dim', style: 'font-size:12.5px;line-height:1.5', text: __('פספסת יום? הקפאה נכנסת לפעולה לבד ושומרת על הרצף היומי שלך.') }),
+      h('button', { class: 'btn primary', disabled: PROG.streak.freezes >= FREEZE_MAX ? true : null, onclick: buyFreeze, text: PROG.streak.freezes >= FREEZE_MAX ? __('מלא') : __('קנה הקפאה · 🪙 ') + FREEZE_PRICE })
+    ]),
+    h('div', { class: 'dim', style: 'font-size:12px;line-height:1.5;text-align:center', text: __('כל הפרסים במשחק חינמיים — מרוויחים אותם רק במשחק, בלי כסף אמיתי.') })
+  ]));
+};
+
+/* ---- trophy road ---- */
+EXTRA_VIEWS['road'] = (stage) => {
+  const cur = arenaIdx(PROG.trophies), S = streakNow();
+  const list = ARENAS.map((A, i) => {
+    const open = i <= PROG.arenaMax, here = i === cur, T = THEMES['a_' + A.id];
+    const N = ARENAS[i + 1];
+    return h('div', { class: 'road-a' + (open ? '' : ' lock') + (here ? ' here' : ''), style: 'background:linear-gradient(135deg,' + A.bg[0] + ',' + A.bg[1] + ')' }, [
+      h('div', { class: 'row', style: 'gap:12px' }, [
+        arenaBadge(i, 52),
+        h('div', { style: 'flex:1;display:flex;flex-direction:column;gap:2px;min-width:0' }, [
+          h('span', { class: 'ac-k', text: __('ארנה ') + (i + 1) + ' · ' + A.at + ' 🏆' }),
+          h('span', { class: 'ac-n', text: A.name }),
+          here && N ? h('span', { class: 'ac-bar' }, [h('i', { style: 'width:' + Math.round((PROG.trophies - A.at) / (N.at - A.at) * 100) + '%' })]) : null
+        ]),
+        h('span', { class: 'road-st', text: here ? __('אתה כאן') : open ? '✓' : '🔒' })
+      ]),
+      (T || A.skin || A.coins) ? h('div', { class: 'rw-arena-gifts', style: 'justify-content:flex-start' }, [
+        T ? h('span', { class: 'rw-gift' }, [boardSwatch(T, 24), h('span', { text: __('לוח') })]) : null,
+        A.skin ? h('span', { class: 'rw-gift' }, [skinPreview(A.skin, 22), h('span', { text: PIECE_SKINS[A.skin].name })]) : null,
+        A.coins ? h('span', { class: 'rw-gift' }, [h('span', { text: '🪙 +' + A.coins })]) : null
+      ]) : null
+    ]);
+  });
+  const ms = Object.keys(STREAK_REWARDS).map(Number);
+  stage.appendChild(h('div', { class: 'phone', style: 'gap:12px' }, [
+    topBar(__('שביל הגביעים'), goMenu),
+    currencyBar(),
+    h('div', { class: 'panel', style: 'gap:6px' }, [
+      h('div', { class: 'row', style: 'justify-content:space-between' }, [h('span', { style: 'font-size:15px;font-weight:800', text: __('איך מרוויחים גביעים') }), h('span', { class: 'dim', style: 'font-size:12px', text: __('שיא: ') + (PROG.best || 0) + ' 🏆' })]),
+      h('div', { class: 'dim', style: 'font-size:12.5px;line-height:1.55', text: __('ניצחון נגד המחשב: יותר גביעים ברמות גבוהות. אונליין: +28 (מדורג +34). רצף ניצחונות מוסיף עד +12. הפסד מוריד גביעים, אבל אף פעם לא מתחת לשער של הארנה שלך.') })
+    ]),
+    h('div', { class: 'road' }, list),
+    h('div', { class: 'panel', style: 'gap:8px' }, [
+      h('div', { class: 'row', style: 'justify-content:space-between' }, [h('span', { style: 'font-size:15px;font-weight:800', text: __('🔥 רצף יומי: ') + S.n }), h('span', { class: 'dim', style: 'font-size:12px', text: __('שיא: ') + (PROG.streak.best || 0) + ' · ❄️ ' + PROG.streak.freezes })]),
+      h('div', { class: 'streak-ms' }, ms.map((n) => { const R = STREAK_REWARDS[n], got = PROG.sm.indexOf(n) !== -1; return h('div', { class: 'sm' + (got ? ' got' : '') + (S.n >= n ? ' on' : '') }, [h('b', { text: n }), h('span', { text: R.skin ? '🎨' : R.freeze ? '❄️' : '🪙' }), h('small', { text: R.skin ? PIECE_SKINS[R.skin].name : '+' + R.coins })]); })),
+      h('div', { class: 'dim', style: 'font-size:12px', text: __('משחק אחד ביום (כל מצב) שומר על הרצף.') })
+    ])
+  ]));
+};
+TAB_MODES.push('shop', 'road');
+
+/* ---- wire into the render loop: arena board frame + the reward card on top of everything ---- */
+{ const _ra = renderApp; renderApp = function () {
+  try { const T = theme(); document.documentElement.style.setProperty('--walnut', T.frame || '#4A3424'); } catch (e) {}
+  _ra();
+  try { const ov = rewardOverlay(); if (ov) document.getElementById('stage').appendChild(ov); } catch (e) { console.error(e); }
+}; }
+/* first launch with progression: a small welcome gift */
+if (!PROG.welcome) { PROG.welcome = true; progSave(); setTimeout(() => { APP.toast = __('חדש: ארנות, סקינים ורצף יומי! קיבלת 100 🪙 מתנה'); scheduleRender(); setTimeout(() => { APP.toast = ''; scheduleRender(); }, 5000); }, 1500); }
+
 /* iOS: audio only starts after a user gesture — unlock it on the first touch */
 function unlockAudio() {
   try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); const b = AC.createBuffer(1, 1, 22050), s = AC.createBufferSource(); s.buffer = b; s.connect(AC.destination); s.start(0); } catch (e) {}
