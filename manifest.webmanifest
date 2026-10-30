@@ -1,7 +1,7 @@
 {
   "name": "Complichess",
   "short_name": "Complichess",
-  "description": "שחמט עם דק שאתה בונה",
+  "description": "שחמט שבו בונים את השורה האחורית מדק של 35 נקודות: כלים קלאסיים, כלי פיות וכלים מקוריים. נגד המחשב, אונליין, Tempo בזמן אמת ו־Brainmaxing.",
   "lang": "he",
   "dir": "rtl",
   "start_url": "./",
@@ -44,5 +44,32 @@
         }
       ]
     }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/home.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "מסך הבית"
+    },
+    {
+      "src": "screenshots/game.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "משחק נגד המחשב"
+    },
+    {
+      "src": "screenshots/store.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "חנות ו־Plus"
+    }
+  ],
+  "prefer_related_applications": false,
+  "display_override": [
+    "standalone"
   ]
 }

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08111E">
+<meta name="robots" content="index, follow">
+<title>Complichess · תקנון, ביטולים, פרטיות ונגישות</title>
+<meta name="description" content="Complichess terms of use and sale, cancellation and refund policy, privacy policy, accessibility statement and seller details.">
+<link rel="icon" href="icon-192.png">
+<style>
+  :root { --bg:#08111E; --panel:#121C2B; --line:#26354A; --text:#F1EEE7; --soft:#C9CFDA; --dim:#8F9AAD; --gold:#D2A54A; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.7 'Rubik', 'Segoe UI', 'Assistant', Arial, sans-serif; }
+  a { color: #FFD27A; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 18px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
+  .brand { font-weight: 900; font-size: 22px; direction: ltr; text-decoration: none; color: var(--text); }
+  .langs { display: flex; flex-wrap: wrap; gap: 4px; }
+  .langs a { padding: 4px 9px; border-radius: 8px; border: 1px solid var(--line); text-decoration: none; color: var(--soft); font-size: 13px; }
+  .langs a.on { border-color: var(--gold); color: var(--text); }
+  nav.toc { position: sticky; top: 0; z-index: 2; display: flex; gap: 6px; overflow-x: auto; padding: 10px 0; margin: 10px 0 4px; background: var(--bg); }
+  nav.toc a { white-space: nowrap; padding: 7px 12px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); color: var(--soft); text-decoration: none; font-size: 14px; }
+  section { margin-top: 18px; padding: 18px 18px 8px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); scroll-margin-top: 64px; }
+  h1 { font-size: 26px; margin: 14px 0 4px; }
+  h2 { font-size: 21px; margin: 0 0 8px; }
+  h3 { font-size: 16.5px; margin: 16px 0 4px; color: #FFE7A3; }
+  p, li { color: var(--soft); }
+  ul { padding-inline-start: 22px; }
+  .muted { color: var(--dim); font-size: 14px; }
+  .note { padding: 10px 12px; border-radius: 10px; background: rgba(210,165,74,.12); border: 1px solid rgba(210,165,74,.35); color: var(--text); font-size: 14.5px; }
+  dl.seller { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 6px 0 12px; }
+  dl.seller dt { color: var(--dim); }
+  dl.seller dd { margin: 0; font-weight: 600; }
+  .back { display: inline-block; margin-top: 22px; }
+  @media print { nav.toc, .langs, .back { display: none; } body { background: #fff; color: #000; } section { border: 0; background: none; } p, li { color: #000; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./">Complichess</a>
+    <div class="langs" id="langs"></div>
+  </header>
+  <h1 id="title"></h1>
+  <div class="muted" id="updated"></div>
+  <div class="note" id="binding" hidden></div>
+  <nav class="toc" id="toc" aria-label="sections"></nav>
+  <main id="main"></main>
+  <a class="back" id="back" href="./"></a>
+</div>
+<script>
+/* © 2026 Bar Lvovski. All rights reserved. Texts for Complichess (barusik.com/complichess). Hebrew is the binding version. */
+const SUPA_URL = 'https://iktmyrfbejtjsiehcrar.supabase.co';
+const SUPA_KEY = 'sb_publishable_vEUqQPQSE0EG7YRnwNeAbg_PzViDO1a';
+const LANGS = [['he', 'עברית'], ['en', 'English'], ['ar', 'العربية'], ['ru', 'Русский'], ['es', 'Español'], ['fr', 'Français']];
+const UPDATED = '2026-10-30';
+
+const T = {
+he: {
+  title: 'Complichess · תקנון, ביטולים, פרטיות ונגישות',
+  updated: 'עודכן לאחרונה: 30 באוקטובר 2026',
+  back: '← חזרה למשחק',
+  toc: { terms: 'תקנון ותנאי רכישה', refunds: 'ביטולים והחזרים', privacy: 'פרטיות', accessibility: 'נגישות', seller: 'פרטי העסק' },
+  seller: { name: 'שם העסק', kind: 'סוג', number: 'מספר', address: 'כתובת', phone: 'טלפון', email: 'מייל', kinds: { patur: 'עוסק פטור', murshe: 'עוסק מורשה', company: 'חברה בע״מ' }, missing: 'פרטי העסק יפורסמו כאן לפני פתיחת המכירה באתר.', loading: 'טוען…' },
+  sections: {
+terms: `
+<p>ברוכים הבאים ל־Complichess ("המשחק"), משחק שחמט שבו כל שחקן בונה את השורה האחורית שלו מדק של כלים. המשחק זמין בכתובת barusik.com/complichess ובאפליקציה שמותקנת ממנה. המשחק מופעל על ידי בר לבובסקי (Barusik Platforms), שפרטי העסק שלו מופיעים בסעיף "פרטי העסק" ("אנחנו", "המפעיל"). השימוש במשחק, וכל רכישה בו, כפופים לתקנון הזה. אם אינכם מסכימים לו — אל תשתמשו במשחק.</p>
+<h3>1. המשחק והחשבון</h3>
+<ul>
+<li>אפשר לשחק בלי חשבון. משחקים מדורגים, טבלת המובילים ורכישות דורשים חשבון — חשבון אחד משותף לכל הפלטפורמות של ברוסיק.</li>
+<li>אתם אחראים לשמור על הסיסמה ולפרטים נכונים. אסור ליצור חשבון בשם של מישהו אחר או שם משתמש פוגעני, מטעה או מתחזה.</li>
+<li>מתחת לגיל 18: השימוש והרכישות מותרים רק באישור הורה או אפוטרופוס.</li>
+</ul>
+<h3>2. משחק הוגן והתנהגות</h3>
+<ul>
+<li>אסור לרמות: להיעזר במנוע או בתוכנה במשחק מדורג, לשנות את קוד המשחק או את הנתונים שלו כדי לקבל יתרון, לנצל באגים, או לשחק בכמה חשבונות כדי לנפח דירוג.</li>
+<li>בצ׳אט הקולי ובשמות: בלי הטרדה, איומים, גזענות, תוכן מיני או פרסום. הצ׳אט הקולי נפתח רק כששני השחקנים מסכימים, ואפשר לסגור אותו בכל רגע.</li>
+<li>אנחנו רשאים להסיר שם משתמש, לאפס דירוג או לחסום חשבון שמפר את הכללים. על רכישות במקרה כזה חל סעיף 6.</li>
+</ul>
+<h3>3. קניין רוחני</h3>
+<p>המשחק, החוקים, הכלים המקוריים (כמו החבל, האקדח והגרוויטציה), העיצוב, הקוד והשם Complichess הם של בר לבובסקי, וכל הזכויות שמורות. מותר לשחק ולשתף משחקים ועמדות. כל שימוש אחר — העתקה, הפצה, שינוי או שימוש מסחרי — רק באישור מראש ובכתב. רכיבי קוד פתוח שהמשחק משתמש בהם מופיעים במסך "אודות", כל אחד לפי הרישיון שלו.</p>
+<h3>4. מה אפשר לקנות</h3>
+<ul>
+<li><b>Complichess Plus</b> — תשלום חד־פעמי שמוסיף לחשבון: בלי הודעות פרסום במשחק, פי 2 מטבעות מכל משחק, סקינים ולוח שזמינים רק ב־Plus, ותג Plus. Plus שייך לחשבון ופעיל בכל מכשיר שבו אתם מחוברים, כל עוד המשחק פועל.</li>
+<li><b>חבילות מטבעות</b> — מטבעות שנכנסים לפרופיל שפתוח במכשיר בזמן שהן נמסרות, ומשמשים לקניית סקינים, לוחות והקפאות רצף בתוך המשחק.</li>
+<li>כל מה שאפשר לקנות אפשר גם להרוויח בחינם במשחק (חוץ מהפריטים הבלעדיים של Plus). אין במשחק פריטים שנותנים יתרון בתוצאת המשחק.</li>
+<li>מטבעות, סקינים ו־Plus הם רישיון אישי לשימוש בתוך המשחק בלבד: אין להם ערך כספי, הם לא ניתנים להמרה לכסף, להעברה לחשבון אחר או למכירה.</li>
+</ul>
+<h3>5. מחירים, תשלום ומסירה</h3>
+<ul>
+<li>המחירים מוצגים בחנות לפני התשלום, בשקלים (ובתשלום בינלאומי — בדולרים). המחיר שמוצג הוא המחיר הסופי לתשלום.</li>
+<li>התשלום מתבצע אצל ספק סליקה מאובטח: Grow (ביט, Apple Pay, Google Pay וכרטיס אשראי) או Paddle (תשלום בינלאומי; Paddle משמשת שם כמוכרת הרשומה ומנפיקה את החשבונית). פרטי הכרטיס לא עוברים דרכנו ולא נשמרים אצלנו.</li>
+<li>קבלה או חשבונית נשלחות במייל מספק התשלום.</li>
+<li>המוצר נמסר מיד אחרי שהתשלום מאושר: Plus מופעל בחשבון, והמטבעות נכנסים בפעם הבאה שהמשחק נפתח כשאתם מחוברים. אם משהו לא הגיע תוך שעה — כתבו לנו עם קוד ההזמנה.</li>
+<li>כשאין עדיין תשלום אונליין, אפשר לשלוח "בקשת רכישה". הבקשה אינה חיוב; אנחנו נאשר אותה, ובמקרה הצורך נשלח לכם דרך לשלם. אפשר לבטל בקשה שעוד לא אושרה בכל רגע.</li>
+</ul>
+<h3>6. הפסקת שירות וחסימה</h3>
+<p>אנחנו משפרים את המשחק כל הזמן ורשאים לשנות מצבים, חוקים, מחירים ופריטים. שינוי לא יגרע מפריט שכבר קניתם בלי פיצוי הוגן. אם נחליט להפסיק את המשחק, נודיע על כך לפחות 30 יום מראש. חסימת חשבון בגלל הפרה חמורה של התקנון (למשל רמאות או הונאת תשלום) יכולה לבטל גם פריטים שנקנו, בלי החזר — אלא אם החוק קובע אחרת.</p>
+<h3>7. אחריות</h3>
+<p>המשחק ניתן כמו שהוא ("AS IS"). אנחנו עושים מאמץ שהוא יעבוד היטב ובלי הפסקות, אבל לא מתחייבים לכך, ולא נהיה אחראים לנזק עקיף שנגרם מהשימוש בו. בכל מקרה האחריות שלנו מוגבלת לסכום ששילמתם בפועל ב־12 החודשים האחרונים. אין בסעיף הזה כדי לגרוע מזכות שהחוק מקנה לצרכן.</p>
+<h3>8. דין ושיפוט</h3>
+<p>על התקנון חלים דיני מדינת ישראל, והסמכות הייחודית נתונה לבתי המשפט המוסמכים בישראל. הנוסח בעברית הוא הנוסח המחייב.</p>
+<h3>9. יצירת קשר</h3>
+<p>לכל שאלה, בקשה או תלונה: <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>. פרטי העסק המלאים — בסעיף "פרטי העסק".</p>`,
+refunds: `
+<p>המדיניות הזו חלה על רכישות במשחק, ונכתבה לפי חוק הגנת הצרכן, התשמ״א–1981 ותקנות הגנת הצרכן (ביטול עסקה), התשע״א–2010.</p>
+<h3>מתי אפשר לבטל</h3>
+<ul>
+<li><b>חיוב שגוי, חיוב כפול או מוצר שלא נמסר</b> — החזר מלא, בכל זמן, בלי דמי ביטול.</li>
+<li><b>Complichess Plus</b> — אפשר לבטל תוך 14 יום מיום הרכישה ולקבל את כל הכסף. אחרי הביטול Plus יוסר מהחשבון.</li>
+<li><b>חבילת מטבעות</b> — אפשר לבטל תוך 14 יום מיום הרכישה, אם המטבעות שבחבילה עוד לא נוצלו. אחרי הביטול המטבעות יורדו מהפרופיל.</li>
+<li>המוצרים הם תוכן דיגיטלי ("מידע" כהגדרתו בחוק המחשבים) שנמסר מיד. לפי סעיף 14ג(ד) לחוק, זכות הביטול הכללית לא חלה עליהם — ובכל זאת אנחנו מאפשרים ביטול לפי הכללים שבסעיף הזה.</li>
+</ul>
+<h3>איך מבטלים</h3>
+<p>שלחו מייל ל־<a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a> מהמייל של החשבון, עם קוד ההזמנה (מופיע במשחק ב"חנות" → "הרכישות שלי"). אפשר לבטל גם בטלפון שמופיע בפרטי העסק. בקשת רכישה שעוד לא אושרה אפשר לבטל בעצמכם בכפתור "בטל" בחנות.</p>
+<h3>ההחזר</h3>
+<ul>
+<li>לא נגבים דמי ביטול.</li>
+<li>הכסף יוחזר לאותו אמצעי תשלום, לא יאוחר מ־14 יום מהיום שבו קיבלנו את הודעת הביטול.</li>
+<li>ברכישה דרך Paddle, ההחזר מתבצע על ידי Paddle לפי אותם כללים.</li>
+</ul>`,
+privacy: `
+<p>המדיניות הזו מסבירה איזה מידע נאסף במשחק ולמה. היא מצטרפת ל<a href="https://barusik.com/he/privacy/">מדיניות הפרטיות הכללית של ברוסיק</a>, שחלה על החשבון המשותף. אנחנו לא מוכרים מידע ולא משתמשים בעוגיות מעקב או פרסום.</p>
+<h3>מה נשמר ואיפה</h3>
+<ul>
+<li><b>במכשיר שלכם בלבד</b>: התקדמות (מטבעות, גביעים, סקינים, רצף ומשימות), הגדרות, דקים, משחקים שמורים ופרופילים מקומיים. זה נשמר באחסון של הדפדפן, ונמחק כשמנקים את נתוני האתר.</li>
+<li><b>בחשבון</b> (אם נרשמתם): מייל, שם משתמש, סיסמה מוצפנת (גיבוב), דירוג, ותוצאות של משחקים מדורגים.</li>
+<li><b>ברכישה</b>: מה נקנה, מתי, הסכום, המייל של החשבון, קוד ההזמנה ומספר העסקה אצל ספק התשלום. בתשלום דרך Grow גם השם המלא ומספר הנייד, כי הם נדרשים לקבלה. פרטי כרטיס אשראי לא מגיעים אלינו בשום שלב.</li>
+<li><b>משחק אונליין וצ׳אט קולי</b>: החיבור בין שני השחקנים ישיר (WebRTC). שרת ציבורי של PeerJS רק עוזר למכשירים למצוא זה את זה. בחיבור ישיר כל מכשיר יכול לראות את כתובת ה־IP של המכשיר השני. הקול לא עובר דרכנו ולא מוקלט.</li>
+</ul>
+<h3>ספקים שעובדים איתנו</h3>
+<ul>
+<li>Supabase — חשבונות, דירוג ורכישות (השרתים עשויים להיות מחוץ לישראל).</li>
+<li>GitHub Pages ו־Cloudflare — אירוח המשחק והדומיין.</li>
+<li>PeerJS — עזרה בחיבור בין שחקנים במשחק אונליין.</li>
+<li>Grow (משולם) ו־Paddle — סליקת תשלומים והנפקת קבלות או חשבוניות. כל אחד מהם מעבד את פרטי התשלום לפי מדיניות הפרטיות שלו.</li>
+</ul>
+<h3>כמה זמן</h3>
+<p>נתוני החשבון נשמרים עד שתמחקו אותו. רישומי רכישות נשמרים 7 שנים, כי דיני המס מחייבים לשמור אותם — גם אחרי מחיקת החשבון, בלי קשר אליו.</p>
+<h3>הזכויות שלכם</h3>
+<ul>
+<li>לעיין במידע שנשמר עליכם, לתקן אותו ולבקש למחוק אותו — במייל <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>. נענה תוך 30 יום.</li>
+<li>מחיקת חשבון: במשחק → "המשתמש שלי" → "מחיקת החשבון". המחיקה מוחקת את החשבון המשותף בכל הפלטפורמות של ברוסיק.</li>
+</ul>
+<h3>ילדים</h3>
+<p>המשחק מתאים לכל הגילים. לא נאסף ביודעין מידע על ילדים מתחת לגיל 13 מעבר למה שנדרש לחשבון. הורה שרוצה למחוק חשבון של ילד יכול לכתוב לנו.</p>`,
+accessibility: `
+<p>חשוב לנו שכל אחד יוכל לשחק ב־Complichess, כולל אנשים עם מוגבלות ואנשים עם לקות ראייה. המשחק נבנה בהתאם להנחיות WCAG 2.0 ברמה AA ולתקן הישראלי 5568, ככל שאפשר במשחק לוח אינטראקטיבי.</p>
+<h3>מה יש במשחק</h3>
+<ul>
+<li>הקראת מהלכים ומצב המשחק לקורא מסך (אפשר להפעיל ולכבות בהגדרות).</li>
+<li>משחק מלא מהמקלדת: Tab למעבר, חיצים בתוך הלוח, Enter לבחירה, I לפרטי כלי ו־Esc לסגירת חלון.</li>
+<li>מצב טקסט ולוח גדולים, מצב ניגודיות גבוהה, ומצב בלי אנימציות. המשחק מכבד גם את הגדרת "הפחתת תנועה" של המכשיר.</li>
+<li>תיאור טקסטואלי לכל כלי (לחיצה ארוכה או I), כולל איך הוא זז.</li>
+<li>תמיכה בעברית ובערבית מימין לשמאל, ובאנגלית, רוסית, ספרדית וצרפתית.</li>
+</ul>
+<h3>מגבלות ידועות</h3>
+<ul>
+<li>מצב Tempo מתנהל בזמן אמת, ולכן קשה יותר לשחק בו עם קורא מסך. כל שאר המצבים מבוססי תורות.</li>
+<li>חלק מהאנימציות והאפקטים בתפריט הם קישוט בלבד ואינם נדרשים כדי לשחק.</li>
+<li>דפי התשלום של ספקי הסליקה (Grow ו־Paddle) אינם בשליטתנו.</li>
+</ul>
+<h3>נתקלתם בבעיה?</h3>
+<p>רכז הנגישות: בר לבובסקי — <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>. ספרו לנו מה ניסיתם לעשות, באיזה מכשיר ובאיזו טכנולוגיה מסייעת, ונחזור אליכם תוך 14 יום.</p>
+<p class="muted">ההצהרה עודכנה ב־30 באוקטובר 2026.</p>`,
+seller: `<p>המוכר במשחק Complichess:</p><div id="sellerBox"></div><p>יצירת קשר בנושא רכישות, ביטולים ונגישות: <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>.</p>`
+  }
+},
+en: {
+  title: 'Complichess · Terms, refunds, privacy and accessibility',
+  updated: 'Last updated: October 30, 2026',
+  back: '← Back to the game',
+  binding: 'This is a translation. The Hebrew version is the binding one.',
+  toc: { terms: 'Terms of use and sale', refunds: 'Cancellations and refunds', privacy: 'Privacy', accessibility: 'Accessibility', seller: 'Seller details' },
+  seller: { name: 'Business name', kind: 'Type', number: 'Number', address: 'Address', phone: 'Phone', email: 'Email', kinds: { patur: 'Exempt dealer (Israel)', murshe: 'Licensed dealer (Israel)', company: 'Ltd. company' }, missing: 'The seller details will be published here before sales open.', loading: 'Loading…' },
+  sections: {
+terms: `
+<p>Welcome to Complichess ("the game"), a chess game in which each player builds their back rank from a deck of pieces. It is available at barusik.com/complichess and as an app installed from there. The game is operated by Bar Lvovski (Barusik Platforms), whose business details appear under "Seller details" ("we", "the operator"). Using the game, and any purchase in it, is subject to these terms. If you do not agree, do not use the game.</p>
+<h3>1. The game and your account</h3>
+<ul>
+<li>You can play without an account. Ranked games, the leaderboard and purchases need an account — one account shared by every Barusik platform.</li>
+<li>Keep your password safe and your details accurate. Do not use someone else's identity or an offensive, misleading or impersonating username.</li>
+<li>Under 18: use and purchases only with the permission of a parent or guardian.</li>
+</ul>
+<h3>2. Fair play and behaviour</h3>
+<ul>
+<li>No cheating: no engine or software help in ranked games, no changing the game's code or data for an advantage, no exploiting bugs, no multiple accounts to inflate a rating.</li>
+<li>In voice chat and names: no harassment, threats, racism, sexual content or advertising. Voice chat opens only when both players agree and can be closed at any time.</li>
+<li>We may remove a username, reset a rating or block an account that breaks these rules. Section 6 covers purchases in that case.</li>
+</ul>
+<h3>3. Intellectual property</h3>
+<p>The game, its rules, the original pieces (such as the rope, the gun and gravity), the design, the code and the name Complichess belong to Bar Lvovski; all rights reserved. You may play and share games and positions. Any other use — copying, distributing, modifying or commercial use — only with prior written permission. Open-source components are listed in the game's "About" screen, each under its own licence.</p>
+<h3>4. What you can buy</h3>
+<ul>
+<li><b>Complichess Plus</b> — a one-time payment that adds to your account: no promotional messages in the game, double coins from every game, skins and a board available only with Plus, and a Plus badge. Plus belongs to your account and works on every device where you are signed in, for as long as the game operates.</li>
+<li><b>Coin packs</b> — coins added to the profile open on the device when they are delivered, used for skins, boards and streak freezes inside the game.</li>
+<li>Everything you can buy can also be earned for free in the game (except the Plus-only items). Nothing for sale gives an advantage in the result of a game.</li>
+<li>Coins, skins and Plus are a personal licence for use inside the game only: they have no monetary value and cannot be exchanged for money, transferred to another account or sold.</li>
+</ul>
+<h3>5. Prices, payment and delivery</h3>
+<ul>
+<li>Prices are shown in the store before payment, in Israeli shekels (and in US dollars for international payment). The price shown is the final price.</li>
+<li>Payment is handled by a secure payment provider: Grow (Bit, Apple Pay, Google Pay and cards) or Paddle (international payment; Paddle acts as the merchant of record and issues the invoice). Card details never pass through or stay with us.</li>
+<li>A receipt or invoice is emailed by the payment provider.</li>
+<li>Delivery is immediate once the payment is confirmed: Plus is switched on in your account, and coins arrive the next time the game opens while you are signed in. If something has not arrived within an hour, write to us with the order code.</li>
+<li>Where online payment is not available yet, you can send a "purchase request". A request is not a charge; we approve it and, if needed, send you a way to pay. You can cancel a request that has not been approved at any time.</li>
+</ul>
+<h3>6. Changes, suspension and blocking</h3>
+<p>We keep improving the game and may change modes, rules, prices and items. A change will not take away an item you already bought without fair compensation. If we decide to close the game, we will announce it at least 30 days in advance. Blocking an account for a serious breach of these terms (for example cheating or payment fraud) may also cancel purchased items without a refund, unless the law says otherwise.</p>
+<h3>7. Liability</h3>
+<p>The game is provided "as is". We work to keep it running well and without interruptions but cannot promise that, and we are not liable for indirect damage from using it. In any case our liability is limited to the amount you actually paid in the last 12 months. Nothing here limits a right that consumer law gives you.</p>
+<h3>8. Law and jurisdiction</h3>
+<p>These terms are governed by the laws of the State of Israel, and the competent courts in Israel have exclusive jurisdiction. The Hebrew version is binding.</p>
+<h3>9. Contact</h3>
+<p>Any question, request or complaint: <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>. Full business details are under "Seller details".</p>`,
+refunds: `
+<p>This policy covers purchases in the game and follows the Israeli Consumer Protection Law, 1981, and the Consumer Protection (Cancellation of Transaction) Regulations, 2010.</p>
+<h3>When you can cancel</h3>
+<ul>
+<li><b>Wrong or double charge, or an item that was not delivered</b> — full refund, at any time, no cancellation fee.</li>
+<li><b>Complichess Plus</b> — cancel within 14 days of purchase for a full refund. Plus is then removed from the account.</li>
+<li><b>Coin pack</b> — cancel within 14 days of purchase if the coins in the pack have not been spent. The coins are then removed from the profile.</li>
+<li>The items are digital content delivered immediately; under section 14C(d) of the law the general right to cancel does not apply to them — we allow cancellation anyway, under the rules in this section.</li>
+</ul>
+<h3>How to cancel</h3>
+<p>Email <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a> from your account's address with the order code (in the game: "Store" → "My purchases"). You can also cancel by the phone number in the seller details. A request that has not been approved yet can be cancelled with the "Cancel" button in the store.</p>
+<h3>The refund</h3>
+<ul>
+<li>No cancellation fee.</li>
+<li>The money goes back to the same payment method, no later than 14 days after we receive the cancellation notice.</li>
+<li>For purchases through Paddle, Paddle makes the refund under the same rules.</li>
+</ul>`,
+privacy: `
+<p>This policy explains what information the game collects and why. It adds to the <a href="https://barusik.com/en/privacy/">general Barusik privacy policy</a>, which covers the shared account. We do not sell information and do not use tracking or advertising cookies.</p>
+<h3>What is stored and where</h3>
+<ul>
+<li><b>Only on your device</b>: progress (coins, trophies, skins, streak and quests), settings, decks, saved games and local profiles — in the browser's storage, deleted when you clear the site's data.</li>
+<li><b>In your account</b> (if you sign up): email, username, encrypted (hashed) password, rating and results of ranked games.</li>
+<li><b>When you buy</b>: what was bought, when, the amount, your account email, the order code and the payment provider's transaction number. With Grow also your full name and mobile number, which the receipt requires. Card details never reach us.</li>
+<li><b>Online play and voice chat</b>: the two players connect directly (WebRTC). A public PeerJS server only helps the devices find each other. In a direct connection each device can see the other's IP address. Voice does not pass through us and is not recorded.</li>
+</ul>
+<h3>Service providers</h3>
+<ul>
+<li>Supabase — accounts, ratings and purchases (servers may be outside Israel).</li>
+<li>GitHub Pages and Cloudflare — hosting and the domain.</li>
+<li>PeerJS — helps players connect for online games.</li>
+<li>Grow (Meshulam) and Paddle — payment processing and receipts or invoices, each under its own privacy policy.</li>
+</ul>
+<h3>How long</h3>
+<p>Account data is kept until you delete the account. Purchase records are kept for 7 years because tax law requires it — also after the account is deleted, without a link to it.</p>
+<h3>Your rights</h3>
+<ul>
+<li>See, correct and ask to delete the information about you — by email to <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>. We answer within 30 days.</li>
+<li>Delete your account in the game: "My account" → "Delete account". This deletes the shared account on every Barusik platform.</li>
+</ul>
+<h3>Children</h3>
+<p>The game suits all ages. We do not knowingly collect information about children under 13 beyond what an account needs. A parent who wants a child's account deleted can write to us.</p>`,
+accessibility: `
+<p>We want everyone to be able to play Complichess, including people with disabilities and people with visual impairments. The game was built to follow WCAG 2.0 level AA and Israeli Standard 5568, as far as an interactive board game allows.</p>
+<h3>What the game offers</h3>
+<ul>
+<li>Moves and game state announced to screen readers (can be switched on and off in settings).</li>
+<li>Full keyboard play: Tab to move, arrows inside the board, Enter to select, I for piece details and Esc to close a window.</li>
+<li>Large text and board, high contrast, and no-animation modes. The game also follows the device's "reduce motion" setting.</li>
+<li>A text description of every piece (long press or I), including how it moves.</li>
+<li>Right-to-left Hebrew and Arabic, plus English, Russian, Spanish and French.</li>
+</ul>
+<h3>Known limitations</h3>
+<ul>
+<li>Tempo mode runs in real time and is harder to play with a screen reader. All other modes are turn-based.</li>
+<li>Some animations and effects in the menu are decoration only and are not needed to play.</li>
+<li>The payment providers' pages (Grow and Paddle) are not under our control.</li>
+</ul>
+<h3>Found a problem?</h3>
+<p>Accessibility coordinator: Bar Lvovski — <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>. Tell us what you tried to do, on which device and with which assistive technology, and we will get back to you within 14 days.</p>
+<p class="muted">Statement updated on October 30, 2026.</p>`,
+seller: `<p>The seller in Complichess:</p><div id="sellerBox"></div><p>Contact about purchases, cancellations and accessibility: <a href="mailto:complichess.app@gmail.com">complichess.app@gmail.com</a>.</p>`
+  }
+}
+};
+
+const qLang = (/[?&]lang=(\w\w)/.exec(location.search) || [])[1];
+const L = LANGS.some((x) => x[0] === qLang) ? qLang : ((navigator.language || 'he').slice(0, 2) === 'he' ? 'he' : 'en');
+const D = T[L] || T.en;
+const rtl = L === 'he' || L === 'ar';
+document.documentElement.lang = L; document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+document.title = D.title;
+document.getElementById('title').textContent = D.title;
+document.getElementById('updated').textContent = D.updated;
+document.getElementById('back').textContent = D.back;
+document.getElementById('back').href = './?lang=' + L;
+if (L !== 'he') { const b = document.getElementById('binding'); b.hidden = false; b.textContent = (L === 'en' ? '' : 'English version shown. ') + T.en.binding; }
+document.getElementById('langs').innerHTML = LANGS.map(([c, n]) => '<a href="?lang=' + c + location.hash + '" class="' + (c === L ? 'on' : '') + '" lang="' + c + '">' + n + '</a>').join('');
+const ids = ['terms', 'refunds', 'privacy', 'accessibility', 'seller'];
+document.getElementById('toc').innerHTML = ids.map((k) => '<a href="#' + k + '">' + D.toc[k] + '</a>').join('');
+document.getElementById('main').innerHTML = ids.map((k) => '<section id="' + k + '"><h2>' + D.toc[k] + '</h2>' + D.sections[k] + '</section>').join('');
+if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(() => t.scrollIntoView(), 0); }
+
+/* seller details come from the store settings that Bar fills in on the admin page */
+(async function () {
+  const box = document.getElementById('sellerBox'); const S = D.seller;
+  box.innerHTML = '<p class="muted">' + S.loading + '</p>';
+  const esc = (v) => String(v || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  try {
+    const r = await fetch(SUPA_URL + '/rest/v1/rpc/cx_public_config', { method: 'POST', headers: { apikey: SUPA_KEY, 'Content-Type': 'application/json' }, body: '{}' });
+    const j = r.ok ? await r.json() : null; const b = (j && j.business) || {};
+    if (!b.name) { box.innerHTML = '<p class="note">' + S.missing + '</p>'; return; }
+    const row = (k, v, href) => v ? '<dt>' + S[k] + '</dt><dd>' + (href ? '<a href="' + href + '">' + esc(v) + '</a>' : esc(v)) + '</dd>' : '';
+    box.innerHTML = '<dl class="seller">' + row('name', b.name) + row('kind', S.kinds[b.kind] || b.kind) + row('number', b.number) + row('address', b.address) +
+      row('phone', b.phone, 'tel:' + String(b.phone || '').replace(/[^\d+]/g, '')) + row('email', b.email, 'mailto:' + esc(b.email)) + '</dl>';
+  } catch (e) { box.innerHTML = '<p class="note">' + S.missing + '</p>'; }
+})();
+</script>
+</body>
+</html>

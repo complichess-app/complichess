@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#08111E">
+<title>Complichess · ניהול חנות</title>
+<link rel="icon" href="icon-192.png">
+<style>
+  :root { --bg:#08111E; --panel:#121C2B; --panel2:#0E1724; --line:#26354A; --text:#F1EEE7; --soft:#C9CFDA; --dim:#8F9AAD; --gold:#D2A54A; --green:#3DBE7A; --red:#E06A5A; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 'Rubik', 'Segoe UI', 'Assistant', Arial, sans-serif; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 16px 14px 60px; }
+  header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  header h1 { flex: 1; margin: 0; font-size: 22px; }
+  .tabs { display: flex; gap: 6px; overflow-x: auto; margin: 14px 0; }
+  .tabs button { white-space: nowrap; }
+  button, .btn { font: inherit; color: inherit; cursor: pointer; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); }
+  button.on, button.primary { background: var(--gold); color: #1A1208; border-color: var(--gold); font-weight: 700; }
+  button.good { background: rgba(61,190,122,.2); border-color: var(--green); }
+  button.bad { background: rgba(224,106,90,.15); border-color: var(--red); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--soft); }
+  input, select, textarea { font: inherit; color: var(--text); background: var(--panel2); border: 1px solid var(--line); border-radius: 9px; min-height: 40px; padding: 6px 10px; }
+  textarea { min-height: 70px; }
+  input[dir=ltr] { text-align: left; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .muted { color: var(--dim); font-size: 13px; }
+  .stat b { display: block; font-size: 24px; direction: ltr; text-align: right; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: start; vertical-align: top; }
+  th { color: var(--dim); font-weight: 600; }
+  .st { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; background: rgba(255,255,255,.08); white-space: nowrap; }
+  .st.paid, .st.approved { background: rgba(61,190,122,.2); color: #8FE6B3; }
+  .st.pending { background: rgba(210,165,74,.22); color: #FFD27A; }
+  .st.awaiting_payment { background: rgba(120,160,255,.15); color: #AFC6FF; }
+  .ok { color: #8FE6B3; } .no { color: #FF9C8E; }
+  code, .mono { direction: ltr; unicode-bidi: embed; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; background: var(--panel2); padding: 2px 6px; border-radius: 6px; word-break: break-all; }
+  .msg { min-height: 22px; font-weight: 700; color: #FFD27A; }
+  .check li { margin: 6px 0; }
+  .hide { display: none !important; }
+  @media (max-width: 640px) { .hide-sm { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Complichess · ניהול חנות</h1>
+    <span class="muted" id="who"></span>
+    <button id="logout" class="hide">התנתק</button>
+    <a class="btn" href="./" style="display:inline-flex;align-items:center;text-decoration:none">למשחק</a>
+  </header>
+  <div class="msg" id="msg" role="status"></div>
+
+  <div id="login" class="card hide">
+    <p>התחבר עם חשבון המנהל (<span class="mono">barusik.official@gmail.com</span>).</p>
+    <div class="grid">
+      <label class="f">מייל<input id="em" type="email" dir="ltr" autocomplete="email"></label>
+      <label class="f">סיסמה<input id="pw" type="password" dir="ltr" autocomplete="current-password"></label>
+    </div>
+    <div class="row" style="margin-top:10px"><button class="primary" id="doLogin">התחבר</button></div>
+  </div>
+
+  <div id="app" class="hide">
+    <div class="tabs" id="tabs"></div>
+    <section data-tab="orders"></section>
+    <section data-tab="sales" class="hide"></section>
+    <section data-tab="business" class="hide"></section>
+    <section data-tab="pay" class="hide"></section>
+    <section data-tab="products" class="hide"></section>
+    <section data-tab="ready" class="hide"></section>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+/* © 2026 Bar Lvovski. All rights reserved. Complichess store admin: orders, sales, business details, payment settings, prices. */
+const SUPA_URL = 'https://iktmyrfbejtjsiehcrar.supabase.co';
+const SUPA_KEY = 'sb_publishable_vEUqQPQSE0EG7YRnwNeAbg_PzViDO1a';
+const FN = SUPA_URL + '/functions/v1/';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: true, autoRefreshToken: true, storageKey: 'complichess-auth' } });
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const say = (m, ms) => { $('#msg').textContent = m || ''; if (m && ms !== 0) setTimeout(() => { if ($('#msg').textContent === m) $('#msg').textContent = ''; }, ms || 4000); };
+const money = (n, c) => (c === 'USD' ? '$' : '₪') + Number(n || 0).toFixed(2);
+const when = (t) => t ? new Date(t).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' }) : '';
+const ST = { pending: 'מחכה לאישור', awaiting_payment: 'בתשלום', paid: 'שולם', approved: 'אושר', declined: 'נדחה', cancelled: 'בוטל', refunded: 'הוחזר' };
+const PNAME = (o) => o.product === 'plus' ? 'Plus' : (o.coins || '') + ' 🪙';
+const TABS = [['orders', 'הזמנות'], ['sales', 'מכירות'], ['business', 'העוסק'], ['pay', 'תשלומים'], ['products', 'מחירים'], ['ready', 'מוכנות לשוק']];
+let S = { orders: [], settings: null, stats: null, filter: 'open', tab: 'orders' };
+
+async function rpc(fn, args) { const { data, error } = await sb.rpc(fn, args || {}); if (error) throw new Error(error.message); return data; }
+
+function tabs() {
+  $('#tabs').innerHTML = TABS.map(([k, l]) => '<button data-k="' + k + '" class="' + (S.tab === k ? 'on' : '') + '">' + l + (k === 'orders' && S.stats && S.stats.waiting ? ' (' + S.stats.waiting + ')' : '') + '</button>').join('');
+  $('#tabs').querySelectorAll('button').forEach((b) => b.onclick = () => { S.tab = b.dataset.k; show(); });
+}
+function show() {
+  tabs();
+  document.querySelectorAll('section[data-tab]').forEach((s) => s.classList.toggle('hide', s.dataset.tab !== S.tab));
+  ({ orders: drawOrders, sales: drawSales, business: drawBusiness, pay: drawPay, products: drawProducts, ready: drawReady })[S.tab]();
+}
+
+/* ---------- orders ---------- */
+function drawOrders() {
+  const el = $('section[data-tab=orders]');
+  const list = S.orders.filter((o) => S.filter === 'all' || (S.filter === 'open' ? o.open : (o.status === 'paid' || o.status === 'approved')));
+  el.innerHTML = '<div class="card"><div class="row"><b style="flex:1">הזמנות</b>' +
+    [['open', 'פתוחות'], ['done', 'שולמו/אושרו'], ['all', 'הכל']].map(([k, l]) => '<button data-f="' + k + '" class="' + (S.filter === k ? 'on' : '') + '">' + l + '</button>').join('') +
+    '<button id="reload">רענן</button></div>' +
+    '<p class="muted">"אשר" = קיבלת את הכסף (או שהתשלום אונליין עבר) והפריט נמסר. "מתנה" = נמסר בחינם, לא נספר כהכנסה. "החזר" = החזרת כסף והפריט נלקח.</p>' +
+    (list.length ? '<div style="overflow-x:auto"><table><thead><tr><th>קוד</th><th>מוצר</th><th>לקוח</th><th>סכום</th><th>דרך</th><th>סטטוס</th><th class="hide-sm">נוצר</th><th></th></tr></thead><tbody>' +
+      list.map((o) => '<tr><td class="mono">' + esc(o.code) + '</td><td>' + esc(PNAME(o)) + '</td><td><span class="mono">' + esc(o.email) + '</span>' +
+        (o.buyer_name ? '<div class="muted">' + esc(o.buyer_name) + ' · ' + esc(o.buyer_phone) + '</div>' : '') + (o.note ? '<div class="muted">📝 ' + esc(o.note) + '</div>' : '') + '</td>' +
+        '<td style="direction:ltr;text-align:right">' + money(o.amount, o.currency) + '</td><td>' + esc(o.provider) + (o.provider_ref ? '<div class="muted mono">' + esc(o.provider_ref) + '</div>' : '') + '</td>' +
+        '<td><span class="st ' + o.status + '">' + (ST[o.status] || o.status) + '</span>' + (o.kind === 'coins' && o.redeemed_at ? '<div class="muted">נכנס למשחק</div>' : '') + '</td>' +
+        '<td class="hide-sm muted">' + when(o.created_at) + '</td><td><div class="row" style="gap:4px">' + actions(o) + '</div></td></tr>').join('') +
+      '</tbody></table></div>' : '<p class="muted">אין הזמנות בתצוגה הזו.</p>') + '</div>';
+  el.querySelectorAll('[data-f]').forEach((b) => b.onclick = () => { S.filter = b.dataset.f; drawOrders(); });
+  $('#reload').onclick = () => load().then(() => say('עודכן'));
+  el.querySelectorAll('[data-act]').forEach((b) => b.onclick = () => decide(b.dataset.id, b.dataset.act));
+}
+function actions(o) {
+  const b = (act, label, cls) => '<button class="' + (cls || '') + '" data-id="' + o.id + '" data-act="' + act + '">' + label + '</button>';
+  if (o.status === 'pending' || o.status === 'awaiting_payment') return b('approve', 'אשר', 'good') + b('gift', 'מתנה') + b('decline', 'דחה', 'bad') + b('note', '📝');
+  if (o.status === 'paid' || o.status === 'approved') return b('refund', 'החזר', 'bad') + b('note', '📝');
+  if (o.status === 'declined' || o.status === 'cancelled') return b('approve', 'אשר בכל זאת') + b('note', '📝');
+  return b('note', '📝');
+}
+async function decide(id, act) {
+  const o = S.orders.find((x) => x.id === id);
+  let note = null;
+  if (act === 'note') { note = prompt('הערה להזמנה ' + o.code, o.note || ''); if (note === null) return; }
+  if (act === 'refund' && !confirm('לסמן את ' + o.code + ' כהוחזר? הפריט יילקח מהשחקן. את הכסף עצמו מחזירים אצל ספק התשלום.')) return;
+  if (act === 'approve' && !confirm('לאשר את ' + o.code + ' (' + PNAME(o) + ', ' + money(o.amount, o.currency) + ')? זה נספר כהכנסה.')) return;
+  try { await rpc('cx_admin_decide', { p_id: id, p_action: act, p_note: note }); await load(); say('עודכן ✓'); } catch (e) { say('שגיאה: ' + e.message, 8000); }
+}
+
+/* ---------- sales ---------- */
+function drawSales() {
+  const st = S.stats || { months: [] };
+  $('section[data-tab=sales]').innerHTML = '<div class="grid">' +
+    '<div class="card stat"><span class="muted">הכנסות השנה (₪)</span><b>' + money(st.year_ils, 'ILS') + '</b></div>' +
+    '<div class="card stat"><span class="muted">הכנסות השנה ($, Paddle)</span><b>' + money(st.year_usd, 'USD') + '</b></div>' +
+    '<div class="card stat"><span class="muted">מנויי Plus</span><b>' + (st.plus || 0) + '</b></div>' +
+    '<div class="card stat"><span class="muted">מחכות לאישור</span><b>' + (st.waiting || 0) + '</b></div></div>' +
+    '<div class="card"><b>לפי חודש</b><table><thead><tr><th>חודש</th><th>הזמנות</th><th>₪</th><th>$</th></tr></thead><tbody>' +
+    (st.months || []).map((m) => '<tr><td class="mono">' + esc(m.month) + '</td><td>' + m.orders + '</td><td>' + money(m.ils, 'ILS') + '</td><td>' + money(m.usd, 'USD') + '</td></tr>').join('') +
+    '</tbody></table><p class="muted">לעוסק פטור יש תקרת מחזור שנתית שמתעדכנת כל שנה — בדוק את התקרה הנוכחית מול רשות המסים או רואה החשבון. הסכומים כאן הם מה שנרשם במשחק; הקובע הוא מה שהתקבל בפועל אצל ספק התשלום.</p></div>';
+}
+
+/* ---------- business (העוסק) ---------- */
+function drawBusiness() {
+  const b = (S.settings && S.settings.business) || {};
+  $('section[data-tab=business]').innerHTML = '<div class="card"><b>פרטי העוסק</b><p class="muted">מופיעים בדף התקנון ("פרטי העסק") ובתחתית החנות. חוק הגנת הצרכן מחייב להציג אותם במכירה מרחוק, וספק הסליקה בודק אותם לפני שהוא מאשר את האתר. בלי השם, המספר, הכתובת וטלפון או מייל — התשלום אונליין לא נפתח.</p><div class="grid">' +
+    '<label class="f">שם העסק / שם מלא<input id="b_name" value="' + esc(b.name) + '"></label>' +
+    '<label class="f">סוג<select id="b_kind">' + [['patur', 'עוסק פטור'], ['murshe', 'עוסק מורשה'], ['company', 'חברה בע״מ']].map(([k, l]) => '<option value="' + k + '"' + ((b.kind || 'patur') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></label>' +
+    '<label class="f">מספר עוסק / ח״פ<input id="b_number" dir="ltr" inputmode="numeric" value="' + esc(b.number) + '"></label>' +
+    '<label class="f">כתובת<input id="b_address" value="' + esc(b.address) + '"></label>' +
+    '<label class="f">טלפון ליצירת קשר<input id="b_phone" dir="ltr" value="' + esc(b.phone) + '"></label>' +
+    '<label class="f">מייל ליצירת קשר<input id="b_email" dir="ltr" value="' + esc(b.email || 'complichess.app@gmail.com') + '"></label></div>' +
+    '<div class="row" style="margin-top:12px"><button class="primary" id="saveBiz">שמור</button><a class="btn" href="legal.html#seller" target="_blank" style="display:inline-flex;align-items:center;text-decoration:none">לראות בדף התקנון</a></div></div>';
+  $('#saveBiz').onclick = () => save({ business: { name: $('#b_name').value.trim(), kind: $('#b_kind').value, number: $('#b_number').value.trim(), address: $('#b_address').value.trim(), phone: $('#b_phone').value.trim(), email: $('#b_email').value.trim() } });
+}
+
+/* ---------- payments ---------- */
+function drawPay() {
+  const s = S.settings || {}, g = s.grow || {}, p = s.paddle || {}, m = s.manual || {};
+  const envSel = (id, v) => '<select id="' + id + '"><option value="sandbox"' + (v !== 'live' ? ' selected' : '') + '>בדיקות (sandbox)</option><option value="live"' + (v === 'live' ? ' selected' : '') + '>אמיתי (live)</option></select>';
+  const onBox = (id, v, l) => '<label class="row" style="gap:8px"><input type="checkbox" id="' + id + '"' + (v ? ' checked' : '') + ' style="width:20px;height:20px;min-height:0"> ' + l + '</label>';
+  $('section[data-tab=pay]').innerHTML =
+    '<div class="card"><b>Grow (משולם) — תשלום ישראלי: ביט, Apple Pay, Google Pay, אשראי</b>' +
+    '<p class="muted">פותחים חשבון ב־Grow על העוסק, ומבקשים מהם "API לאתר" (Light API). הם נותנים userId ו־pageCode (ולפעמים apiKey), ובודקים את האתר לפני מעבר לאמיתי. כתובת ההתראות שלך (notifyUrl) נשלחת אוטומטית בכל תשלום:</p>' +
+    '<p><code>' + FN + 'cx-webhook?provider=grow</code></p><div class="grid">' +
+    '<label class="f">userId<input id="g_user" dir="ltr" value="' + esc(g.user_id) + '"></label>' +
+    '<label class="f">pageCode<input id="g_page" dir="ltr" value="' + esc(g.page_code) + '"></label>' +
+    '<label class="f">apiKey (אם נתנו)<input id="g_key" dir="ltr" value="' + esc(g.api_key) + '"></label>' +
+    '<label class="f">סביבה' + envSel('g_env', g.env) + '</label></div>' +
+    '<div class="row" style="margin-top:10px">' + onBox('g_on', g.on, 'פעיל בחנות') + '</div></div>' +
+    '<div class="card"><b>Paddle — תשלום בינלאומי (לא חובה)</b>' +
+    '<p class="muted">Paddle היא המוכרת הרשומה מול הקונה, ומטפלת במע״מ ובמסים בחו״ל. ב־Paddle יוצרים מוצר ומחיר לכל פריט (את מזהי המחיר pri_… מדביקים בלשונית "מחירים"), Client-side token, ו־Notification destination לכתובת:</p>' +
+    '<p><code>' + FN + 'cx-webhook?provider=paddle</code></p><p class="muted">באירועים לסמן: transaction.completed. את ה־Secret key של ההתראות מדביקים כאן. בהגדרות Paddle צריך לאשר את הדומיין barusik.com.</p><div class="grid">' +
+    '<label class="f">Client-side token<input id="p_tok" dir="ltr" value="' + esc(p.client_token) + '"></label>' +
+    '<label class="f">Webhook secret key<input id="p_sec" dir="ltr" value="' + esc(p.webhook_secret) + '"></label>' +
+    '<label class="f">סביבה' + envSel('p_env', p.env) + '</label></div>' +
+    '<div class="row" style="margin-top:10px">' + onBox('p_on', p.on, 'פעיל בחנות') + '</div></div>' +
+    '<div class="card"><b>בקשות רכישה (בלי תשלום אונליין)</b>' +
+    '<p class="muted">כשאין ספק תשלום פעיל, הקונה שולח בקשה והיא מופיעה בלשונית "הזמנות". אפשר להוסיף קישור תשלום (למשל דף תשלום של ביט עסקי או PayBox) — הקונה יתבקש לכתוב בהערה את קוד ההזמנה, ואתה מאשר כשהכסף מגיע.</p><div class="grid">' +
+    '<label class="f">קישור לתשלום (לא חובה)<input id="m_link" dir="ltr" value="' + esc(m.link) + '"></label>' +
+    '<label class="f">הוראות לקונה (לא חובה)<textarea id="m_note">' + esc(m.note) + '</textarea></label></div>' +
+    '<div class="row" style="margin-top:10px">' + onBox('m_on', m.on !== false, 'לאפשר בקשות כשאין תשלום אונליין') + '</div></div>' +
+    '<div class="row"><button class="primary" id="savePay">שמור הגדרות תשלום</button><span class="muted">מפתחות סודיים מוצגים מוסתרים (••••1234). אם לא שינית אותם — הם נשמרים כמו שהם.</span></div>';
+  $('#savePay').onclick = () => save({
+    grow: { on: $('#g_on').checked, env: $('#g_env').value, user_id: $('#g_user').value, page_code: $('#g_page').value, api_key: $('#g_key').value },
+    paddle: { on: $('#p_on').checked, env: $('#p_env').value, client_token: $('#p_tok').value, webhook_secret: $('#p_sec').value },
+    manual: { on: $('#m_on').checked, link: $('#m_link').value, note: $('#m_note').value } });
+}
+
+/* ---------- products ---------- */
+function drawProducts() {
+  const ps = (S.settings && S.settings.products) || [];
+  $('section[data-tab=products]').innerHTML = '<div class="card"><b>מוצרים ומחירים</b><p class="muted">המחיר בשקלים משמש ל־Grow ולבקשות; המחיר בדולרים מוצג ב־Paddle (המחיר בפועל נקבע במחיר שהגדרת ב־Paddle, אז שמור על אותו סכום). עוסק פטור לא גובה מע״מ.</p>' +
+    '<div style="overflow-x:auto"><table><thead><tr><th>מוצר</th><th>מטבעות</th><th>₪</th><th>$</th><th>Paddle price id</th><th>פעיל</th></tr></thead><tbody>' +
+    ps.map((p) => '<tr data-id="' + p.id + '"><td>' + (p.kind === 'plus' ? 'Complichess Plus' : 'חבילת מטבעות') + '<div class="muted mono">' + p.id + '</div></td>' +
+      '<td>' + (p.kind === 'coins' ? '<input data-k="coins" type="number" min="1" style="width:90px" value="' + p.coins + '">' : '—') + '</td>' +
+      '<td><input data-k="price_ils" type="number" step="0.1" min="1" style="width:90px" value="' + p.price_ils + '"></td>' +
+      '<td><input data-k="price_usd" type="number" step="0.01" min="0.5" style="width:90px" value="' + p.price_usd + '"></td>' +
+      '<td><input data-k="paddle_price_id" dir="ltr" style="width:220px" value="' + esc(p.paddle_price_id) + '"></td>' +
+      '<td><input data-k="active" type="checkbox" style="width:20px;height:20px;min-height:0"' + (p.active ? ' checked' : '') + '></td></tr>').join('') +
+    '</tbody></table></div><div class="row" style="margin-top:10px"><button class="primary" id="saveProd">שמור מחירים</button></div></div>';
+  $('#saveProd').onclick = () => {
+    const out = Array.from(document.querySelectorAll('section[data-tab=products] tr[data-id]')).map((tr) => {
+      const o = { id: tr.dataset.id };
+      tr.querySelectorAll('[data-k]').forEach((i) => { o[i.dataset.k] = i.type === 'checkbox' ? i.checked : i.value; });
+      return o;
+    });
+    save({ products: out });
+  };
+}
+
+/* ---------- readiness ---------- */
+async function drawReady() {
+  const el = $('section[data-tab=ready]');
+  const s = S.settings || {}, b = s.business || {}, g = s.grow || {}, p = s.paddle || {};
+  const items = [];
+  const add = (ok, text, hint) => items.push('<li><span class="' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</span> ' + text + (hint && !ok ? '<div class="muted">' + hint + '</div>' : '') + '</li>');
+  add(true, 'טבלאות החנות מותקנות במסד הנתונים');
+  add(!!(b.name && b.number && b.address && (b.phone || b.email)), 'פרטי העוסק מלאים', 'לשונית "העוסק".');
+  let fnOk = false; try { const r = await fetch(FN + 'cx-checkout', { method: 'OPTIONS' }); fnOk = r.ok; } catch (e) {}
+  add(fnOk, 'פונקציית התשלום (cx-checkout) פרוסה בשרת', 'צריך לפרוס את supabase/functions/cx-checkout ו־cx-webhook (ראו GO-LIVE.md).');
+  let whOk = false; try { const r = await fetch(FN + 'cx-webhook?provider=none', { method: 'POST', body: '' }); whOk = r.status === 400; } catch (e) {}
+  add(whOk, 'כתובת ההתראות (cx-webhook) עונה', 'צריך לפרוס את cx-webhook עם Verify JWT כבוי.');
+  add(!!(g.on && g.user_id && g.page_code), 'Grow מחובר ופעיל' + (g.env === 'live' ? ' (אמיתי)' : g.on ? ' (בדיקות)' : ''), 'לשונית "תשלומים". אפשר להתחיל ב־sandbox ולעבור ל־live אחרי האישור של Grow.');
+  add(!!(p.on && p.client_token), 'Paddle מחובר (לא חובה — רק לקונים מחו״ל)', 'לא חובה.');
+  el.innerHTML = '<div class="card"><b>מה חסר כדי למכור</b><ul class="check" style="list-style:none;padding:0">' + items.join('') + '</ul>' +
+    '<p class="muted">דפים שספקי הסליקה והחנויות מבקשים: <a href="legal.html#terms" target="_blank">תקנון</a> · <a href="legal.html#refunds" target="_blank">ביטולים</a> · <a href="legal.html#privacy" target="_blank">פרטיות</a> · <a href="legal.html#accessibility" target="_blank">נגישות</a>. כל אלה גם בתוך המשחק, ותיבת "קראתי ואני מסכים" מופיעה לפני כל תשלום.</p></div>';
+}
+
+/* ---------- data ---------- */
+async function save(patch) {
+  try { S.settings = await rpc('cx_admin_save_settings', { p: patch }); say('נשמר ✓'); show(); } catch (e) { say('שגיאה: ' + e.message, 8000); }
+}
+async function load() {
+  const [o, s, st] = await Promise.all([rpc('cx_admin_orders'), rpc('cx_admin_settings'), rpc('cx_admin_stats')]);
+  S.orders = o || []; S.settings = s; S.stats = st; show();
+}
+async function boot() {
+  const { data } = await sb.auth.getSession();
+  const user = data && data.session && data.session.user;
+  $('#login').classList.toggle('hide', !!user); $('#app').classList.add('hide'); $('#logout').classList.toggle('hide', !user);
+  $('#who').textContent = user ? user.email : '';
+  if (!user) return;
+  let admin = false; try { admin = await rpc('is_admin'); } catch (e) {}
+  if (!admin) { say('לחשבון הזה אין הרשאת ניהול.', 0); return; }
+  try { await load(); $('#app').classList.remove('hide'); }
+  catch (e) { say(/cx_admin|function .* does not exist|schema cache/i.test(e.message) ? 'טבלאות החנות עוד לא הותקנו: להריץ את supabase/store.sql ב־SQL Editor (ראו GO-LIVE.md).' : 'שגיאה: ' + e.message, 0); }
+}
+$('#doLogin').onclick = async () => {
+  say('מתחבר…', 0);
+  const { error } = await sb.auth.signInWithPassword({ email: $('#em').value.trim(), password: $('#pw').value });
+  if (error) say('מייל או סיסמה לא נכונים', 6000); else { say(''); boot(); }
+};
+$('#pw').onkeydown = (e) => { if (e.key === 'Enter') $('#doLogin').click(); };
+$('#logout').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+setInterval(() => { if (!$('#app').classList.contains('hide') && S.tab === 'orders' && !document.hidden) load().catch(() => {}); }, 60000);
+boot();
+</script>
+</body>
+</html>
