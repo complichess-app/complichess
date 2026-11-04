@@ -160,7 +160,7 @@ function drawBusiness() {
     '<label class="f">מספר עוסק / ח״פ<input id="b_number" dir="ltr" inputmode="numeric" value="' + esc(b.number) + '"></label>' +
     '<label class="f">כתובת<input id="b_address" value="' + esc(b.address) + '"></label>' +
     '<label class="f">טלפון ליצירת קשר<input id="b_phone" dir="ltr" value="' + esc(b.phone) + '"></label>' +
-    '<label class="f">מייל ליצירת קשר<input id="b_email" dir="ltr" value="' + esc(b.email || 'complichess.app@gmail.com') + '"></label></div>' +
+    '<label class="f">מייל ליצירת קשר<input id="b_email" dir="ltr" value="' + esc(b.email || 'barusik.official@gmail.com') + '"></label></div>' +
     '<div class="row" style="margin-top:12px"><button class="primary" id="saveBiz">שמור</button><a class="btn" href="legal.html#seller" target="_blank" style="display:inline-flex;align-items:center;text-decoration:none">לראות בדף התקנון</a></div></div>';
   $('#saveBiz').onclick = () => save({ business: { name: $('#b_name').value.trim(), kind: $('#b_kind').value, number: $('#b_number').value.trim(), address: $('#b_address').value.trim(), phone: $('#b_phone').value.trim(), email: $('#b_email').value.trim() } });
 }

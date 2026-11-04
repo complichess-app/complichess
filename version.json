@@ -1,11 +1,11 @@
 {
-  "version": "2.4.0",
+  "version": "2.4.1",
   "notes": {
-    "en": "New: the Complichess store — Plus (no ads, ×2 coins, exclusive skins) and coin packs, terms and privacy pages, and account deletion in the game",
-    "he": "חדש: חנות Complichess — Plus (בלי פרסומות, ×2 מטבעות, סקינים בלעדיים) וחבילות מטבעות, תקנון ופרטיות, ומחיקת חשבון מתוך המשחק",
-    "ar": "جديد: متجر Complichess — Plus (بلا إعلانات، ×2 عملات، أشكال حصرية) وحزم العملات، صفحات الشروط والخصوصية، وحذف الحساب من داخل اللعبة",
-    "ru": "Новое: магазин Complichess — Plus (без рекламы, ×2 монет, эксклюзивные скины) и наборы монет, условия и конфиденциальность, удаление аккаунта в игре",
-    "es": "Nuevo: la tienda Complichess — Plus (sin anuncios, ×2 monedas, skins exclusivos) y paquetes de monedas, términos y privacidad, y eliminar la cuenta desde el juego",
-    "fr": "Nouveau : la boutique Complichess — Plus (sans pub, ×2 pièces, skins exclusifs) et packs de pièces, conditions et confidentialité, et suppression du compte dans le jeu"
+    "en": "Small fixes: a link to Barusik Platforms, clearer seller details and terms in every language, tidier profile chip on phones",
+    "he": "תיקונים קטנים: קישור ל־Barusik Platforms, פרטי העסק והתקנון ברורים יותר בכל השפות, כרטיס פרופיל מסודר יותר בטלפון",
+    "ar": "إصلاحات صغيرة: رابط إلى Barusik Platforms، تفاصيل البائع والشروط أوضح بكل اللغات، وبطاقة الملف الشخصي أرتب على الهاتف",
+    "ru": "Небольшие исправления: ссылка на Barusik Platforms, понятнее данные продавца и условия на всех языках, аккуратнее карточка профиля на телефоне",
+    "es": "Pequeños arreglos: enlace a Barusik Platforms, datos del vendedor y términos más claros en todos los idiomas, y tarjeta de perfil más ordenada en el móvil",
+    "fr": "Petites corrections : lien vers Barusik Platforms, coordonnées du vendeur et conditions plus claires dans toutes les langues, carte de profil plus nette sur mobile"
   }
 }
