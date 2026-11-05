@@ -1,11 +1,11 @@
 {
-  "version": "2.4.1",
+  "version": "3.0.0",
   "notes": {
-    "en": "Small fixes: a link to Barusik Platforms, clearer seller details and terms in every language, tidier profile chip on phones",
-    "he": "תיקונים קטנים: קישור ל־Barusik Platforms, פרטי העסק והתקנון ברורים יותר בכל השפות, כרטיס פרופיל מסודר יותר בטלפון",
-    "ar": "إصلاحات صغيرة: رابط إلى Barusik Platforms، تفاصيل البائع والشروط أوضح بكل اللغات، وبطاقة الملف الشخصي أرتب على الهاتف",
-    "ru": "Небольшие исправления: ссылка на Barusik Platforms, понятнее данные продавца и условия на всех языках, аккуратнее карточка профиля на телефоне",
-    "es": "Pequeños arreglos: enlace a Barusik Platforms, datos del vendedor y términos más claros en todos los idiomas, y tarjeta de perfil más ordenada en el móvil",
-    "fr": "Petites corrections : lien vers Barusik Platforms, coordonnées du vendeur et conditions plus claires dans toutes les langues, carte de profil plus nette sur mobile"
+    "en": "The big upgrade: 11 arenas, 9 new pieces, pieces that unlock arena by arena, chests from every win and a new game screen. Pieces from higher arenas can be bought with coins: the further the arena, the higher the price",
+    "he": "המשחק השתדרג: 11 ארנות, 9 כלים חדשים, כלים שנפתחים ארנה אחרי ארנה, תיבה מכל ניצחון ומסך משחק חדש. כלי מארנה מתקדמת אפשר לקנות במטבעות: ככל שהארנה רחוקה יותר, הוא יקר יותר",
+    "ar": "ترقية كبيرة: 11 ساحة و9 قطع جديدة، قطع تُفتح ساحة بعد ساحة، صندوق من كل فوز وشاشة لعب جديدة. يمكن شراء قطع الساحات المتقدمة بالعملات: كلما بعدت الساحة زاد السعر",
+    "ru": "Большое обновление: 11 арен, 9 новых фигур, фигуры открываются от арены к арене, сундук за каждую победу и новый игровой экран. Фигуры с более высоких арен можно купить за монеты: чем дальше арена, тем дороже",
+    "es": "La gran mejora: 11 arenas, 9 piezas nuevas, piezas que se desbloquean arena tras arena, un cofre por cada victoria y una nueva pantalla de juego. Las piezas de arenas superiores se compran con monedas: cuanto más lejos la arena, más caras",
+    "fr": "La grande mise à jour : 11 arènes, 9 nouvelles pièces, des pièces débloquées arène après arène, un coffre à chaque victoire et un nouvel écran de jeu. Les pièces des arènes supérieures s'achètent avec des pièces d'or : plus l'arène est loin, plus c'est cher"
   }
 }
