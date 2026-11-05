@@ -6,8 +6,10 @@ Chess with arenas and pieces to collect. Each player builds their own back rank 
 classic, fairy and original pieces (rope, gun, gravity…). Every arena unlocks new pieces, and pieces from
 higher arenas can be bought with coins: the further the arena, the higher the price. Wins give chests.
 Play the arena guardians, a friend online by room code, or on one device.
-Ranked games (the battle button and the random opponent) use the pieces you opened. Unranked games open every piece and give no trophies or chests.
+Battles against the arena guardians and the Arena Cup use the pieces you opened. Every game against another player (random ranked opponent, a friend's room, a friends' tournament) opens every piece for both sides, so nothing bought gives an edge.
 Tournaments: a daily Arena Cup against the guardians, and an online knockout for 2 to 8 friends.
+Clans: up to 30 players, chat, a shared weekly goal, a weekly clan table with prizes and clan-against-clan duels. Clan points come only from real games (at most 20 a day per player).
+Sign in with e-mail or Google (the Google button appears once Google is switched on in Supabase).
 
 **Brainmaxing Chess** mode: the game invents the pieces — seven numbered discs (random1–random7)
 with random move maps and rare powers (jump, extra life, shooting, gravity, side-wrap), and pawns
@@ -17,6 +19,7 @@ drawn from fairy-chess pawn types. Both players get the same army.
 
 Complichess Plus (yearly, no automatic charge: no ads, ×2 coins, faster chests, Plus-only skins and board) and coin packs, tied to the
 player's account. They are sold through the Barusik checkout at barusik.com/pay and managed at barusik.com/admin.
+Ads are Bar's own, run from barusik.com/admin: before every Nth game (with skip) and one card on the home screen, never during a game and never for Plus.
 Terms, refunds, privacy and accessibility: [legal.html](legal.html). How it fits together: [GO-LIVE.md](GO-LIVE.md).
 
 © 2026 Bar Lvovski — all rights reserved. See [LICENSE](LICENSE).

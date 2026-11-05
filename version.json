@@ -1,11 +1,11 @@
 {
-  "version": "3.1.0",
+  "version": "3.2.0",
   "notes": {
-    "he": "טורנירים! גביע ארנה יומי וטורניר אונליין עם חברים. במשחק לא מדורג כל הכלים פתוחים, ומסך הבית התמלא",
-    "en": "Tournaments! A daily Arena Cup and online tournaments with friends. Unranked games open every piece, and the home screen is fuller",
-    "ar": "بطولات! كأس ساحة يومية وبطولة عبر الإنترنت مع الأصدقاء. كل القطع مفتوحة في المباريات غير المصنفة، والشاشة الرئيسية أغنى",
-    "ru": "Турниры! Ежедневный кубок арены и онлайн-турниры с друзьями. В играх без рейтинга открыты все фигуры, а главный экран стал насыщеннее",
-    "es": "¡Torneos! Copa de la arena diaria y torneos en línea con amigos. Sin clasificar se abren todas las piezas, y la pantalla principal está más completa",
-    "fr": "Des tournois ! Une coupe de l'arène quotidienne et des tournois en ligne entre amis. En non classé, toutes les pièces sont ouvertes, et l'écran d'accueil est plus riche"
+    "he": "קלאנים! צ׳אט, יעד שבועי, טבלת קלאנים ודו־קרבות. מסך הבית ממוקד במשחק: כפתור הקרב, הדק שלך והדירוג. מול שחקנים אחרים כל הכלים פתוחים, ואפשר להתחבר עם Google",
+    "en": "Clans! Chat, a weekly goal, a clan table and duels. The home screen is about the game: the battle button, your deck and your rating. Against other players every piece is open, and you can sign in with Google",
+    "ar": "العشائر! دردشة وهدف أسبوعي وجدول عشائر ومبارزات. الشاشة الرئيسية تركّز على اللعب: زر المعركة ومجموعتك وتصنيفك. أمام اللاعبين الآخرين كل القطع مفتوحة، ويمكنك تسجيل الدخول عبر Google",
+    "ru": "Кланы! Чат, цель недели, таблица кланов и дуэли. Главный экран — про игру: кнопка боя, ваша колода и рейтинг. Против других игроков открыты все фигуры, а войти можно через Google",
+    "es": "¡Clanes! Chat, objetivo semanal, tabla de clanes y duelos. La pantalla principal va del juego: el botón de batalla, tu mazo y tu clasificación. Contra otros jugadores todas las piezas están abiertas, y puedes entrar con Google",
+    "fr": "Les clans ! Chat, objectif hebdomadaire, classement des clans et duels. L'écran d'accueil est centré sur le jeu : le bouton de combat, votre deck et votre classement. Contre d'autres joueurs toutes les pièces sont ouvertes, et vous pouvez vous connecter avec Google"
   }
 }
