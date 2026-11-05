@@ -1,11 +1,11 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "notes": {
-    "en": "The big upgrade: 11 arenas, 9 new pieces, pieces that unlock arena by arena, chests from every win and a new game screen. Pieces from higher arenas can be bought with coins: the further the arena, the higher the price",
-    "he": "המשחק השתדרג: 11 ארנות, 9 כלים חדשים, כלים שנפתחים ארנה אחרי ארנה, תיבה מכל ניצחון ומסך משחק חדש. כלי מארנה מתקדמת אפשר לקנות במטבעות: ככל שהארנה רחוקה יותר, הוא יקר יותר",
-    "ar": "ترقية كبيرة: 11 ساحة و9 قطع جديدة، قطع تُفتح ساحة بعد ساحة، صندوق من كل فوز وشاشة لعب جديدة. يمكن شراء قطع الساحات المتقدمة بالعملات: كلما بعدت الساحة زاد السعر",
-    "ru": "Большое обновление: 11 арен, 9 новых фигур, фигуры открываются от арены к арене, сундук за каждую победу и новый игровой экран. Фигуры с более высоких арен можно купить за монеты: чем дальше арена, тем дороже",
-    "es": "La gran mejora: 11 arenas, 9 piezas nuevas, piezas que se desbloquean arena tras arena, un cofre por cada victoria y una nueva pantalla de juego. Las piezas de arenas superiores se compran con monedas: cuanto más lejos la arena, más caras",
-    "fr": "La grande mise à jour : 11 arènes, 9 nouvelles pièces, des pièces débloquées arène après arène, un coffre à chaque victoire et un nouvel écran de jeu. Les pièces des arènes supérieures s'achètent avec des pièces d'or : plus l'arène est loin, plus c'est cher"
+    "he": "טורנירים! גביע ארנה יומי וטורניר אונליין עם חברים. במשחק לא מדורג כל הכלים פתוחים, ומסך הבית התמלא",
+    "en": "Tournaments! A daily Arena Cup and online tournaments with friends. Unranked games open every piece, and the home screen is fuller",
+    "ar": "بطولات! كأس ساحة يومية وبطولة عبر الإنترنت مع الأصدقاء. كل القطع مفتوحة في المباريات غير المصنفة، والشاشة الرئيسية أغنى",
+    "ru": "Турниры! Ежедневный кубок арены и онлайн-турниры с друзьями. В играх без рейтинга открыты все фигуры, а главный экран стал насыщеннее",
+    "es": "¡Torneos! Copa de la arena diaria y torneos en línea con amigos. Sin clasificar se abren todas las piezas, y la pantalla principal está más completa",
+    "fr": "Des tournois ! Une coupe de l'arène quotidienne et des tournois en ligne entre amis. En non classé, toutes les pièces sont ouvertes, et l'écran d'accueil est plus riche"
   }
 }
