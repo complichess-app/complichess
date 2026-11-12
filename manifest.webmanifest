@@ -8,8 +8,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0F3A82",
-  "theme_color": "#1453A8",
+  "background_color": "#100E17",
+  "theme_color": "#14121C",
   "icons": [
     {
       "src": "icon-192.png",
@@ -71,5 +71,11 @@
   "prefer_related_applications": false,
   "display_override": [
     "standalone"
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://barusik.com/complichess/manifest.webmanifest"
+    }
   ]
 }
