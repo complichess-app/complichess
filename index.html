@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1453A8">
+<meta name="theme-color" content="#14121C">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1531,8 +1531,8 @@
   .x-way:active { transform: scale(.975); }
   .x-way-i { height: 24px; display: flex; align-items: center; color: var(--accent); }
   .x-way-i .piece, .x-way-i svg { width: 24px !important; height: 24px !important; }
-  .x-way b { font-family: var(--disp); font-weight: 700; font-size: 13.5px; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .x-way small { font-size: 11px; color: var(--muted); line-height: 1.2; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .x-way b { font-family: var(--disp); font-weight: 700; font-size: 13.5px; line-height: 1.15; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; }
+  .x-way small { font-size: 11px; color: var(--muted); line-height: 1.2; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .x-way .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-inline-end: 4px; vertical-align: 1px; }
   .x-quick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
   .x-tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 76px; padding: 8px 4px 7px; border-radius: 14px; border: 1px solid var(--edge); background: var(--panel); color: var(--text); min-width: 0; }
@@ -6965,7 +6965,7 @@ function settingsOverlay() {
    server first, so every launch gets the newest version. While the app is open it checks
    version.json; when a newer version is out it shows a bar and swaps in the update between games.
    To release: bump APP_VERSION here and "version" in version.json (tools/release.mjs does both). */
-const APP_VERSION = '3.2.0';
+const APP_VERSION = '4.0.0';
 const UPD = { latest: null, notes: '', ready: false, checking: false, msg: '', dismissed: '', reg: null, installEvt: null };
 function verNewer(a, b) { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++) { if ((x[i] || 0) > (y[i] || 0)) return true; if ((x[i] || 0) < (y[i] || 0)) return false; } return false; }
 function inMatch() {

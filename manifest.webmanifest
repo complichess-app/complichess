@@ -54,6 +54,13 @@
       "label": "מסך הבית"
     },
     {
+      "src": "screenshots/deck.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "הדק שלך"
+    },
+    {
       "src": "screenshots/game.png",
       "sizes": "780x1688",
       "type": "image/png",
