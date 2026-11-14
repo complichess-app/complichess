@@ -1,11 +1,11 @@
 {
-  "version": "4.0.0",
+  "version": "4.1.0",
   "notes": {
-    "he": "מראה חדש לגמרי: מסך בית שבו הצבא שלך עומד על הלוח, עמוד דקים שבו גוררים כלים ממשבצת למשבצת, ומשחק אונליין יציב יותר שעובד בכל רשת.",
-    "en": "A whole new look: a home screen with your army standing on the board, a deck page where you drag pieces from square to square, and steadier online play that works on any network.",
-    "ar": "مظهر جديد كليًا: شاشة رئيسية يقف فيها جيشك على اللوح، صفحة مجموعة تسحب فيها القطع من مربع إلى مربع، ولعب عبر الإنترنت أكثر ثباتًا يعمل على أي شبكة.",
-    "ru": "Совершенно новый вид: главный экран, где ваша армия стоит на доске, страница колоды с перетаскиванием фигур с поля на поле и более стабильная онлайн-игра, которая работает в любой сети.",
-    "es": "Un aspecto totalmente nuevo: una pantalla principal con tu ejército sobre el tablero, una página de mazo donde arrastras las piezas de casilla en casilla y un juego en línea más estable que funciona en cualquier red.",
-    "fr": "Un tout nouveau look : un écran d’accueil où votre armée se tient sur l’échiquier, une page de deck où l’on fait glisser les pièces de case en case, et un jeu en ligne plus stable qui fonctionne sur tous les réseaux."
+    "he": "הלוח מתעורר לחיים: השמיים של הארנה שלך מאחורי הצבא, הכלים זזים, שומר הארנה מחכה בצד השני של הלוח ויש לו מה להגיד, והצבעים של הארנה מאירים את כל המשחק.",
+    "en": "The board comes alive: your arena's sky stands behind your army, the pieces move, the arena guardian waits across the board with something to say, and the arena's colours light the whole game.",
+    "ar": "اللوح ينبض بالحياة: سماء ساحتك خلف جيشك، القطع تتحرك، حارس الساحة ينتظر في الجهة الأخرى ولديه ما يقوله، وألوان الساحة تضيء اللعبة كلها.",
+    "ru": "Доска оживает: небо вашей арены за армией, фигуры двигаются, страж арены ждёт на другой стороне доски и ему есть что сказать, а цвета арены освещают всю игру.",
+    "es": "El tablero cobra vida: el cielo de tu arena detrás de tu ejército, las piezas se mueven, el guardián de la arena espera al otro lado con algo que decir, y los colores de la arena iluminan todo el juego.",
+    "fr": "L'échiquier prend vie : le ciel de votre arène derrière votre armée, les pièces bougent, le gardien de l'arène attend de l'autre côté avec quelque chose à dire, et les couleurs de l'arène éclairent tout le jeu."
   }
 }
